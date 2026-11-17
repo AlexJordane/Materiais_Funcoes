@@ -1,0 +1,1656 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{tcolorbox}
+\usepackage{parskip}
+\usepackage{setspace}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.15}
+\usepackage{verbatim}
+\usetikzlibrary{arrows.meta, calc}
+\setstretch{1.2}
+\tcbuselibrary{skins, breakable}
+\geometry{top=2cm, bottom=2cm, left=2.5cm, right=2.5cm}
+\usepackage[colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue]{hyperref}
+
+\usepackage{chngcntr}
+\counterwithout{footnote}{chapter}
+
+\pagestyle{fancy}
+\fancyhf{} 
+\fancyhead[C]{\leftmark} 
+\fancyfoot[C]{\thepage} 
+
+% Estilo de caixa para destaque conceitual
+\newtcolorbox{destaque}[1][]{
+	enhanced,
+	breakable,
+	colback=gray!5,
+	colframe=black!70,
+	boxrule=1pt,
+	arc=4pt,
+	left=10pt,
+	right=10pt,
+	top=8pt,
+	bottom=8pt,
+	fonttitle=\bfseries,
+	code={%
+		\ifstrempty{#1}{%
+			\pgfkeysalso{notitle}%
+		}{%
+			\pgfkeysalso{title={#1}}%
+		}%
+	}
+}
+
+\begin{document}
+	
+	\begin{titlepage}
+		\centering
+		
+		\includegraphics[width=8cm]{ifes.png}\\[1cm]
+		
+		{\Large \textbf{Instituto Federal do Espírito Santo}}\\[0.5cm]
+		{\large \textbf{Licenciatura em Matemática}}\\[0.5cm]
+		{\large Introdução ao Estudo das Funções}
+		
+		\vspace{\fill}
+		
+		{\Huge \textbf{Logaritmos e Função Logarítmica}}\\[0.5cm]
+		{\Large Material de Apoio}
+		
+		\vspace{\fill}
+		
+		{\Large Professor Alex Jordane}
+		
+		\vspace{\fill}
+		
+		{\large Vitória -- ES}\\[0.2cm]
+		{\large 2026}
+		
+	\end{titlepage}
+	
+	\clearpage
+	\setcounter{page}{1}  % Inicia a contagem pré-textual a partir de i
+	
+	\chapter*{Apresentação}
+	\addcontentsline{toc}{chapter}{Apresentação}
+	
+	O estudo dos logaritmos e da função logarítmica constitui um momento singular na formação matemática. Longe de se reduzir a um conjunto de regras de manipulação simbólica ou a artifícios técnicos de simplificação, a criação dos logaritmos representa uma resposta histórica às necessidades de cálculo de sua época e uma ponte conceitual indispensável para a compreensão de fenômenos contínuos.
+	
+	Nossa investigação parte de uma situação-problema real ligada à farmacocinética clínica. Diante do decaimento da concentração de um medicamento na corrente sanguínea, deparamo-nos com uma relação exponencial cujas bases distintas não admitem redução direta por fatoração elementar. É exatamente essa necessidade prática que motiva a emergência dos logaritmos como instrumento capaz de converter potências e variações exponenciais em relações lineares operáveis.
+	
+	Ao longo dos capítulos, articulamos o conceito de logaritmo, suas propriedades operatórias, a relação de inversa da função exponencial, o comportamento gráfico e as técnicas de resolução de equações e inequações. Esperamos que este texto sirva como um recurso aberto e acolhedor de consulta, reflexão e estudo autônomo, apoiando estudantes e docentes na construção de compreensões sólidas acerca do pensamento funcional.
+	
+	Bons estudos!
+	
+	\vspace{\fill}
+	
+	{\footnotesize
+		\texttt{Esta é uma primeira versão do material, criada em 02/11/2026.}\\
+		\texttt{Este material foi elaborado em colaboração com a inteligência artificial Gemini, \\ versão 3.1 Pro.} \\		
+		\texttt{O compartilhamento e a reprodução deste material são permitidos, desde que a fonte \\ e a autoria sejam citadas.}  \\		
+		\texttt{Esta obra está licenciada com uma Licença Atribuição-NãoComercial-SemDerivações 4.0.}
+		\vspace{1cm}
+		\begin{center}
+			\includegraphics[width=4cm]{CC.png}
+	\end{center}}
+	
+	\clearpage
+	
+	\chapter*{Convenções e Notações Matemáticas}
+	\addcontentsline{toc}{chapter}{Convenções e Notações Matemáticas}
+	\thispagestyle{empty}
+	\label{chap:convencoes}
+	
+	Para facilitar a leitura e manter a clareza, reunimos as principais notações e convenções adotadas neste material:
+	
+	\begin{itemize}[label=$\circ$]
+		\item \textbf{Conjuntos numéricos e restrições:}
+		\begin{itemize}[label=--]
+			\item $\mathbb{N} = \{0, 1, 2, \dots\}$, $\mathbb{Z}$, $\mathbb{Q}$ e $\mathbb{R}$.
+			\item $\mathbb{R}^*_+ = \{x \in \mathbb{R} \mid x > 0\} = {]0, +\infty[}$ (domínio fundamental dos logaritmos).
+		\end{itemize}
+		
+		\item \textbf{Intervalos reais (notação com colchetes invertidos):}
+		\begin{itemize}[label=--]
+			\item $[a, b]$: fechado em ambos os extremos ($\{x \in \mathbb{R} \mid a \leqslant x \leqslant b\}$).
+			\item $]a, b[$: aberto em ambos os extremos ($\{x \in \mathbb{R} \mid a < x < b\}$).
+			\item $]a, +\infty[$ e $]-\infty, b[$: abertos e ilimitados.
+		\end{itemize}
+		
+		\item \textbf{Logaritmos:}
+		\begin{itemize}[label=--]
+			\item $\log_a b$: logaritmo de $b$ na base $a$ ($a > 0$, $a \neq 1$ e $b > 0$).
+			\item $\log x = \log_{10} x$ (base decimal omitida).
+			\item $\ln x = \log_e x$ (logaritmo natural, com $e \approx 2{,}718$).
+			\item $\text{antilog}_a x = a^x$.
+		\end{itemize}
+		
+		\item \textbf{Pares ordenados e separadores:}
+		\begin{itemize}[label=--]
+			\item Em coordenadas com vírgula decimal, utiliza-se ponto e vírgula como separador: $P(x_0; y_0)$ (exemplo: $(3{,}5; 0)$).
+			\item Adota-se a vírgula para números decimais (padrão brasileiro) e o símbolo $\blacksquare$ para indicar o encerramento de demonstrações.
+		\end{itemize}
+	\end{itemize}	
+	\clearpage
+	
+	\tableofcontents
+	\thispagestyle{empty}
+	
+	\clearpage
+	%\pagenumbering{arabic} % Retorna à numeração arábica tradicional (1, 2, 3, ...)
+	%\setcounter{page}{1}   % Reinicia a contagem para que o Capítulo 1 comece na página 1
+		
+	\chapter{Uma situação problema real}
+	\label{chap:problema}
+	
+	Vamos começar esse material com um problema muito comum em nosso cotidiano. A \textbf{farmacocinética clínica} se ocupa em determinar o tempo necessário para que a concentração de um medicamento caia a um patamar seguro ou terapêutico no organismo. Nosso problema está relacionado a este contexto.
+	
+	\begin{destaque}[O Problema do Ajuste Medicamentoso]
+		\label{dest:problema}
+		Em um tratamento hospitalar, uma pessoa recebe uma dose de determinado analgésico por via venosa. A partir do momento em que a substância entra na corrente sanguínea, o organismo passa a eliminá-la de forma contínua por meio dos processos metabólicos.
+		
+		Estudos mostram que a cada hora a concentração do medicamento diminui em $20\%$, ou seja, resta $80\%$ ($0{,}8$) da quantidade da hora anterior.
+		
+		A concentração inicial no sangue é de $50\text{ mg/L}$. Para que o medicamento continue aliviando a dor sem atingir níveis de toxicidade, a equipe de saúde precisa saber em quantas horas a concentração atingirá exatamente $15\text{ mg/L}$, momento planejado para a aplicação de uma nova dose ou avaliação clínica.
+		
+		Sabendo isso, como calculamos o momento exato que deve ser aplicado nova dose?
+	\end{destaque}
+	
+	\section{O modelo matemático}
+	A concentração $C(t)$ em função do tempo decorrido $t$ (em horas) é descrita pela relação exponencial decrescente:
+	$$C(t) = 50 \cdot (0{,}8)^t$$
+	Igualando a concentração ao valor desejado de $15\text{ mg/L}$:
+	$$50 \cdot (0{,}8)^t = 15$$
+	Dividindo ambos os lados por $50$:
+	$$(0{,}8)^t = \frac{15}{50}$$
+	$$(0{,}8)^t = 0{,}3$$
+	Na forma fracionária irredutível:
+	$$\left(\frac{4}{5}\right)^t = \frac{3}{10}$$
+	
+	\section{O problema da redução a bases comuns}
+	
+	Aqui entramos em um dilema, como resolver essa equação?	
+	
+	Até este ponto dos estudos de equações exponenciais, resolvemos equações buscando bases comuns por meio da fatoração simples (como transformar $4^x = 32$ em $2^{2x} = 2^5$). 
+	
+	No entanto, ao analisar a relação obtida:
+	\begin{itemize}[label=$\circ$]
+		\item Do lado esquerdo, temos potências com fatores primos $2$ e $5$.
+		\item Do lado direito, surge o fator primo $3$ no numerador, além dos fatores $2$ e $5$ no denominador.
+		\item Não existe expoente racional simples que permita igualar diretamente as bases $\frac{4}{5}$ e $\frac{3}{10}$ pelo método tradicional de decomposição.
+	\end{itemize}
+	
+	É justamente esse impasse que justifica a introdução de um novo conceito, o de \textbf{logaritmo}. Esse novo conceito será a ferramenta algébrica para extrair o expoente quando a redução a bases comuns não é viável.
+	
+	Vamos começar a estudar essa nova ferramenta no próximo capítulo e em breve retornaremos ao problema \ref{dest:problema}.
+	
+	
+	\chapter{Logaritmos}
+	\label{chap:logaritmos}
+	
+	\section{Conceito e Definição}
+	
+	Vimos que equações como $\left(\frac{4}{5}\right)^t = \frac{3}{10}$ nos colocam diante da busca por um expoente real que relaciona duas grandezas positivas quando a fatoração elementar não é suficiente. Formalizamos essa operação inversa da exponenciação por meio do conceito de logaritmo.
+	
+	\begin{destaque}[Definição de Logaritmo]
+		Dados os números reais $a$ e $b$, com $a > 0$, $a \neq 1$ e $b > 0$, chama-se \textbf{logaritmo de $b$ na base $a$} o expoente $x$ ao qual se deve elevar a base $a$ para obter o número $b$:
+		$$\log_a b = x \iff a^x = b$$
+	\end{destaque}
+	
+	Nessa relação:
+	\begin{itemize}[label=$\circ$]
+		\item $a$ é a \textbf{base} do logaritmo;
+		\item $b$ é o \textbf{logaritmando} (ou argumento);
+		\item $x$ é o \textbf{logaritmo}.
+	\end{itemize}
+	
+	As restrições impostas ($a > 0$, $a \neq 1$ e $b > 0$) constituem as chamadas \textbf{condições de existência}:
+	\begin{itemize}[label=$\circ$]
+		\item Se $a \leqslant 0$, a potência $a^x$ não estaria bem definida para expoentes reais quaisquer (por exemplo, $(-4)^{1/2} \notin \mathbb{R}$).
+		\item Se $a = 1$, teríamos $1^x = 1$ para todo $x$, impossibilitando determinar um valor único para expressões como $\log_1 5$ ou tornando $\log_1 1$ indeterminado.
+		\item Como $a > 0$, qualquer potência real de $a$ resulta sempre em um número estritamente positivo; logo, é indispensável que $b > 0$.
+	\end{itemize}
+	
+	\subsection*{Exemplos de Aplicação Direta}
+	
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item $\log_2 16 = 4$, pois $2^4 = 16$.
+		\item $\log_3 \left(\frac{1}{3}\right) = -1$, pois $3^{-1} = \frac{1}{3}$.
+		\item $\log_7 \sqrt{7} = \frac{1}{2}$, pois $7^{1/2} = \sqrt{7}$.
+		\item $\log_61 = 0$, pois $6^0 = 1$.
+		\item $\log_{1/2} 16 = -4$, pois $\left(\frac{1}{2}\right)^{-4} = 2^4 = 16$.
+	\end{enumerate}
+	
+	\section{Exercícios Resolvidos}
+	
+	\subsection*{Exercícios Resolvidos}
+	
+	\textbf{Exercício 1.} Calcule o valor da expressão:
+	$$E = \log_2 64 - \log_3 \left(\frac{1}{27}\right) + \log_{10} 0{,}01$$
+	
+	\textit{Resolução:}
+	Calculamos cada termo separadamente a partir da definição:
+	\begin{itemize}[label=$\circ$]
+		\item $\log_2 64 = x \iff 2^x = 64 \iff 2^x = 2^6 \iff x = 6$.
+		\item $\log_3 \left(\frac{1}{27}\right) = y \iff 3^y = \frac{1}{27} \iff 3^y = 3^{-3} \iff y = -3$.
+		\item $\log_{10} 0{,}01 = z \iff 10^z = \frac{1}{100} \iff 10^z = 10^{-2} \iff z = -2$.
+	\end{itemize}
+	Substituindo os valores obtidos na expressão:
+	$$E = 6 - (-3) + (-2) = 6 + 3 - 2 = 7$$
+	
+	\vspace{0.3cm}
+		
+	\subsection*{Exercícios Propostos}
+	
+	\begin{enumerate}
+		\item Calcule o valor dos seguintes logaritmos:
+		\begin{multicols}{2}
+			\begin{enumerate}[label=\textbf{\alph*)}]
+				\item $\log_4 16$
+				\item $\log_3 \sqrt[3]{9}$
+				\item $\log_{1/3} 81$
+				\item $\log_{0{,}5} 32$
+			\end{enumerate}
+		\end{multicols}
+		
+		\item Determine o valor de $x$ em cada uma das sentenças:
+		\begin{multicols}{2}
+			\begin{enumerate}[label=\textbf{\alph*)}]
+				\item $\log_x 49 = 2$
+				\item $\log_2 x = -4$
+				\item $\log_4 (2x - 1) = 2$
+				\item $\log_{x+1} 25 = 2$
+			\end{enumerate}
+		\end{multicols}
+		
+	\end{enumerate}
+	
+	\section{Consequências Imediatas da Definição:}
+	
+	Da equivalência fundamental $\log_a b = x \iff a^x = b$, decorrem quatro consequências para todo $a > 0$, $a \neq 1$ e termos pertencentes aos seus respectivos domínios:
+	
+	\begin{destaque}[Consequências]
+		\begin{enumerate}[label=\textbf{\arabic*.}]
+			\item \textbf{Logaritmo da unidade:} O logaritmo de $1$ em qualquer base é igual a zero.
+			$$\log_a 1 = 0 \quad (\text{pois } a^0 = 1)$$
+			
+			\item \textbf{Logaritmo da própria base:} O logaritmo da base na mesma base é igual a um.
+			$$\log_a a = 1 \quad (\text{pois } a^1 = a)$$
+			
+			\item \textbf{Potência de expoente logarítmico:} A potência de base $a$ e expoente $\log_a b$ é igual a $b$.
+			$$a^{\log_a b} = b \quad (\text{para todo } b > 0)$$
+				
+			\item \textbf{Unicidade do logaritmo:} Dois logaritmos em uma mesma base são iguais se, e somente se, os logaritmandos forem iguais.
+			$$\log_a b = \log_a c \iff b = c \quad (\text{para } b, c > 0)$$		
+			
+		\end{enumerate}
+	\end{destaque}
+	
+	\begin{destaque}[Demonstração da Consequência 3]
+		Sejam $a > 0$, $a \neq 1$ e $b > 0$. 
+		
+		Pela definição fundamental de logaritmo, temos:
+		$$\log_a b = x \iff a^x = b$$
+		
+		Como $x$ representa exatamente a expressão $\log_a b$, substituímos $x$ diretamente no expoente da equação exponencial $a^x = b$:
+		$$a^{\log_a b} = b$$
+		
+		Essa identidade expressa o fato de que a função exponencial de base $a$ e a função logarítmica de mesma base são operações inversas, desfazendo uma à outra.
+		$$\blacksquare$$
+	\end{destaque}
+
+		
+	\begin{destaque}[Demonstração da Consequência 4]
+		$$\log_a b = \log_a c \Longleftrightarrow a^{\log_a c} = b \Longleftrightarrow c=b$$
+		$$\blacksquare$$
+	\end{destaque}
+	
+	\subsection*{Exemplos Numéricos}
+	
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item $\log_8 1 = 0$
+		\item $\log_{\pi} \pi = 1$
+		\item $3^{\log_3 7} = 7$
+		\item $5^{\log_5 12} = 12$
+		\item $2^{1 + \log_2 5} = 2^1 \cdot 2^{\log_2 5} = 2 \cdot 5 = 10$
+		\item Se $\log_5 (3x - 2) = \log_5 (x + 8)$, temos $3x - 2 = x + 8 \implies 2x = 10 \implies x = 5$.
+	\end{enumerate}
+	
+	\section{Sistemas de Logaritmos}
+	
+	Embora a base $a$ possa ser qualquer número real positivo e diferente de $1$, dois sistemas assumem papel de relevo em aplicações científicas e tecnológicas:
+	
+	\subsection{Sistema de Logaritmos Decimais (Base 10)}
+	Criado e sistematizado por Henry Briggs (1561--1630), utiliza a base $10$, a mesma do nosso sistema de numeração posicional. Por convenção usual, quando a base é $10$, omite-se o índice na notação:
+	$$\log_{10} x = \log x$$
+	
+	Exemplos:
+	\begin{itemize}[label=$\circ$]
+		\item $\log 10 = 1$
+		\item $\log 1000 = \log (10^3) = 3$
+		\item $\log 0{,}001 = \log (10^{-3}) = -3$
+	\end{itemize}
+	
+	\subsection{Sistema de Logaritmos Naturais ou Neperianos (Base $e$)}
+	Utiliza como base o número irracional $e \approx 2{,}71828\dots$ (número de Euler). Esse sistema surge espontaneamente no estudo de fenômenos de crescimento e decaimento contínuos na natureza, na física e na economia. 
+	
+	O logaritmo na base $e$ é denominado \textbf{logaritmo natural} (ou \textbf{neperiano}, em homenagem ao matemarico escocês John Napier (1550-1617)) e representado pela notação $\ln$:
+	$$\log_e x = \ln x$$
+	
+	Exemplos:
+	\begin{itemize}[label=$\circ$]
+		\item $\ln e = 1$
+		\item $\ln 1 = 0$
+		\item $\ln (e^4) = 4$
+		\item $e^{\ln 5} = 5$
+	\end{itemize}
+	
+	\section{Propriedades Operatórias dos Logaritmos}
+	
+	As propriedades operatórias constituem a principal razão histórica e analítica do desenvolvimento dos logaritmos, pois permitem transformar operações aritméticas de maior complexidade (multiplicações, divisões e potenciações) em operações mais simples (adições, subtrações e multiplicações por constantes).
+	
+	\subsection{Logaritmo do Produto}
+	
+	A primeira propriedade estabelece que o logaritmo de um produto de dois termos estritamente positivos é igual à soma dos logaritmos desses termos tomados na mesma base.
+	
+	\begin{destaque}[Logaritmo do Produto]
+		Sejam $a, b, c \in \mathbb{R}$ tais que $a > 0$, $a \neq 1$, $b > 0$ e $c > 0$. Então:
+		$$\log_a (b \cdot c) = \log_a b + \log_a c$$
+	\end{destaque}
+	
+	\begin{destaque}[Demonstração]
+		Para demonstrar essa relação, nomeamos os logaritmos individuais de cada fator:
+		$$\log_a b = x \quad \text{e} \quad \log_a c = y$$
+		
+		Pela definição fundamental de logaritmo, reescrevemos essas igualdades na forma exponencial:
+		$$a^x = b \quad \text{e} \quad a^y = c$$
+		
+		Multiplicando membro a membro as duas igualdades obtidas:
+		$$b \cdot c = a^x \cdot a^y$$
+		
+		Pelas propriedades fundamentais das potências de mesma base, conservamos a base e somamos os expoentes:
+		$$b \cdot c = a^{x + y}$$
+		
+		Aplicando novamente a definição de logaritmo a essa relação exponencial:
+		$$\log_a (b \cdot c) = x + y$$
+		
+		Substituindo $x$ e $y$ pelas expressões originais:
+		$$\log_a (b \cdot c) = \log_a b + \log_a c$$
+		$$\blacksquare$$
+	\end{destaque}
+	
+	\begin{destaque}[Observação: Produto de termos de mesmo sinal]
+		A condição de existência do logaritmo exige apenas que o logaritmando seja estritamente positivo, ou seja, $b \cdot c > 0$. Para que essa desigualdade se verifique no conjunto dos números reais, há duas possibilidades:
+		\begin{enumerate}[label=\alph*)]
+			\item $b > 0$ e $c > 0$ (ambos positivos);
+			\item $b < 0$ e $c < 0$ (ambos negativos).
+		\end{enumerate}
+		
+		No segundo caso, as expressões $\log_a b$ e $\log_a c$ isoladas não existem em $\mathbb{R}$, pois os argumentos seriam negativos. No entanto, como seus valores absolutos $|b| = -b > 0$ e $|c| = -c > 0$ são termos positivos, temos que $b \cdot c = (-b) \cdot (-c) = |b| \cdot |c|$. 
+		
+		Portanto, de maneira abrangente, se $b \cdot c > 0$, a propriedade assume a forma:
+		$$\log_a (b \cdot c) = \log_a |b| + \log_a |c|$$
+		
+		\textbf{Exemplo numérico:}  
+		Considerando $b = -4$ e $c = -8$ na base $2$, temos $(-4) \cdot (-8) = 32 > 0$. Logo:
+		$$\log_2 \bigl((-4) \cdot (-8)\bigr) = \log_2 32 = 5$$
+		Aplicando a relação com módulos:
+		$$\log_2 |-4| + \log_2 |-8| = \log_2 4 + \log_2 8 = 2 + 3 = 5$$
+	\end{destaque}
+	
+	\subsection*{Exemplos}
+	
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item Sabendo que $\log 2 \approx 0{,}30$ e $\log 3 \approx 0{,}48$, podemos calcular:
+		$$\log 6 = \log(2 \cdot 3) = \log 2 + \log 3 \approx 0{,}30 + 0{,}48 = 0{,}78$$
+		
+		\item $\log_2 (8 \cdot 16) = \log_2 8 + \log_2 16 = 3 + 4 = 7$.
+	\end{enumerate}
+	
+	\subsection*{Extensão para o Produto de $n$ Fatores}
+	
+	A propriedade do produto se estende naturalmente para qualquer quantidade finita $n \geqslant 2$ de fatores reais estritamente positivos.
+	
+	\newpage
+	
+	\begin{destaque}[Logaritmo do Produto de $n$ Fatores]
+		Sejam $a > 0$ com $a \neq 1$, e $b_1, b_2, \dots, b_n \in \mathbb{R}^*_+$, com $n \geqslant 2$. Então:
+		$$\log_a (b_1 \cdot b_2 \dotsm b_n) = \log_a b_1 + \log_a b_2 + \dots + \log_a b_n$$
+		Ou, em notação de produtório e somatório:
+		$$\log_a \left(\prod_{i=1}^n b_i\right) = \sum_{i=1}^n \log_a b_i$$
+	\end{destaque}
+	
+	\begin{destaque}[Demonstração por Indução Finita]
+		A demonstração é feita por indução matemática sobre o número de fatores $n$.
+		
+		\textbf{1. Base da indução ($n = 2$):}  
+		Para dois fatores, a proposição é verdadeira conforme demonstrado anteriormente:
+		$$\log_a (b_1 \cdot b_2) = \log_a b_1 + \log_a b_2$$
+		
+		\textbf{2. Hipótese de indução:}  
+		Assumimos que a propriedade seja válida para $k$ fatores ($k \geqslant 2$), isto é:
+		$$\log_a (b_1 \cdot b_2 \dotsm b_k) = \log_a b_1 + \log_a b_2 + \dots + \log_a b_k$$
+		
+		\textbf{3. Passo indutivo:}  
+		Devemos provar a validade da relação para $k + 1$ fatores:
+		$$\log_a (b_1 \cdot b_2 \dotsm b_k \cdot b_{k+1})$$
+		
+		Associando os primeiros $k$ fatores em um único bloco $B = (b_1 \cdot b_2 \dotsm b_k)$, temos o produto de dois termos: $B$ e $b_{k+1}$. Como $b_i > 0$ para todo $i$, segue que $B > 0$. Aplicando o caso base:
+		$$\log_a \bigl(B \cdot b_{k+1}\bigr) = \log_a B + \log_a b_{k+1}$$
+		
+		Pela hipótese de indução, expandimos $\log_a B$:
+		$$\log_a B = \log_a (b_1 \cdot b_2 \dotsm b_k) = \log_a b_1 + \log_a b_2 + \dots + \log_a b_k$$
+		
+		Substituindo essa soma na expressão anterior:
+		$$\log_a (b_1 \cdot b_2 \dotsm b_k \cdot b_{k+1}) = \log_a b_1 + \log_a b_2 + \dots + \log_a b_k + \log_a b_{k+1}$$
+		
+		Pelo princípio da indução matemática, a propriedade é válida para todo número inteiro $n \geqslant 2$.
+		$$\blacksquare$$
+	\end{destaque}
+	
+	\subsection{Logaritmo do Quociente}
+	
+	A segunda propriedade operatória estabelece que o logaritmo da divisão (ou razão) entre dois números estritamente positivos é igual à diferença entre os logaritmos do dividendo (numerador) e do divisor (denominador), mantida a mesma base.
+	
+	\begin{destaque}[Logaritmo do Quociente]
+		Sejam $a, b, c \in \mathbb{R}$ tais que $a > 0$, $a \neq 1$, $b > 0$ e $c > 0$. Então:
+		$$\log_a \left(\frac{b}{c}\right) = \log_a b - \log_a c$$
+	\end{destaque}
+	
+	\begin{destaque}[Demonstração]
+		Nomeamos os logaritmos do numerador e do denominador:
+		$$\log_a b = x \quad \text{e} \quad \log_a c = y$$
+		
+		Pela definição fundamental de logaritmo, escrevemos essas relações na forma exponencial:
+		$$a^x = b \quad \text{e} \quad a^y = c$$
+		
+		Dividindo membro a membro a primeira igualdade pela segunda:
+		$$\frac{b}{c} = \frac{a^x}{a^y}$$
+		
+		Pelas regras operatórias das potências de mesma base, mantemos a base e subtraímos os expoentes:
+		$$\frac{b}{c} = a^{x - y}$$
+		
+		Aplicando novamente a definição de logaritmo à igualdade exponencial obtida:
+		$$\log_a \left(\frac{b}{c}\right) = x - y$$
+		
+		Substituindo $x$ e $y$ por suas expressões originais:
+		$$\log_a \left(\frac{b}{c}\right) = \log_a b - \log_a c$$
+		$$\blacksquare$$
+	\end{destaque}
+	
+	\begin{destaque}[Caso Particular: Logaritmo do Inverso]
+		Como decorrência imediata, fazendo $b = 1$ e sabendo que $\log_a 1 = 0$, obtemos o logaritmo do inverso de um número:
+		$$\log_a \left(\frac{1}{c}\right) = \log_a 1 - \log_a c = 0 - \log_a c = -\log_a c$$
+	\end{destaque}
+	
+	\begin{destaque}[Observação: Quociente de termos de mesmo sinal]
+		De modo inteiramente análogo ao produto, a existência de $\log_a \left(\frac{b}{c}\right)$ requer unicamente que a razão seja estritamente positiva, ou seja, $\frac{b}{c} > 0$. Isso ocorre em duas situações:
+		\begin{enumerate}[label=\alph*)]
+			\item $b > 0$ e $c > 0$ (numerador e denominador positivos);
+			\item $b < 0$ e $c < 0$ (numerador e denominador negativos).
+		\end{enumerate}
+		
+		Quando ambos são negativos, as expressões isoladas $\log_a b$ e $\log_a c$ não estão definidas no conjunto dos números reais. Entretanto, como a divisão de dois valores negativos resulta em um número positivo idêntico à divisão de seus respectivos valores absolutos, temos:
+		$$\frac{b}{c} = \frac{-b}{-c} = \frac{|b|}{|c|}$$
+		
+		Dessa forma, caso saibamos apenas que $\frac{b}{c} > 0$, a propriedade assume a formulação abrangente:
+		$$\log_a \left(\frac{b}{c}\right) = \log_a |b| - \log_a |c|$$
+		
+		\textbf{Exemplo numérico:}  
+		Tomando $b = -32$ e $c = -4$ na base $2$, verificamos que $\frac{-32}{-4} = 8 > 0$. Assim:
+		$$\log_2 \left(\frac{-32}{-4}\right) = \log_2 8 = 3$$
+		Utilizando a forma modular:
+		$$\log_2 |-32| - \log_2 |-4| = \log_2 32 - \log_2 4 = 5 - 2 = 3$$
+	\end{destaque}
+	
+	\subsection*{Exemplos}
+	
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item Sabendo que $\log 2 \approx 0{,}30$ e $\log 3 \approx 0{,}48$, calculemos $\log 1{,}5$:
+		$$\log 1{,}5 = \log\left(\frac{3}{2}\right) = \log 3 - \log 2 \approx 0{,}48 - 0{,}30 = 0{,}18$$
+		
+		\item O cálculo de $\log 5$ em base decimal é uma aplicação clássica da propriedade do quociente, escrevendo $5 = \frac{10}{2}$:
+		$$\log 5 = \log\left(\frac{10}{2}\right) = \log 10 - \log 2 = 1 - 0{,}30 = 0{,}70$$
+		
+		\item $\log_3 \left(\frac{1}{81}\right) = -\log_3 81 = -\log_3 (3^4) = -4$.
+		
+		\item $\log_2 \left(\frac{32}{4}\right) = \log_2 32 - \log_2 4 = 5 - 2 = 3$.
+	\end{enumerate}
+
+	\subsection{Logaritmo de Potência}
+	
+	A terceira propriedade operatória estabelece que o logaritmo de uma potência cuja base é estritamente positiva equivale ao produto do expoente pelo logaritmo da base dessa potência (conhecida intuitivamente como a ``regra do tombo'').
+	
+	\begin{destaque}[Logaritmo de uma Potência]
+		Sejam $a, b \in \mathbb{R}$ tais que $a > 0$, $a \neq 1$, $b > 0$, e seja $\alpha \in \mathbb{R}$. Então:
+		$$\log_a (b^\alpha) = \alpha \cdot \log_a b$$
+	\end{destaque}
+	
+	\begin{destaque}[Demonstração]
+		Definimos o logaritmo da base $b$:
+		$$\log_a b = x$$
+		
+		Pela definição fundamental de logaritmo, escrevemos essa relação na forma exponencial:
+		$$a^x = b$$
+		
+		Elevando ambos os membros da igualdade ao expoente real $\alpha$:
+		$$(a^x)^\alpha = b^\alpha$$
+		
+		Pelas propriedades da potenciação (potência de potência):
+		$$a^{\alpha \cdot x} = b^\alpha$$
+		
+		Aplicando a definição de logaritmo a essa nova igualdade exponencial:
+		$$\log_a (b^\alpha) = \alpha \cdot x$$
+		
+		Substituindo $x$ pela sua expressão original ($\log_a b$):
+		$$\log_a (b^\alpha) = \alpha \cdot \log_a b$$
+		$$\blacksquare$$
+	\end{destaque}
+	
+	\begin{destaque}[Caso Particular: Logaritmo de um Radical]
+		Como todo radical pode ser expresso como uma potência de expoente fracionário, fazendo $\alpha = \frac{1}{n}$ (com $n \in \mathbb{N}$ e $n \geqslant 2$), decorre que:
+		$$\log_a (\sqrt[n]{b}) = \log_a \left(b^{1/n}\right) = \frac{1}{n} \cdot \log_a b = \frac{\log_a b}{n}$$
+	\end{destaque}
+	
+	\begin{destaque}[Observação: Potências de Expoente Par e Valores Absolutos]
+		Se o expoente $\alpha$ for um número inteiro par ($\alpha = 2k$, com $k \in \mathbb{Z}^*$), a potência $b^{2k}$ é estritamente positiva para todo $b \neq 0$, o que assegura a existência de $\log_a (b^{2k})$ mesmo quando $b$ é um número negativo.
+		
+		Todavia, para que o termo isolado $\log_a b$ faça sentido no conjunto dos números reais, a base do logaritmando precisa ser positiva. Logo, caso saibamos unicamente que $b \neq 0$:
+		$$\log_a (b^{2k}) = 2k \cdot \log_a |b|$$
+		
+		\textbf{Exemplo numérico:}  
+		Para $b = -3$ e a base $a = 10$:
+		$$\log \bigl((-3)^2\bigr) = \log 9 = \log(3^2) = 2 \cdot \log |-3| = 2 \cdot \log 3$$
+		Omissões do módulo conduziriam à expressão indefinida $2 \cdot \log(-3)$.
+	\end{destaque}
+	
+	\subsection*{Exemplos}
+	
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item Sabendo que $\log 2 \approx 0{,}30$, calculemos $\log 32$:
+		$$\log 32 = \log(2^5) = 5 \cdot \log 2 \approx 5 \cdot 0{,}30 = 1{,}50$$
+		
+		\item Aplicação em radicais:
+		$$\log_3 (\sqrt[5]{27}) = \log_3 \left(27^{1/5}\right) = \frac{1}{5} \cdot \log_3 (3^3) = \frac{3}{5}$$
+		
+		\item Determinação de logaritmos decimais por potências inversas:
+		$$\log \left(\frac{1}{\sqrt{10}}\right) = \log\left(10^{-1/2}\right) = -\frac{1}{2} \cdot \log 10 = -\frac{1}{2} \cdot 1 = -0{,}5$$
+	\end{enumerate}
+	
+	\section{Desenvolvimento e Redução de Expressões Logarítmicas}
+	
+	A aplicação combinada das propriedades operatórias permite dois procedimentos algébricos complementares:
+	\begin{itemize}[label=$\circ$]
+		\item \textbf{Desenvolvimento logarítmico:} transformar o logaritmo de uma expressão algébrica complexa (envolvendo multiplicações, divisões, potências e raízes) em uma soma algébrica de logaritmos simples.
+		\item \textbf{Redução (ou condensação) a um único logaritmo:} realizar o caminho inverso, reunindo vários logaritmos em um único logaritmando.
+	\end{itemize}
+	
+	\subsection{Desenvolvimento de uma Expressão Algébrica}
+	
+	Tomemos como modelo analítico a expressão geral:
+	$$A = \frac{a^x \cdot \sqrt[y]{b}}{c^z}$$
+	
+	Assumindo as condições de existência ($a, b, c > 0$, base do logaritmo $k > 0$ com $k \neq 1$, e índice do radical $y \in \mathbb{N}$ com $y \geqslant 2$), aplicamos o logaritmo em ambos os membros:
+	$$\log_k A = \log_k \left( \frac{a^x \cdot \sqrt[y]{b}}{c^z} \right)$$
+	
+	O procedimento de expansão ocorre em etapas sucessivas:
+	
+	\begin{destaque}[Passo a Passo do Desenvolvimento]
+		\begin{enumerate}[label=\textbf{\arabic*.}]
+			\item \textbf{Aplicação da propriedade do quociente:}  
+			O logaritmo da razão converte-se na diferença entre o logaritmo do numerador e o do denominador:
+			$$\log_k A = \log_k \left( a^x \cdot \sqrt[y]{b} \right) - \log_k (c^z)$$
+			
+			\item \textbf{Aplicação da propriedade do produto:}  
+			No primeiro termo, o logaritmo do produto decompõe-se na soma dos logaritmos:
+			$$\log_k A = \log_k (a^x) + \log_k (\sqrt[y]{b}) - \log_k (c^z)$$
+			
+			\item \textbf{Conversão do radical em potência:}  
+			Reescrevemos a raiz como expoente fracionário ($\sqrt[y]{b} = b^{1/y}$):
+			$$\log_k A = \log_k (a^x) + \log_k \left( b^{1/y} \right) - \log_k (c^z)$$
+			
+			\item \textbf{Aplicação da propriedade das potências:}  
+			Os expoentes passam a multiplicar os respectivos logaritmos:
+			$$\log_k A = x \cdot \log_k a + \frac{1}{y} \cdot \log_k b - z \cdot \log_k c$$
+		\end{enumerate}
+	\end{destaque}
+	
+	\subsection*{Exemplos Numéricos e Algébricos}
+	
+	\textbf{Exemplo 1 (Desenvolvimento Numérico).} Desenvolva a expressão $E = \frac{x^3 \cdot \sqrt{y}}{z^4}$ em termos de logaritmos decimais de $x$, $y$ e $z$ (com $x, y, z > 0$):
+	$$\log E = \log\left(\frac{x^3 \cdot y^{1/2}}{z^4}\right) = \log(x^3) + \log\left(y^{1/2}\right) - \log(z^4) = 3\log x + \frac{1}{2}\log y - 4\log z$$
+	
+	\vspace{0.3cm}
+	
+	\textbf{Exemplo 2 (Cálculo com Valores de Referência).} Considerando os dados $\log 2 \approx 0{,}30$ e $\log 3 \approx 0{,}48$, determine o valor aproximado de:
+	$$K = \sqrt{\frac{12}{5}}$$
+	
+	\textit{Resolução:}  
+	Aplicamos o logaritmo decimal à expressão:
+	$$\log K = \log \left( \left(\frac{12}{5}\right)^{1/2} \right) = \frac{1}{2} \cdot \log\left(\frac{12}{5}\right)$$
+	
+	Expandindo pelo quociente e decompondo em fatores primos ($12 = 2^2 \cdot 3$ e $5 = \frac{10}{2}$):
+	$$\log\left(\frac{12}{5}\right) = \log 12 - \log 5 = \log(2^2 \cdot 3) - \log\left(\frac{10}{2}\right)$$
+	$$\log\left(\frac{12}{5}\right) = [2\log 2 + \log 3] - [\log 10 - \log 2]$$
+	$$\log\left(\frac{12}{5}\right) = 2\log 2 + \log 3 - 1 + \log 2 = 3\log 2 + \log 3 - 1$$
+	
+	Substituindo as aproximações:
+	$$\log\left(\frac{12}{5}\right) \approx 3 \cdot (0{,}30) + 0{,}48 - 1 = 0{,}90 + 0{,}48 - 1 = 0{,}38$$
+	
+	Retornando à expressão de $\log K$:
+	$$\log K = \frac{1}{2} \cdot 0{,}38 = 0{,}19$$
+	
+	Dispondo de uma tábua (ou tabela) de logaritmos decimais, é possível realizar a operação inversa e determinar diretamente o valor aproximado de $K$. Procurando o número cujo logaritmo decimal é $0{,}19$ (ou seja, determinando $\text{antilog } 0{,}19 = 10^{0{,}19}$), encontramos:
+	$$K \approx 1{,}55$$
+	
+	Com os avanços da computação e a presença constante de celulares e calculadoras em nosso cotidiano, o uso das antigas tábuas tornou-se desnecessário para o cálculo prático, guardando apenas seu relevante valor histórico e conceitual.
+	
+	Note que, por cálculo direto, $\sqrt{\frac{12}{5}} = \sqrt{2{,}4} \approx 1{,}549$, o que ilustra a precisão do método logarítmico para simplificar operações com radicais e frações.
+	
+	\vspace{0.3cm}
+	
+	\textbf{Exemplo 3 (Processo Inverso: Redução a um Único Logaritmo).}  
+	Escreva a expressão $P = 2\log_a x + \frac{1}{3}\log_a y - 3\log_a z$ como o logaritmo de uma única expressão algébrica:
+	\begin{align*}
+		P &= \log_a (x^2) + \log_a \left(y^{1/3}\right) - \log_a (z^3) \\
+		&= \log_a \left(x^2 \cdot \sqrt[3]{y}\right) - \log_a (z^3) \\
+		&= \log_a \left(\frac{x^2 \cdot \sqrt[3]{y}}{z^3}\right)
+	\end{align*}
+	
+	\section{Exercícios sobre Propriedades Operatórias}
+	
+	\subsection{Exercícios Resolvidos}
+	
+	\textbf{Exercício 1.} Sabendo que $\log 2 \approx 0{,}30$ e $\log 3 \approx 0{,}48$, determine o valor de:
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item $\log 72$
+		\item $\log \sqrt{0{,}6}$
+	\end{enumerate}
+	
+	\textit{Resolução:}
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item Decompondo $72$ em fatores primos: $72 = 8 \cdot 9 = 2^3 \cdot 3^2$.  
+		Aplicando as propriedades do produto e da potência:
+		\begin{align*}
+			\log 72 &= \log(2^3 \cdot 3^2) = \log(2^3) + \log(3^2) \\
+			&= 3 \cdot \log 2 + 2 \cdot \log 3 \\
+			&\approx 3 \cdot (0{,}30) + 2 \cdot (0{,}48) = 0{,}90 + 0{,}96 = 1{,}86
+		\end{align*}
+		
+		\item Escrevemos a raiz e o número decimal em forma fracionária: $\sqrt{0{,}6} = \left(\frac{6}{10}\right)^{1/2} = \left(\frac{3}{5}\right)^{1/2}$.  
+		Lembrando que $5 = \frac{10}{2}$, podemos expressar:
+		$$\log 5 = \log\left(\frac{10}{2}\right) = \log 10 - \log 2 \approx 1 - 0{,}30 = 0{,}70$$
+		Assim:
+		\begin{align*}
+			\log \sqrt{0{,}6} &= \frac{1}{2} \cdot \log\left(\frac{3}{5}\right) = \frac{1}{2} \cdot [\log 3 - \log 5] \\
+			&\approx \frac{1}{2} \cdot [0{,}48 - 0{,}70] = \frac{1}{2} \cdot (-0{,}22) = -0{,}11
+		\end{align*}
+	\end{enumerate}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Exercício 2.}  O potencial hidrogeniônico ($\text{pH}$) mede o nível de acidez ou alcalinidade de uma solução aquosa, sendo definido por:
+	$$\text{pH} = -\log [\text{H}^+]$$
+	em que $[\text{H}^+]$ representa a concentração de íons hidrogênio em mol por litro ($\text{mol/L}$).  
+	Em uma análise de controle da qualidade da água potável, verificou-se que uma amostra continha $[\text{H}^+] = 3{,}2 \times 10^{-7}\text{ mol/L}$. Considerando $\log 2 \approx 0{,}30$, determine o $\text{pH}$ dessa amostra e indique se a água está ligeiramente ácida ($\text{pH} < 7$) ou neutra/alcalina ($\text{pH} \geqslant 7$).
+	
+	\textit{Resolução:}  
+	Substituindo a concentração na relação do $\text{pH}$:
+	$$\text{pH} = -\log (3{,}2 \times 10^{-7})$$
+	
+	Expressamos $3{,}2$ na forma de fração com potências conhecidas: $3{,}2 = \frac{32}{10} = \frac{2^5}{10}$.  
+	Substituindo na expressão do produto:
+	$$3{,}2 \times 10^{-7} = \frac{2^5}{10} \times 10^{-7} = 2^5 \times 10^{-8}$$
+	
+	Aplicamos as propriedades do produto e da potência:
+	\begin{align*}
+		\log (2^5 \times 10^{-8}) &= \log(2^5) + \log(10^{-8}) \\
+		&= 5 \cdot \log 2 + (-8) \cdot \log 10 \\
+		&= 5 \cdot \log 2 - 8
+	\end{align*}
+	
+	Substituindo a aproximação $\log 2 \approx 0{,}30$:
+	$$\log (3{,}2 \times 10^{-7}) \approx 5 \cdot (0{,}30) - 8 = 1{,}50 - 8 = -6{,}50$$
+	
+	Portanto:
+	$$\text{pH} = -(-6{,}50) = 6{,}50$$
+	Como $\text{pH} = 6{,}50 < 7$, a água analisada encontra-se ligeiramente ácida.
+	
+	\vspace{0.3cm}
+	
+	\textbf{Exercício 3.}  A sensibilidade do ouvido humano a variações de pressão sonora não é linear, mas logarítmica. O nível de intensidade sonora $N$, expresso em decibéis ($\text{dB}$), é dado pela relação:
+	$$N = 10 \cdot \log \left(\frac{I}{I_0}\right)$$
+	em que $I$ é a intensidade física da onda sonora (em $\text{W/m}^2$) e $I_0 = 10^{-12}\text{ W/m}^2$ é o limiar de audibilidade humana.  
+	Em um ambiente escolar, a intensidade do ruído durante o intervalo foi medida em $I_1 = 2 \times 10^{-5}\text{ W/m}^2$, enquanto na sala de aula durante a aula era de $I_2 = 2 \times 10^{-8}\text{ W/m}^2$.  
+	Usando as propriedades dos logaritmos, determine:
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item O nível sonoro $N_1$ no intervalo (adote $\log 2 \approx 0{,}30$).
+		\item A diferença $N_1 - N_2$ expressa a partir do quociente das intensidades.
+	\end{enumerate}
+	
+	\textit{Resolução:}
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item Calculamos a razão entre $I_1$ e $I_0$:
+		$$\frac{I_1}{I_0} = \frac{2 \times 10^{-5}}{10^{-12}} = 2 \times 10^7$$
+		Aplicando as propriedades do produto e da potência no logaritmo:
+		\begin{align*}
+			N_1 &= 10 \cdot \log(2 \times 10^7) = 10 \cdot [\log 2 + \log(10^7)] \\
+			&= 10 \cdot [\log 2 + 7 \cdot \log 10] \\
+			&\approx 10 \cdot [0{,}30 + 7] = 10 \cdot 7{,}30 = 73\text{ dB}
+		\end{align*}
+		
+		\item A diferença de níveis sonoros é dada por:
+		$$N_1 - N_2 = 10 \cdot \log\left(\frac{I_1}{I_0}\right) - 10 \cdot \log\left(\frac{I_2}{I_0}\right) = 10 \cdot \left[ \log\left(\frac{I_1}{I_0}\right) - \log\left(\frac{I_2}{I_0}\right) \right]$$
+		Pela propriedade do quociente de logaritmos:
+		$$N_1 - N_2 = 10 \cdot \log\left( \frac{I_1 / I_0}{I_2 / I_0} \right) = 10 \cdot \log\left(\frac{I_1}{I_2}\right)$$
+		Substituindo a razão $\frac{I_1}{I_2} = \frac{2 \times 10^{-5}}{2 \times 10^{-8}} = 10^3$:
+		$$N_1 - N_2 = 10 \cdot \log(10^3) = 10 \cdot 3 = 30\text{ dB}$$
+		Esse resultado mostra que um aumento de $1\,000$ vezes na intensidade física da onda corresponde a um acréscimo de apenas $30\text{ dB}$ na percepção auditiva.
+	\end{enumerate}
+	
+
+	\subsection{Exercícios Propostos}
+	
+	\begin{enumerate}
+		\item Dados $\log 2 \approx 0{,}301$ e $\log 3 \approx 0{,}477$, determine o valor numérico aproximado de:
+		\begin{multicols}{2}
+			\begin{enumerate}[label=\textbf{\alph*)}]
+				\item $\log 18$
+				\item $\log 24$
+				\item $\log 0{,}75$
+				\item $\log \sqrt[3]{12}$
+			\end{enumerate}
+		\end{multicols}
+		
+		\item Reduza as seguintes expressões a um único logaritmo:
+		\begin{enumerate}[label=\textbf{\alph*)}]
+			\item $A = \log_a x + 2\log_a y - 3\log_a z$ \quad ($x, y, z > 0$)
+			\item $B = \frac{1}{2}\log_b (x + 1) - \log_b y - 4\log_b z$ \quad ($x > -1$, $y, z > 0$)
+		\end{enumerate}
+		
+		\item (\textbf{Escala Richter}) A magnitude $M$ de um terremoto na escala Richter relaciona-se com a energia liberada $E$ (em joules) por meio da expressão:
+		$$\log E = 4{,}4 + 1{,}5 \cdot M$$
+		\begin{enumerate}[label=\textbf{\alph*)}]
+			\item Sabendo que dois terremotos registraram magnitudes $M_1 = 7{,}0$ e $M_2 = 5{,}0$, use a propriedade do quociente de logaritmos para determinar a razão $\frac{E_1}{E_2}$ entre as energias liberadas.
+			\item Interprete o que essa razão representa em termos de liberação de energia física entre dois graus inteiros da escala.
+		\end{enumerate}
+		
+		\item Mostre que, se $a, b \in \mathbb{R}^*_+$ e $a \neq 1$, então:
+		$$\log_a \left(\frac{a + b}{b}\right) = 1 - \log_a \left(\frac{b}{a+b}\right)$$
+	\end{enumerate}
+	
+	\section{Mudança de Base}
+	
+	Em muitas situações analíticas, deparamo-nos com logaritmos expressos em bases distintas daquelas disponíveis em tabelas, instrumentos computacionais (que operam comumente nas bases $10$ e $e$) ou convenientes para a simplificação algébrica de uma equação. A relação de mudança de base permite reescrever qualquer logaritmo em termos de uma nova base escolhida arbitrariamente.
+	
+	\begin{destaque}[Fórmula de Mudança de Base]
+		Sejam $a, b, c \in \mathbb{R}$ tais que $a > 0$, $a \neq 1$, $b > 0$, $c > 0$ e $c \neq 1$. O logaritmo de $b$ na base $a$ pode ser expresso na nova base $c$ pela razão:
+		$$\log_a b = \frac{\log_c b}{\log_c a}$$
+	\end{destaque}
+	
+	\newpage
+	
+	\begin{destaque}[Demonstração:]
+		Definimos inicialmente:
+		$$\log_a b = x$$
+		
+		Pela definição fundamental de logaritmo, escrevemos a relação correspondente na forma exponencial:
+		$$a^x = b$$
+		
+		Como ambos os membros são estritamente positivos e $c$ é uma base admissível ($c > 0$ e $c \neq 1$), aplicamos o logaritmo na base $c$ a ambos os lados da igualdade:
+		$$\log_c (a^x) = \log_c b$$
+		
+		Aplicando a propriedade do logaritmo de uma potência no primeiro membro:
+		$$x \cdot \log_c a = \log_c b$$
+		
+		Como $a \neq 1$, temos que $\log_c a \neq 0$. Logo, podemos isolar $x$:
+		$$x = \frac{\log_c b}{\log_c a}$$
+		
+		Substituindo $x$ por $\log_a b$, obtemos a relação desejada:
+		$$\log_a b = \frac{\log_c b}{\log_c a}$$
+		$$\blacksquare$$
+	\end{destaque}
+	
+	\newpage
+	
+	\subsection{Consequências Imediatas}
+	
+	A fórmula de mudança de base dá origem a identidades práticas de simplificação algébrica:
+	
+	\begin{destaque}[Consequências Práticas]
+		\begin{enumerate}[label=\textbf{\arabic*.}]
+			\item \textbf{Inversão de base e logaritmando:}  
+			Fazendo $c = b$ na relação fundamental (com $b \neq 1$), temos:
+			$$\log_a b = \frac{\log_b b}{\log_b a} = \frac{1}{\log_b a}$$
+			Ou seja:
+			$$\log_a b \cdot \log_b a = 1$$
+			
+			\item \textbf{Regra da cadeia para produtos de logaritmos:}  
+			Para termos positivos e bases admissíveis $a, b, c$:
+			$$\log_a b \cdot \log_b c = \frac{\log_k b}{\log_k a} \cdot \frac{\log_k c}{\log_k b} = \frac{\log_k c}{\log_k a} = \log_a c$$
+			De modo geral, para bases e argumentos encadeados:
+			$$\log_{a_1} a_2 \cdot \log_{a_2} a_3 \dotsm \log_{a_{n-1}} a_n = \log_{a_1} a_n$$
+			
+			\item \textbf{Expoente na base:}  
+			Para $\beta \in \mathbb{R}^*$:
+			$$\log_{a^\beta} b = \frac{\log_a b}{\log_a (a^\beta)} = \frac{\log_a b}{\beta \cdot \log_a a} = \frac{1}{\beta} \cdot \log_a b$$
+			Combinando com o expoente no logaritmando:
+			$$\log_{a^\beta} (b^\alpha) = \frac{\alpha}{\beta} \cdot \log_a b$$
+		\end{enumerate}
+	\end{destaque}
+	
+	\subsection*{Exemplos}
+	
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item \textbf{Cálculo com dados em base 10:}  
+		Sabendo que $\log 2 \approx 0{,}30$ e $\log 3 \approx 0{,}48$, determine $\log_2 3$:
+		$$\log_2 3 = \frac{\log 3}{\log 2} \approx \frac{0{,}48}{0{,}30} = 1{,}60$$
+		
+		\item \textbf{Simplificação de expoente na base:}  
+		$$\log_8 16 = \log_{2^3} (2^4) = \frac{4}{3} \cdot \log_2 2 = \frac{4}{3} \cdot 1 = \frac{4}{3}$$
+		
+		\item \textbf{Simplificação por encadeamento de bases:}  
+		$$\log_2 3 \cdot \log_3 5 \cdot \log_5 8 = \log_2 8 = \log_2 (2^3) = 3$$
+	\end{enumerate}
+	
+	\section{Nota Histórica}
+	\begin{destaque}[As Tábuas de Logaritmos e o Cálculo Numérico]
+		Antes do surgimento dos recursos computacionais modernos, cálculos astronômicos, náuticos e geodésicos demandavam meses de trabalho manual exaustivo com multiplicações e divisões de números com muitas casas decimais. A invenção dos logaritmos, no início do século XVII, operou uma verdadeira revolução científica ao substituir o esforço dessas operações pela simples adição e subtração.
+		
+		O matemático escocês John Napier (1550--1617) dedicou mais de duas décadas ao desenvolvimento do método, publicado em 1614 em sua obra \textit{Mirifici Logarithmorum Canonis Descriptio}. Pouco tempo depois, em diálogo com o matemático inglês Henry Briggs (1561--1630), consolidou-se o sistema de base decimal, ideal para o cálculo numérico em virtude de nossa base de numeração posicional. Briggs publicou tábuas com dezenas de milhares de logaritmos calculados com extraordinária precisão (inicialmente com catorze casas decimais).
+		
+		Na prática, essas tábuas funcionavam como instrumentos essenciais de mediação do trabalho científico:
+		\begin{itemize}[label=$\circ$]
+			\item Para calcular produtos ou quocientes complexos, determinavam-se os logaritmos dos fatores na tabela;
+			\item Realizava-se a soma ou subtração desses valores;
+			\item Pelo processo inverso (busca pelo antilogaritmo na tábua), localizava-se o número correspondente ao resultado final.
+		\end{itemize}
+		
+		Quando o valor do logaritmo obtido caía entre duas entradas consecutivas da tábua, recorria-se à interpolação linear para estimar com precisão as casas decimais adicionais. 
+		
+		O célebre astrônomo e matemático Pierre-Simon Laplace resumiu esse impacto ao afirmar que a criação dos logaritmos, ao encurtar o trabalho dos astrônomos, prolongou-lhes a vida útil dedicada à ciência.
+	\end{destaque}
+	
+	
+	\chapter{Retorno ao Ponto de Partida: A Resolução do Ajuste Medicamentoso}
+	
+	Ao final do Capítulo~\ref{chap:problema}, deparamo-nos com o dilema prático da equipe de saúde: determinar em quantas horas a concentração sanguínea de um analgésico atingiria exatamente $15\text{ mg/L}$, partindo de $50\text{ mg/L}$ e decrescendo a uma taxa de $20\%$ por hora. A modelagem conduziu à equação exponencial:
+	$$\left(\frac{4}{5}\right)^t = \frac{3}{10} \quad \text{ou, na forma decimal,} \quad (0{,}8)^t = 0{,}3$$
+	
+	Naquele momento, a fatoração clássica em bases comuns mostrou-se insuficiente devido à incompatibilidade dos fatores primos dos dois lados da igualdade ($2$ e $5$ à esquerda; $3$, $2$ e $5$ à direita). Munidos agora das propriedades operatórias e dos conceitos de logaritmo, podemos finalmente resolver essa relação com rigor algébrico.
+	
+	\begin{destaque}[Resolução do Problema Clínico]
+		Partimos da equação exponencial:
+		$$(0{,}8)^t = 0{,}3$$
+		
+		Para expressar os valores em termos de dados tabelados usuais, adotamos:
+		$$\log 2 \approx 0{,}30 \quad \text{e} \quad \log 3 \approx 0{,}48$$
+		
+		\begin{enumerate}[label=\textbf{\arabic*.}]
+			\item \textbf{Aplicação de logaritmos decimais:}  
+			Aplicando o logaritmo na base $10$ em ambos os membros da igualdade:
+			$$\log(0{,}8^t) = \log(0{,}3)$$
+			\newpage
+			\item \textbf{Uso da propriedade da potência:}  
+			Pela regra do tombo, o expoente $t$ passa a multiplicar o logaritmo da base:
+			$$t \cdot \log(0{,}8) = \log(0{,}3)$$
+			Isolando o tempo $t$:
+			$$t = \frac{\log(0{,}3)}{\log(0{,}8)}$$
+			
+			\item \textbf{Decomposição por meio das frações decimais:}  
+			Escrevendo os argumentos na forma fracionária decimal:
+			$$0{,}3 = \frac{3}{10} \quad \text{e} \quad 0{,}8 = \frac{8}{10} = \frac{2^3}{10}$$
+			
+			\item \textbf{Cálculo do numerador e do denominador:}  
+			Aplicando as propriedades do quociente e da potência, lembrando que $\log 10 = 1$:
+			\begin{itemize}[label=$\circ$]
+				\item \textbf{Numerador:}  
+				$$\log(0{,}3) = \log\left(\frac{3}{10}\right) = \log 3 - \log 10 \approx 0{,}48 - 1 = -0{,}52$$
+				\item \textbf{Denominador:}  
+				$$\log(0{,}8) = \log\left(\frac{2^3}{10}\right) = 3 \cdot \log 2 - \log 10 \approx 3 \cdot (0{,}30) - 1 = 0{,}90 - 1 = -0{,}10$$
+			\end{itemize}
+			
+			\item \textbf{Determinação do tempo $t$ e interpretação clínica:}  
+			Substituindo os valores encontrados:
+			$$t = \frac{-0{,}52}{-0{,}10} = 5{,}2\text{ horas}$$
+		\end{enumerate}
+		
+		Para traduzir a fração de hora em minutos de forma precisa para a equipe hospitalar:
+		$$0{,}2\text{ h} = 0{,}2 \times 60\text{ minutos} = 12\text{ minutos}$$
+		
+		Portanto, a concentração atinge exatamente o patamar terapêutico planejado de 15~mg/L após \textbf{5 horas e 12 minutos} da aplicação venosa inicial.
+	\end{destaque}
+	
+	\section*{Síntese}
+	
+	O percurso percorrido evidencia o papel que conferiu aos logaritmos sua relevância histórica e sua importância analítica:
+	\begin{itemize}[label=$\circ$]
+		\item Diante de fenômenos contínuos em que as grandezas não coincidem em potências inteiras simples, o logaritmo atua como uma possibilidade que transforma o expoente desconhecido em um fator linear.
+		\item A razão entre dois números negativos ($\frac{-0{,}52}{-0{,}10}$) resultou em um tempo estritamente positivo ($5{,}2\text{ horas}$), expressando coerentemente a natureza decrescente do processo de eliminação do fármaco pelo organismo.
+	\end{itemize}
+	
+	Com a base conceitual e operatória dos logaritmos devidamente estabelecida, estamos prontos para avançar, no próximo capítulo, para a formalização da \textbf{Função Logarítmica}, seu comportamento gráfico, domínio e propriedades analíticas.
+	
+	\chapter{A Função Logarítmica}
+	\label{chap:funcao_logaritmica}
+	
+	Após o estudo dos logaritmos como ferramenta algébrica e operatória, nosso olhar se volta para o comportamento funcional. Vamos analisar como a variação contínua do logaritmando produz variações no valor do logaritmo, caracterizando uma nova classe de funções elementares: as funções logarítmicas.
+	
+	\section{Definição e Condições de Existência}
+	
+	\begin{destaque}[Definição de Função Logarítmica]
+		Dado um número real $a$, com $a > 0$ e $a \neq 1$, chama-se \textbf{função logarítmica de base $a$} a aplicação $f \colon \mathbb{R}^*_+ \to \mathbb{R}$ que associa a cada número real estritamente positivo $x$ o seu logaritmo na base $a$:
+		$$f(x) = \log_a x$$
+	\end{destaque}
+	
+	A partir dessa definição, destacam-se imediatamente os conjuntos fundamentais da função:
+	\begin{itemize}[label=$\circ$]
+		\item \textbf{Domínio:} $\text{Dom}(f) = \mathbb{R}^*_+ = {]0, +\infty[}$. A função só admite valores reais quando o argumento for estritamente positivo.
+		\item \textbf{Contradomínio e Conjunto Imagem:} O contradomínio é $\mathbb{R}$ e a imagem coincide com todo o conjunto dos números reais, isto é, $\text{Im}(f) = \mathbb{R} = {]-\infty, +\infty[}$.
+	\end{itemize}
+	
+	\subsection*{Determinação de Domínio em Expressões Compostas}
+	
+	Quando trabalhamos com funções em que o logaritmando ou a base dependem de uma variável real (da forma $g(x) = \log_{b(x)} [u(x)]$), o domínio da função é o conjunto de todos os valores de $x$ para os quais as condições de existência sejam simultaneamente satisfeitas:
+	$$\begin{cases}
+		u(x) > 0 & \text{(o logaritmando deve ser estritamente positivo)} \\
+		b(x) > 0 & \text{(a base deve ser estritamente positiva)} \\
+		b(x) \neq 1 & \text{(a base deve ser diferente de $1$)}
+	\end{cases}$$
+	
+	\textbf{Exemplo 1.} Determine o domínio da função real $f(x) = \log_2 (3x - 12)$.
+	
+	\textit{Resolução:}  
+	A base é fixa ($2 > 0$ e $2 \neq 1$). A única exigência recai sobre o logaritmando:
+	$$3x - 12 > 0 \implies 3x > 12 \implies x > 4$$
+	Logo:
+	$$\text{Dom}(f) = \{x \in \mathbb{R} \mid x > 4\} = {]4, +\infty[}$$
+	
+	\vspace{0.3cm}
+	
+	\textbf{Exemplo 2.} Determine o domínio da função real $g(x) = \log_{(x - 2)} (9 - x^2)$.
+	
+	\textit{Resolução:}  
+	Precisamos impor as três condições fundamentais:
+	\begin{enumerate}[label=\textbf{\arabic*.}]
+		\item Logaritmando positivo:
+		$$9 - x^2 > 0 \implies x^2 < 9 \implies -3 < x < 3 \quad (\text{Intervalo } {]-3, 3[})$$
+		\item Base positiva:
+		$$x - 2 > 0 \implies x > 2 \quad (\text{Intervalo } {]2, +\infty[})$$
+		\item Base diferente de 1:
+		$$x - 2 \neq 1 \implies x \neq 3$$
+	\end{enumerate}
+	
+	Determinando a interseção das três condições:
+	$${]-3, 3[} \;\cap\; {]2, +\infty[} \;\cap\; (\mathbb{R} - \{3\}) = {]2, 3[}$$
+	Portanto, o domínio de $g$ é:
+	$$\text{Dom}(g) = \{x \in \mathbb{R} \mid 2 < x < 3\} = {]2, 3[}$$
+	
+	\section{Gráficos e Comportamento da Função}
+	
+	O traçado e o comportamento da curva $y = \log_a x$ dependem diretamente do valor da base $a$. Distinguem-se dois casos essenciais: a base maior do que um ($a > 1$) e a base entre zero e um ($0 < a < 1$).
+	
+	\subsection{Caso 1: Base Maior que a Unidade ($a > 1$)}
+	
+	Tomemos como modelo a função $f(x) = \log_2 x$. Atribuindo potências de $2$ para a variável independente $x$, calculamos os valores correspondentes de $y$:
+	
+	\begin{center}
+		\begin{tabular}{|c|c|c|c|c|c|c|c|}
+			\hline
+			$x$ & $\frac{1}{4}$ & $\frac{1}{2}$ & $1$ & $2$ & $4$ & $8$ \\
+			\hline
+			$y = \log_2 x$ & $-2$ & $-1$ & $0$ & $1$ & $2$ & $3$ \\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	Observando a tabela e a curva associada:
+	\begin{itemize}[label=$\circ$]
+		\item À medida que $x$ cresce, $y$ também cresce de modo contínuo. A função é \textbf{estritamente crescente}:
+		$$x_1 < x_2 \iff \log_a x_1 < \log_a x_2 \quad (\text{para } a > 1)$$
+		\item Para $x = 1$, temos $y = 0$. A curva intercepta o eixo horizontal no ponto $(1, 0)$.
+		\item Para $x > 1$, os valores de $y$ são estritamente positivos.
+		\item Para $0 < x < 1$, os valores de $y$ são negativos.
+		\item À medida que $x$ se aproxima de zero pela direita ($x \to 0^+$), a curva aproxima-se indefinidamente do eixo vertical ($y \to -\infty$), fazendo do eixo das ordenadas uma \textbf{assíntota vertical}.
+	\end{itemize}
+	
+	\begin{figure}[htbp]
+		\centering
+		\begin{tikzpicture}
+			\begin{axis}[
+				axis lines = center,
+				xlabel = {$x$},
+				ylabel = {$y$},
+				xmin = -0.5, xmax = 8.5,
+				ymin = -3.2, ymax = 3.5,
+				domain = 0.12:8.2,
+				samples = 150,
+				grid = major,
+				grid style = {dashed, gray!30},
+				width = 9.5cm,
+				height = 7.5cm,
+				legend style = {at={(0.95,0.15)}, anchor=south east, font=\small}
+				]
+				\addplot[blue, thick] {ln(x)/ln(2)};
+				\addlegendentry{$f(x) = \log_2 x$}
+				
+				% Ponto de interseção com o eixo x
+				\addplot[mark=*, mark size=2pt, fill=black] coordinates {(1, 0)};
+				\node[below right, font=\small] at (axis cs: 1, 0) {$(1, 0)$};
+				
+				% Ponto notável (2, 1)
+				\addplot[mark=*, mark size=2pt, fill=black] coordinates {(2, 1)};
+				\node[above left, font=\small] at (axis cs: 2, 1) {$(2, 1)$};
+			\end{axis}
+		\end{tikzpicture}
+		\caption{Gráfico da função logarítmica crescente ($f(x) = \log_2 x$, com base $a = 2 > 1$).}
+		\label{fig:log_crescente}
+	\end{figure}
+	
+	\subsection{Caso 2: Base entre Zero e a Unidade ($0 < a < 1$)}
+	
+	Analisemos agora a função $g(x) = \log_{1/2} x$. Construindo a tabela para valores convenientes:
+	
+	\begin{center}
+		\begin{tabular}{|c|c|c|c|c|c|c|c|}
+			\hline
+			$x$ & $\frac{1}{4}$ & $\frac{1}{2}$ & $1$ & $2$ & $4$ & $8$ \\
+			\hline
+			$y = \log_{1/2} x$ & $2$ & $1$ & $0$ & $-1$ & $-2$ & $-3$ \\
+			\hline
+		\end{tabular}
+	\end{center}
+	
+	Neste caso:
+	\begin{itemize}[label=$\circ$]
+		\item À medida que $x$ aumenta, os valores de $y$ diminuem continuamente. A função é \textbf{estritamente decrescente}:
+		$$x_1 < x_2 \iff \log_a x_1 > \log_a x_2 \quad (\text{para } 0 < a < 1)$$
+		\item A curva mantém a interseção com o eixo das abscissas no ponto $(1, 0)$.
+		\item Para $0 < x < 1$, os valores de $y$ são positivos, tendendo a $+\infty$ quando $x \to 0^+$.
+		\item Para $x > 1$, os valores de $y$ tornam-se negativos.
+	\end{itemize}
+	
+	\begin{figure}[htbp]
+		\centering
+		\begin{tikzpicture}
+			\begin{axis}[
+				axis lines = center,
+				xlabel = {$x$},
+				ylabel = {$y$},
+				xmin = -0.5, xmax = 8.5,
+				ymin = -3.5, ymax = 3.2,
+				domain = 0.12:8.2,
+				samples = 150,
+				grid = major,
+				grid style = {dashed, gray!30},
+				width = 9.5cm,
+				height = 7.5cm,
+				legend style = {at={(0.95,0.85)}, anchor=north east, font=\small}
+				]
+				\addplot[red!80!black, thick] {ln(x)/ln(0.5)};
+				\addlegendentry{$g(x) = \log_{1/2} x$}
+				
+				% Ponto de interseção com o eixo x
+				\addplot[mark=*, mark size=2pt, fill=black] coordinates {(1, 0)};
+				\node[above right, font=\small] at (axis cs: 1, 0) {$(1, 0)$};
+				
+				% Ponto notável (2, -1)
+				\addplot[mark=*, mark size=2pt, fill=black] coordinates {(2, -1)};
+				\node[below left, font=\small] at (axis cs: 2, -1) {$(2, -1)$};
+			\end{axis}
+		\end{tikzpicture}
+		\caption{Gráfico da função logarítmica decrescente ($g(x) = \log_{1/2} x$, com base $a = \frac{1}{2}$).}
+		\label{fig:log_decrescente}
+	\end{figure}
+	
+	\section{A Relação de Inversão com a Função Exponencial}
+	
+	Uma propriedade geométrica e analítica de grande valor formativo é o vínculo de bijeção e inversão entre a função exponencial $e_a(x) = a^x$ e a função logarítmica $l_a(x) = \log_a x$.
+	
+	\begin{destaque}[Simetria em Relação à Bissetriz dos Quadrantes Ímpares]
+		Como a função logarítmica é a inversa da exponencial correspondente:
+		$$\log_a(a^x) = x \quad (\forall x \in \mathbb{R}) \quad \text{e} \quad a^{\log_a x} = x \quad (\forall x \in \mathbb{R}^*_+)$$
+		o gráfico cartesiano de $y = \log_a x$ é a imagem refletida do gráfico de $y = a^x$ em relação à reta bissetriz dos quadrantes ímpares ($y = x$).
+		
+		A Figura \ref{fig:simetria_exp_log} apresenta essa simetria quando $a>0$ e a Figura  \ref{fig:simetria_exp_log_decrescente} quando $0<a<1$.
+	\end{destaque}
+		
+	\begin{figure}[H]
+		\centering
+		\begin{tikzpicture}
+			\begin{axis}[
+				axis lines = center,
+				xlabel = {$x$},
+				ylabel = {$y$},
+				xmin = -3.2, xmax = 5.5,
+				ymin = -3.2, ymax = 5.5,
+				grid = major,
+				grid style = {dashed, gray!30},
+				width = 10.5cm,
+				height = 10.5cm,
+				legend style = {
+					at = {(0.5, -0.15)},
+					anchor = north,
+					legend columns = -1,
+					font = \small
+				},
+				legend cell align = {left}
+				]
+				% Bissetriz dos quadrantes ímpares: y = x
+				\addplot[gray!70, thick, dashdotted, domain=-3:5] {x};
+				\addlegendentry{$y = x$}
+				
+				% Função Exponencial: f(x) = 2^x
+				\addplot[blue, thick, domain=-3:2.4, samples=120] {2^x};
+				\addlegendentry{$f(x) = 2^x$}
+				
+				% Função Logarítmica: g(x) = log_2(x)
+				\addplot[red!80!black, thick, domain=0.12:5.2, samples=150] {ln(x)/ln(2)};
+				\addlegendentry{$g(x) = \log_2 x$}
+				
+				% Segmentos conectando pares simétricos refletidos por y = x
+				\draw[dashed, black!60] (axis cs: 0, 1) -- (axis cs: 1, 0);
+				\draw[dashed, black!60] (axis cs: 1, 2) -- (axis cs: 2, 1);
+				\draw[dashed, black!60] (axis cs: 2, 4) -- (axis cs: 4, 2);
+				
+				% Pontos notáveis na exponencial
+				\addplot[only marks, mark=*, mark size=2pt, draw=blue, fill=blue] coordinates {(0, 1) (1, 2) (2, 4)};
+				\node[left, font=\footnotesize, blue] at (axis cs: 0, 1.3) {$(0, 1)$};
+				\node[left, font=\footnotesize, blue] at (axis cs: 1, 2) {$(1, 2)$};
+				\node[above left, font=\footnotesize, blue] at (axis cs: 2, 4) {$(2, 4)$};
+				
+				% Pontos notáveis no logaritmo
+				\addplot[only marks, mark=*, mark size=2pt, draw=red!80!black, fill=red!80!black] coordinates {(1, 0) (2, 1) (4, 2)};
+				\node[below, font=\footnotesize, red!80!black] at (axis cs: 1.5, 0) {$(1, 0)$};
+				\node[below right, font=\footnotesize, red!80!black] at (axis cs: 2, 1) {$(2, 1)$};
+				\node[below right, font=\footnotesize, red!80!black] at (axis cs: 4, 2) {$(4, 2)$};
+				
+			\end{axis}
+		\end{tikzpicture}
+		
+		\caption{Simetria entre as curvas de $f(x) = 2^x$ e $g(x) = \log_2 x$ em relação à bissetriz $y = x$.}
+		\label{fig:simetria_exp_log}
+	\end{figure}
+	
+	\begin{figure}[H]
+		\centering
+		\begin{tikzpicture}
+			\begin{axis}[
+				axis lines = center,
+				xlabel = {$x$},
+				ylabel = {$y$},
+				xmin = -3.2, xmax = 5.5,
+				ymin = -3.2, ymax = 5.5,
+				grid = major,
+				grid style = {dashed, gray!30},
+				width = 10.5cm,
+				height = 10.5cm,
+				legend style = {
+					at = {(0.5, -0.15)},
+					anchor = north,
+					legend columns = -1,
+					font = \small
+				},
+				legend cell align = {left}
+				]
+				% Bissetriz dos quadrantes ímpares: y = x
+				\addplot[gray!70, thick, dashdotted, domain=-3:5] {x};
+				\addlegendentry{$y = x$}
+				
+				% Função Exponencial decrescente: f(x) = (1/2)^x
+				\addplot[blue, thick, domain=-2.3:4.8, samples=120] {0.5^x};
+				\addlegendentry{$f(x) = \left(\frac{1}{2}\right)^x$}
+				
+				% Função Logarítmica decrescente: g(x) = log_{1/2}(x)
+				\addplot[red!80!black, thick, domain=0.12:4.8, samples=150] {ln(x)/ln(0.5)};
+				\addlegendentry{$g(x) = \log_{1/2} x$}
+				
+				% Segmentos conectando pares ordenados simétricos (x, y) e (y, x)
+				\draw[dashed, black!60] (axis cs: -1, 2) -- (axis cs: 2, -1);
+				\draw[dashed, black!60] (axis cs: -2, 4) -- (axis cs: 4, -2);
+				\draw[dashed, black!60] (axis cs: 0, 1) -- (axis cs: 1, 0);
+				
+				% Ponto comum de interseção na bissetriz (aproximadamente (0.641, 0.641))
+				\addplot[mark=*, mark size=2.5pt, fill=black] coordinates {(0.641186, 0.641186)};
+				
+				% Pontos notáveis na exponencial
+				\addplot[only marks, mark=*, mark size=2pt, draw=blue, fill=blue] coordinates {(-2, 4) (-1, 2) (0, 1) (1, 0.5)};
+				\node[left, font=\footnotesize, blue] at (axis cs: -2, 4) {$(-2, 4)$};
+				\node[left, font=\footnotesize, blue] at (axis cs: -1, 2) {$(-1, 2)$};
+				\node[below left, font=\footnotesize, blue] at (axis cs: 0, 1) {$(0, 1)$};
+				
+				% Pontos notáveis no logaritmo
+				\addplot[only marks, mark=*, mark size=2pt, draw=red!80!black, fill=red!80!black] coordinates {(4, -2) (2, -1) (1, 0) (0.5, 1)};
+				\node[below, font=\footnotesize, red!80!black] at (axis cs: 4, -2) {$(4, -2)$};
+				\node[below left, font=\footnotesize, red!80!black] at (axis cs: 2, -1) {$(2, -1)$};
+				\node[below left, font=\footnotesize, red!80!black] at (axis cs: 1, 0) {$(1, 0)$};
+				
+			\end{axis}
+		\end{tikzpicture}
+		\caption{Simetria entre as curvas de $f(x) = \left(\frac{1}{2}\right)^x$ e $g(x) = \log_{1/2} x$ em relação à bissetriz $y = x$.}
+		\label{fig:simetria_exp_log_decrescente}
+	\end{figure}
+	
+	\section{Exercícios sobre a Função Logarítmica}
+	
+	\subsection*{Exercícios Resolvidos}
+	
+	\textbf{Exercício 1.} Determine o domínio da função real definida por:
+	$$f(x) = \log_{(x - 1)} (x^2 - 4x - 5)$$
+	
+	\textit{Resolução:}  
+	Para que a função esteja bem definida no conjunto dos números reais, é necessário satisfazer simultaneamente as três condições de existência:
+	\begin{enumerate}[label=\textbf{\arabic*.}]
+		\item \textbf{Logaritmando estritamente positivo:}
+		$$x^2 - 4x - 5 > 0$$
+		As raízes da equação correspondente $x^2 - 4x - 5 = 0$ são:
+		$$x = \frac{4 \pm \sqrt{16 - 4(1)(-5)}}{2} = \frac{4 \pm 6}{2} \implies x_1 = -1 \quad \text{e} \quad x_2 = 5$$
+		Como a parábola tem concavidade voltada para cima, a expressão é positiva para:
+		$$x < -1 \quad \text{ou} \quad x > 5 \quad (S_1 = {]-\infty, -1[} \cup {]5, +\infty[})$$
+		
+		\item \textbf{Base estritamente positiva:}
+		$$x - 1 > 0 \implies x > 1 \quad (S_2 = {]1, +\infty[})$$
+		
+		\item \textbf{Base diferente de $1$:}
+		$$x - 1 \neq 1 \implies x \neq 2 \quad (S_3 = \mathbb{R} - \{2\})$$
+	\end{enumerate}
+	
+	Determinando a interseção $S = S_1 \cap S_2 \cap S_3$:
+	$$({]-\infty, -1[} \cup {]5, +\infty[}) \;\cap\; {]1, +\infty[} \;\cap\; (\mathbb{R} - \{2\}) = {]5, +\infty[}$$
+	Portanto:
+	$$\text{Dom}(f) = \{x \in \mathbb{R} \mid x > 5\} = {]5, +\infty[}$$
+	
+	\vspace{0.3cm}
+	
+	\textbf{Exercício 2.}  
+	Considere a função real $g(x) = \log_2 (x - 3) + 1$.
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item Determine o domínio, a imagem e a equação da assíntota vertical do gráfico de $g$.
+		\item Calcule as coordenadas do ponto de interseção da curva com o eixo das abscissas (raiz de $g$).
+	\end{enumerate}
+	
+	\textit{Resolução:}
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item A condição de existência exige:
+		$$x - 3 > 0 \implies x > 3$$
+		Logo, $\text{Dom}(g) = {]3, +\infty[}$. O conjunto imagem de toda função logarítmica com translações verticais é $\text{Im}(g) = \mathbb{R}$.  
+		A assíntota vertical da função elementar $y = \log_2 x$ (a reta $x = 0$) é transladada três unidades para a direita, resultando na reta de equação:
+		$$x = 3$$
+		
+		\item A interseção com o eixo horizontal ocorre quando $g(x) = 0$:
+		$$\log_2 (x - 3) + 1 = 0 \implies \log_2 (x - 3) = -1$$
+		Pela definição fundamental de logaritmo:
+		$$x - 3 = 2^{-1} \implies x - 3 = \frac{1}{2} \implies x = 3 + 0{,}5 = 3{,}5$$
+		Assim, o gráfico intercepta o eixo $x$ no par ordenado $(3{,}5; 0)$.
+	\end{enumerate}
+	
+	\vspace{0.3cm}
+	
+	\textbf{Exercício 3.}  
+	Em fósseis e tecidos vegetais antigos, a idade $t$ (em anos) da amostra pode ser modelada a partir da fração restante $P$ de Carbono-14 em relação à sua quantidade na matéria viva, por meio da função logarítmica:
+	$$t(P) = -8\,267 \cdot \ln P$$
+	em que $P \in {]0, 1]}$ representa a razão $\frac{C(t)}{C_0}$ e $\ln$ denota o logaritmo natural.
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item Justifique por que, embora a constante multiplicativa seja negativa ($-8\,267$), a idade $t(P)$ obtida é sempre não negativa no domínio considerado.
+		\item Uma peça arqueológica de madeira encontrada em um sítio funerário revelou conter apenas $25\%$ ($P = 0{,}25$) da sua concentração original de Carbono-14. Determine a idade aproximada do fóssil (considere $\ln 2 \approx 0{,}693$).
+	\end{enumerate}
+	
+	\textit{Resolução:}
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item Para todo $P$ pertencente ao intervalo ${]0, 1]}$, o logaritmo natural é menor ou igual a zero ($\ln P \leqslant 0$), uma vez que a base $e \approx 2{,}718 > 1$ e $\ln 1 = 0$. Como o produto de dois valores não positivos é positivo, o fator $-8\,267$ assegura que $t(P) \geqslant 0$, em plena coerência com a contagem cronológica do tempo.
+		
+		\item Para $P = 0{,}25 = \frac{1}{4} = 2^{-2}$, reescrevemos o logaritmo:
+		$$\ln(0{,}25) = \ln(2^{-2}) = -2 \cdot \ln 2$$
+		Substituindo na expressão do tempo:
+		$$t = -8\,267 \cdot (-2 \cdot \ln 2) = 16\,534 \cdot \ln 2$$
+		Utilizando a aproximação $\ln 2 \approx 0{,}693$:
+		$$t \approx 16\,534 \cdot 0{,}693 \approx 11\,458\text{ anos}$$
+		Portanto, a madeira fóssil tem aproximadamente $11\,458$ anos de idade.
+	\end{enumerate}
+	
+	\subsection*{Exercícios Propostos}
+	
+	\begin{enumerate}
+		\item Determine o domínio das seguintes funções reais:
+		\begin{multicols}{2}
+			\begin{enumerate}[label=\textbf{\alph*)}]
+				\item $f(x) = \log_3 (7 - 2x)$
+				\item $g(x) = \log_5 (x^2 - 6x + 8)$
+				\item $h(x) = \log_{(x - 3)} 10$
+				\item $p(x) = \log_{(2x - 4)} (25 - x^2)$
+			\end{enumerate}
+		\end{multicols}
+		
+		\item Seja $f(x) = \log_a x$ uma função logarítmica cujo gráfico contém o ponto $A(8, -3)$.
+		\begin{enumerate}[label=\textbf{\alph*)}]
+			\item Determine a base $a$ da função.
+			\item Calcule o valor de $f(32)$ e de $f\left(\frac{1}{16}\right)$.
+			\item A função $f$ é crescente ou decrescente? Justifique a resposta com base no valor de $a$.
+		\end{enumerate}
+		
+		\item Para cada uma das funções a seguir, determine a raiz, o domínio e a equação da assíntota vertical do respectivo gráfico:
+		\begin{enumerate}[label=\textbf{\alph*)}]
+			\item $f(x) = \log_3 (x + 2)$
+			\item $g(x) = 2 - \log_2 x$
+			\item $h(x) = \log_{1/3} (2x - 5) + 2$
+		\end{enumerate}
+		
+		\item A altitude $h$ (em quilômetros acima do nível do mar) pode ser estimada a partir da pressão atmosférica local $P$ (em milímetros de mercúrio, $\text{mmHg}$) através do modelo logarítmico:
+		$$h(P) = -5{,}6 \cdot \ln\left(\frac{P}{760}\right)$$
+		em que $760\text{ mmHg}$ corresponde à pressão média padrão ao nível do mar ($h = 0$).
+		\begin{enumerate}[label=\textbf{\alph*)}]
+			\item Mostre que, para qualquer pressão inferior à do nível do mar ($0 < P < 760$), a altitude estimada $h(P)$ é estritamente positiva.
+			\item Um grupo de alpinistas mediu uma pressão de $380\text{ mmHg}$ no acampamento alto de uma montanha. Determine a altitude em que se encontram (considere $\ln 2 \approx 0{,}693$).
+		\end{enumerate}
+	\end{enumerate}
+	
+	\chapter{Equações Exponenciais e Logarítmicas}
+	\label{chap:equacoes_inequacoes}
+	
+	Neste capítulo, estudamos os métodos de resolução para equações exponenciais e logarítmicas. Investigamos desde relações exponenciais que não admitem redução direta a bases comuns até equações em que a incógnita figura no logaritmando ou na base do logaritmo, momento em que as condições de existência orientam a validação das soluções encontradas.
+	
+	\section{Equações Exponenciais Não Redutíveis a Bases Comuns}
+	
+	No estudo inicial das equações exponenciais, os métodos baseiam-se quase exclusivamente em manipulações algébricas elementares para igualar as bases de ambos os membros da igualdade:
+	$$a^{f(x)} = a^{g(x)} \implies f(x) = g(x)$$
+	
+	Entretanto, em inúmeras situações matemáticas e em modelagens de fenômenos contínuos, deparamo-nos com equações em que os dois membros envolvem fatores primos distintos que não admitem redução direta a uma base comum, tais como:
+	$$a^x = b \quad \text{ou} \quad a^{f(x)} = b^{g(x)} \quad (a \neq b)$$
+	
+	Nesses casos, o método algébrico apropriado consiste na aplicação de logaritmos em ambos os membros da igualdade, permitindo transferir os expoentes para a linha multiplicativa por meio da propriedade da potência.
+	
+	\subsection{Procedimento Geral de Resolução}
+	
+	Dada a equação geral:
+	$$a^{f(x)} = b^{g(x)}$$
+	com $a, b \in \mathbb{R}^*_+$, $a \neq 1$ e $b \neq 1$, o procedimento analítico organiza-se nas seguintes etapas:
+	
+	\begin{destaque}[Roteiro de Resolução via Logaritmos]
+		\begin{enumerate}[label=\textbf{\arabic*.}]
+			\item \textbf{Aplicação do logaritmo:}  
+			Aplica-se o logaritmo em uma base conveniente (geralmente decimal ou natural, ou na própria base de uma das potências) em ambos os lados da igualdade:
+			$$\log(a^{f(x)}) = \log(b^{g(x)})$$
+			
+			\item \textbf{Descida dos expoentes:}  
+			Pela propriedade do logaritmo de uma potência:
+			$$f(x) \cdot \log a = g(x) \cdot \log b$$
+			
+			\item \textbf{Isolamento da incógnita:}  
+			A equação transforma-se em uma equação algébrica linear ou polinomial na variável $x$, permitindo isolá-la diretamente em termos dos logaritmos das constantes envolvidas.
+		\end{enumerate}
+	\end{destaque}
+	
+	\subsection*{Exemplos}
+	
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item \textbf{Equação com potências simples:}  
+		Determine a solução exata e a aproximação decimal de $2^x = 5$, considerando $\log 2 \approx 0{,}301$ e $\log 5 \approx 0{,}699$:
+		$$\log(2^x) = \log 5 \implies x \cdot \log 2 = \log 5 \implies x = \frac{\log 5}{\log 2} = \log_2 5$$
+		Substituindo as aproximações:
+		$$x \approx \frac{0{,}699}{0{,}301} \approx 2{,}322$$
+		
+		\item \textbf{Equação com expoentes lineares em ambas as bases:}  
+		Resolva $3^{2x - 1} = 5^{x + 2}$:
+		\begin{align*}
+			\log(3^{2x - 1}) &= \log(5^{x + 2}) \\
+			(2x - 1) \cdot \log 3 &= (x + 2) \cdot \log 5 \\
+			2x \log 3 - \log 3 &= x \log 5 + 2 \log 5 \\
+			2x \log 3 - x \log 5 &= 2 \log 5 + \log 3 \\
+			x(2\log 3 - \log 5) &= 2 \log 5 + \log 3 \\
+			x &= \frac{2\log 5 + \log 3}{2\log 3 - \log 5} = \frac{\log(25 \cdot 3)}{\log(9 / 5)} = \frac{\log 75}{\log 1{,}8}
+		\end{align*}
+	\end{enumerate}
+	
+	\subsection*{Exercícios Resolvidos}
+	
+	\textbf{Exercício 1.} Resolva a equação $7^x = 12$, expressando a solução em forma exata e em valor aproximado (adote $\log 2 \approx 0{,}30$, $\log 3 \approx 0{,}48$ e $\log 7 \approx 0{,}84$).
+	
+	\textit{Resolução:}  
+	Aplicamos o logaritmo decimal em ambos os membros:
+	$$\log(7^x) = \log 12 \implies x \cdot \log 7 = \log 12 \implies x = \frac{\log 12}{\log 7}$$
+	Decompomos o numerador em fatores primos ($12 = 2^2 \cdot 3$):
+	$$\log 12 = \log(2^2 \cdot 3) = 2\log 2 + \log 3 \approx 2 \cdot (0{,}30) + 0{,}48 = 1{,}08$$
+	Substituindo os valores:
+	$$x \approx \frac{1{,}08}{0{,}84} \approx 1{,}286$$
+	Portanto, $S = \left\{\frac{\log 12}{\log 7}\right\} \approx \{1{,}286\}$.
+	
+	\vspace{0.3cm}
+	
+	\textbf{Exercício 2.} Resolva a equação $2^{x+1} \cdot 5^{2x} = 30$, admitindo $\log 2 \approx 0{,}30$ e $\log 3 \approx 0{,}48$.
+	
+	\textit{Resolução:}  
+	Aplicamos o logaritmo decimal à igualdade:
+	$$\log(2^{x+1} \cdot 5^{2x}) = \log 30$$
+	Aplicando as propriedades do produto e da potência:
+	$$\log(2^{x+1}) + \log(5^{2x}) = \log(3 \cdot 10)$$
+	$$(x + 1) \cdot \log 2 + 2x \cdot \log 5 = \log 3 + \log 10$$
+	Lembrando que $\log 5 = \log\left(\frac{10}{2}\right) = \log 10 - \log 2 = 1 - \log 2$:
+	$$x \log 2 + \log 2 + 2x(1 - \log 2) = \log 3 + 1$$
+	$$x \log 2 + \log 2 + 2x - 2x \log 2 = \log 3 + 1$$
+	$$x(2 - \log 2) = \log 3 + 1 - \log 2$$
+	$$x=\frac{\log 3 + 1 - \log 2}{2 - \log 2}$$
+	
+	Substituindo as aproximações $\log 2 \approx 0{,}30$ e $\log 3 \approx 0{,}48$:
+	$$x = \frac{0{,}48 + 1 - 0{,}30}{2 - 0{,}30}$$
+	$$x = \frac{1{,}18}{1{,}70} \approx 0{,}694$$
+	Portanto, $S \approx \{0{,}694\}$.
+	
+	\vspace{0.3cm}
+	
+	\textbf{Exercício 3.} Em um experimento biológico, uma população bacteriana $P_1(t) = 800 \cdot (1{,}4)^t$ compete com outra cultura cujo crescimento segue $P_2(t) = 200 \cdot (2{,}1)^t$, onde $t$ é medido em dias. Determine após quantos dias as duas populações atingirão exatamente o mesmo número de indivíduos (adote $\log 2 \approx 0{,}30$, $\log 3 \approx 0{,}48$ e $\log 7 \approx 0{,}84$).
+	
+	\textit{Resolução:}  
+	Igualando as duas populações:
+	$$800 \cdot (1{,}4)^t = 200 \cdot (2{,}1)^t$$
+	Dividindo ambos os membros por $200$:
+	$$4 \cdot (1{,}4)^t = (2{,}1)^t \implies 4 = \frac{(2{,}1)^t}{(1{,}4)^t} \implies 4 = \left(\frac{2{,}1}{1{,}4}\right)^t$$
+	Simplificando a fração decimal:
+	$$\frac{2{,}1}{1{,}4} = \frac{21}{14} = \frac{3}{2} = 1{,}5$$
+	A equação assume a forma:
+	$$\left(\frac{3}{2}\right)^t = 4$$
+	Aplicando o logaritmo decimal em ambos os lados:
+	$$\log\left(\left(\frac{3}{2}\right)^t\right) = \log 4 \implies t \cdot \log\left(\frac{3}{2}\right) = \log(2^2)$$
+	$$t \cdot (\log 3 - \log 2) = 2 \cdot \log 2$$
+	Isolando $t$:
+	$$t = \frac{2 \cdot \log 2}{\log 3 - \log 2}$$
+	Substituindo os dados numéricos:
+	$$t \approx \frac{2 \cdot 0{,}30}{0{,}48 - 0{,}30} = \frac{0{,}60}{0{,}18} = \frac{60}{18} = \frac{10}{3} \approx 3{,}33\text{ dias}$$
+	Portanto, as culturas atingem o mesmo número de bactérias após $3\text{ dias e } 8\text{ horas}$.
+	
+	\subsection*{Exercícios Propostos}
+	
+	\begin{enumerate}
+		\item Resolva as seguintes equações exponenciais em $\mathbb{R}$, determinando a solução exata em termos de logaritmos decimais:
+		\begin{enumerate}[label=\textbf{\alph*)}]
+			\item $3^x = 20$
+			\item $5^{2x - 1} = 7$
+			\item $2^{x + 3} = 3^{x - 1}$
+			\item $4^x \cdot 3^{x + 1} = 5^x$
+		\end{enumerate}
+		
+		\item Considerando os valores aproximados $\log 2 \approx 0{,}301$ e $\log 3 \approx 0{,}477$, determine a solução numérica aproximada de:
+		\begin{enumerate}[label=\textbf{\alph*)}]
+			\item $6^x = 10$
+			\item $3^{x + 2} = 2^{2x + 1}$
+		\end{enumerate}
+		
+		\item Um equipamento eletrônico sofre desvalorização exponencial com o passar do tempo, de modo que o seu valor de mercado $V(t)$ (em reais) após $t$ anos de uso é modelado por $V(t) = 6\,000 \cdot (0{,}82)^t$. Determine em quantos anos o valor do equipamento se reduzirá à metade do valor original de aquisição (adote $\log 2 \approx 0{,}30$ e $\log 8{,}2 \approx 0{,}91$).
+		
+		\item Resolva a equação $e^{2x} - 4e^x + 3 = 0$, determinando suas raízes em termos de logaritmos naturais ($\ln$).
+	\end{enumerate}
+	
+	\section{Equações Logarítmicas}
+	
+	Uma equação é dita logarítmica quando a incógnita aparece vinculada a pelo menos um operador logarítmico. Classificamos os procedimentos de resolução em três tipos fundamentais.
+	
+	\subsection{1º Tipo: Redução a uma Igualdade de Mesma Base}
+	
+	São as equações que, após simplificações operatórias, assumem a forma:
+	$$\log_a f(x) = \log_a g(x)$$
+	com $a > 0$ e $a \neq 1$.
+	
+	Pela propriedade da unicidade dos logaritmos, essa igualdade equivale à igualdade dos logaritmandos, desde que respeitadas as condições de existência:
+	$$\begin{cases}
+		f(x) = g(x) \\
+		f(x) > 0 \\
+		g(x) > 0
+	\end{cases}$$
+	
+	\newpage
+	
+	\begin{destaque}[Exemplo Resolvido]
+		Resolva a equação:
+		$$\log_2 (2x - 3) = \log_2 (x + 1)$$
+		
+		\textit{Resolução:}
+		\begin{enumerate}[label=\textbf{\arabic*.}]
+			\item Condições de existência:
+			$$\begin{cases} 
+				2x - 3 > 0 \implies x > \frac{3}{2} \\
+				x + 1 > 0 \implies x > -1
+			\end{cases} \implies x \in {]\frac{3}{2}, +\infty[}$$
+			
+			\item Igualando os logaritmandos:
+			$$2x - 3 = x + 1 \implies x = 4$$
+			
+			\item Verificação:
+			Como $4 \in {]\frac{3}{2}, +\infty[}$, o valor é admitido.
+		\end{enumerate}
+		Portanto, o conjunto solução é $S = \{4\}$.
+	\end{destaque}
+	
+	\subsection{2º Tipo: Aplicação Direta da Definição}
+	
+	São as equações que se reduzem à forma elementar:
+	$$\log_a f(x) = k \quad (k \in \mathbb{R})$$
+	cuja resolução decorre imediatamente da definição fundamental:
+	$$f(x) = a^k \quad \text{com } f(x) > 0$$
+	
+	\begin{destaque}[Exemplo Resolvido]
+		Resolva a equação:
+		$$\log_3 (x^2 - 7) = 2$$
+		
+		\textit{Resolução:}
+		\begin{enumerate}[label=\textbf{\arabic*.}]
+			\item Condição de existência:
+			$$x^2 - 7 > 0 \implies x < -\sqrt{7} \quad \text{ou} \quad x > \sqrt{7}$$
+			
+			\item Pela definição de logaritmo:
+			$$x^2 - 7 = 3^2 \implies x^2 - 7 = 9 \implies x^2 = 16 \implies x = \pm 4$$
+			
+			\item Verificação:
+			Como $(\pm 4)^2 = 16 > 7$, ambos os valores satisfazem a condição de existência.
+		\end{enumerate}
+		Portanto, o conjunto solução é $S = \{-4, 4\}$.
+	\end{destaque}
+	
+	\subsection{3º Tipo: Resolução por Mudança de Variável}
+	
+	Ocorrem quando a expressão envolve potências do próprio logaritmo. Nesses casos, introduzimos uma incógnita auxiliar $y = \log_a x$, transformando a expressão em uma equação polinomial.
+	
+	\begin{destaque}[Exemplo Resolvido]
+		Resolva a equação:
+		$$(\log_2 x)^2 - 3\log_2 x + 2 = 0$$
+		
+		\textit{Resolução:}
+		\begin{enumerate}[label=\textbf{\arabic*.}]
+			\item Condição de existência:
+			$$x > 0$$
+			
+			\item Mudança de variável:
+			Fazendo $y = \log_2 x$, obtemos:
+			$$y^2 - 3y + 2 = 0 \implies (y - 1)(y - 2) = 0 \implies y = 1 \quad \text{ou} \quad y = 2$$
+			
+			\item Retorno à variável original:
+			\begin{itemize}[label=$\circ$]
+				\item Para $y = 1$: $\log_2 x = 1 \implies x = 2^1 = 2$.
+				\item Para $y = 2$: $\log_2 x = 2 \implies x = 2^2 = 4$.
+			\end{itemize}
+			Ambos atendem à restrição $x > 0$.
+		\end{enumerate}
+		Portanto, o conjunto solução é $S = \{2, 4\}$.
+	\end{destaque}
+	
+	\section{Exercícios Resolvidos e Propostos}
+	
+	\subsection*{Exercícios Resolvidos}
+	
+	\textbf{Exercício 1.} Resolva a equação:
+	$$\log (x + 2) + \log (x - 1) = 1$$
+	
+	\textit{Resolução:}
+	\begin{enumerate}[label=\textbf{\arabic*.}]
+		\item Condições de existência:
+		$$\begin{cases}
+			x + 2 > 0 \implies x > -2 \\
+			x - 1 > 0 \implies x > 1
+		\end{cases} \implies x \in {]1, +\infty[}$$
+		
+		\item Aplicando a propriedade do logaritmo do produto:
+		$$\log[(x + 2)(x - 1)] = 1$$
+		Como a base implícita é $10$, pela definição fundamental:
+		$$(x + 2)(x - 1) = 10^1 \implies x^2 + x - 2 = 10 \implies x^2 + x - 12 = 0$$
+		
+		\item Determinando as raízes:
+		$$(x + 4)(x - 3) = 0 \implies x = -4 \quad \text{ou} \quad x = 3$$
+		
+		\item Análise de pertinência ao domínio:
+		\begin{itemize}[label=$\circ$]
+			\item $x = -4 \notin {]1, +\infty[}$ (solução estranha decorrente do produto de dois fatores negativos).
+			\item $x = 3 \in {]1, +\infty[}$.
+		\end{itemize}
+	\end{enumerate}
+	Portanto, o conjunto solução é $S = \{3\}$.
+	
+	\vspace{0.3cm}
+	
+	\textbf{Exercício 2.} Um investimento financeiro de capital inicial $C_0$ rende juros compostos contínuos segundo o modelo de montante $M(t) = C_0 \cdot (1{,}05)^t$, onde $t$ representa o tempo em anos. Deseja-se determinar em quanto tempo esse investimento pelo menos triplica o capital aplicado.
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item Modele o problema por meio de uma inequação logarítmica.
+		\item Calcule o tempo mínimo inteiro de anos necessário, considerando $\log 3 \approx 0{,}477$ e $\log 1{,}05 \approx 0{,}021$.
+	\end{enumerate}
+	
+	\textit{Resolução:}
+	\begin{enumerate}[label=\textbf{\alph*)}]
+		\item Para que o montante triplique:
+		$$C_0 \cdot (1{,}05)^t \geqslant 3 C_0 \implies (1{,}05)^t \geqslant 3$$
+		Como a base decimal é maior que 1, aplicamos o logaritmo mantendo o sentido:
+		$$\log(1{,}05^t) \geqslant \log 3 \implies t \cdot \log 1{,}05 \geqslant \log 3 \implies t \geqslant \frac{\log 3}{\log 1{,}05}$$
+		
+		\item Substituindo as aproximações:
+		$$t \geqslant \frac{0{,}477}{0{,}021} \approx 22{,}71\text{ anos}$$
+		Como se busca o menor número inteiro de anos, temos $t = 23\text{ anos}$.
+	\end{enumerate}
+	
+	\newpage
+	
+	\subsection*{Exercícios Propostos}
+	
+	\begin{enumerate}
+		\item Resolva as seguintes equações logarítmicas em $\mathbb{R}$:
+		\begin{enumerate}[label=\textbf{\alph*)}]
+			\item $\log_3 (4x - 5) = 2$
+			\item $\log_2 (x^2 - 5x + 8) = 1$
+			\item $\log_4 x + \log_4 (x - 6) = 2$
+			\item $(\log_3 x)^2 - 4\log_3 x + 3 = 0$
+		\end{enumerate}
+		
+		\item Um reservatório de resíduos industriais sofre vazamento acidental. A concentração de poluentes na água $C(t)$, medida em partes por milhão ($\text{ppm}$), diminui conforme o tempo $t$ (em dias) segundo $C(t) = 400 \cdot (0{,}5)^{t/4}$. A legislação ambiental permite o uso da água para abastecimento apenas quando a concentração for menor que $25\text{ ppm}$.
+		\begin{enumerate}[label=\textbf{\alph*)}]
+			\item Escreva a inequação correspondente a essa exigência ambiental.
+			\item Determine a partir de quantos dias a água do reservatório estará liberada para captação.
+		\end{enumerate}
+	\end{enumerate}
+\end{document}
