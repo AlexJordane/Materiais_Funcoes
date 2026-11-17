@@ -1,0 +1,757 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[portuguese]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+\usepackage{parskip}
+\usepackage{setspace}
+\usepackage{tikz}
+\usepackage{verbatim}
+\usetikzlibrary{arrows.meta, calc}
+\setstretch{1.2}
+\tcbuselibrary{skins, breakable}
+\geometry{top=2cm, bottom=2cm, left=2.5cm, right=2.5cm}
+\usepackage[colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue]{hyperref}
+
+\pagestyle{fancy}
+\fancyhf{} % Limpa os padrões anteriores do programa
+\fancyhead[C]{\leftmark} % Posiciona o nome do capítulo à direita
+\fancyfoot[C]{\thepage} % Mantém o número da página no centro do rodapé
+
+
+% Estilo de caixa para destaque conceitual
+\newtcolorbox{destaque}[1][]{
+	enhanced,
+	colback=gray!5,
+	colframe=black!70,
+	boxrule=1pt,
+	arc=4pt,
+	left=10pt,
+	right=10pt,
+	top=8pt,
+	bottom=8pt,
+	fonttitle=\bfseries,
+	title=#1
+}
+
+\begin{document}
+	
+	\begin{titlepage}
+		\centering
+		
+		% --- Cabeçalho da Instituição ---
+		% Caso não deseje a imagem na capa, basta remover a linha abaixo
+		\includegraphics[width=8cm]{ifes.png}\\[1cm]
+		
+		{\Large \textbf{Instituto Federal do Espírito Santo}}\\[0.5cm]
+		{\large \textbf{Licenciatura em Matemática}}\\[0.5cm]
+		{\large Introdução ao Estudo das Funções }
+		
+		\vspace{\fill}
+		
+		% --- Título ---
+		{\Huge \textbf{Função Quadrática}}\\[0.5cm]
+		{\Large Material de Apoio}
+		
+		\vspace{\fill}
+		
+		% --- Autoria ---
+		{\Large Professor Alex Jordane}
+		
+		\vspace{\fill}
+		
+		% --- Local e Data ---
+		{\large Vitória -- ES}\\[0.2cm]
+		{\large 2026}
+		
+	\end{titlepage}
+	
+	\setcounter{page}{1}
+	
+	\chapter*{Apresentação}
+	\thispagestyle{empty}
+	
+	
+Neste material vamos tratar do estudo das funções quadráticas. Iniciamos apresentando as formas de representação algébricas, incluindo o cálculo das raízes e o vértice. Em seguida trataremos da representação gráfica e outras características: imagem, interseção com o eixo das ordenadas $(y)$, concavidade, crescimento e decrescimento, estudo de sinais e ponto extremo (máximo ou mínimo).
+
+Bons estudos!
+
+	\vspace{\fill}
+
+{\footnotesize
+	\texttt{Esta é uma primeira versão do material, criada em 02/10/2026.}\\
+	\texttt{Este material foi elaborado em colaboração com a inteligência artificial Gemini, versão 3.1 Pro.} \\		
+	\texttt{O compartilhamento e a reprodução deste material são permitidos, desde que a fonte e a autoria sejam citadas.}  \\		
+	\texttt{Esta obra está licenciada com uma Licença Atribuição-NãoComercial-SemDerivações 4.0 Brasil.}
+	\begin{center}
+		\includegraphics[width=4cm]{CC.png}
+\end{center}}
+
+\tableofcontents
+\thispagestyle{empty}
+
+\vspace{1cm} % Um pequeno respiro visual antes de iniciar o texto
+
+\chapter{As representações algébricas}
+\label{sec:algebricas}
+
+	Uma função quadrática pode ser representada por meio de diferentes escritas algébricas, cada uma com suas especificidades. Embora todas conduzam à mesma representação geométrica, cada forma de representação algébrica ilumina propriedades geométricas particulares e apresenta um olhar próprio sobre o comportamento da parábola, que iremos tratar no \autoref{sec:grafico}.
+	
+	Vamos começar pela forma geral ou polinomial que já conhecemos das equações polinomiais do segundo grau. Outra representação é a forma canônica. Finalmente vamos ver a forma fatorada. Partimos da forma fatorada para chegar à relação da soma e produto das raízes com a forma geral.
+	
+	Reconhecer e alternar entre essas formas enriquece a leitura matemática, permitindo escolher o caminho mais transparente para dialogar com cada problema.
+	
+	
+	\section{Forma Polinomial ou Geral}
+	\label{subsec:geral}
+	
+	A representação polinomial expressa a relação funcional desenvolvida em potências decrescentes de $x$. Como o próprio nome indica, ela se baseia na forma geral de um polinômio: $a_n x^n + a_{n-1} x^{n-1}+ \cdots+ a_2 x^2 + a_1 x + a_0$. Como estamos trabalhando com um polinômio de segundo grau, teremos a parte $a_2 x^2 + a_1 x + a_0$. Então, podemos trocar os coeficientes para representar uma função quadrática:
+	
+	
+	\begin{destaque}[Forma Polinomial ou Geral]
+		\label{dest:formageral}
+		$$f(x) = ax^2 + bx + c, \quad \text{com } a, b, c \in \mathbb{R} \text{ e } a \neq 0$$
+	\end{destaque}
+	
+	Deste ponto em diante vamos sempre considerar a condição de existência da função quadrática: $a, b, c \in \mathbb{R} \text{ e } a \neq 0$.
+	\section{Forma Canônica}
+	\label{subsec:canonica}
+	
+	A forma canônica destaca o ponto extremo (máximo ou mínimo), também chamado de vértice $V$. Para chegarmos a essa forma, vamos fazer o procedimento conhecido como completamento de quadrados.
+	
+	\subsection{Passagem da Forma Geral para a Forma Canônica}
+	
+	Partindo de $f(x) = ax^2 + bx + c$, colocamos o fator $a$ em evidência nos dois primeiros termos:
+		$$f(x)= a\left(x^2 + \frac{b}{a}x\right) + c $$
+		Multiplicamos e dividimos o termo  $\frac{b}{a}x$ por $2$: 
+		$$f(x) = a\left(x^2 + 2 \cdot \frac{b}{2a}x\right) + c $$
+		Somamos e subtraímos $\left( \frac{b}{2a} \right)^2 =  \frac{b^2}{4a^2}$: 
+		$$f(x) = a\left(x^2 + 2\cdot \frac{b}{2a}x + \frac{b^2}{4a^2} - \frac{b^2}{4a^2}\right) + c $$
+		Reorganizamos os termos:
+		$$f(x) = a\left[ \left( x^2 + 2\cdot \frac{b}{2a}x + \frac{b^2}{4a^2} \right)  - \frac{b^2}{4a^2} \right] + c $$
+		$$f(x) = a \left\lbrace  \left[x^2 + 2\cdot \frac{b}{2a}x + \left( \frac{b}{2a} \right)^2 \right]  - \frac{b^2}{4a^2} \right\rbrace + c $$
+		$\left[x^2 + 2\cdot \frac{b}{2a}x + \left( \frac{b}{2a} \right)^2 \right]$ é um trinômio quadrado perfeito, ou seja:\\[0.2cm] 
+		$\left[x^2 + 2\cdot \frac{b}{2a}x + \left( \frac{b}{2a} \right)^2 \right] = \left(x + \frac{b}{2a}\right)^2 $
+		$$f(x) = a \left[  \left(x + \frac{b}{2a}\right)^2 - \frac{b^2}{4a^2} \right]  + c $$
+		Aplicando a propriedade distributiva:
+		$$f(x) = a \left(x + \frac{b}{2a}\right)^2 - a \cdot \frac{b^2}{4a^2} + c $$
+		Simplificando a fração $a \cdot \frac{b^2}{4a^2}$:
+		$$f(x) = a \left(x + \frac{b}{2a}\right)^2 - \frac{b^2}{4a} + c $$
+		Colocando $- \frac{b^2}{4a} + c$ sob o mesmo denominador:
+		$$f(x) = a\left(x + \frac{b}{2a}\right)^2 - \left(\frac{b^2 - 4ac}{4a}\right) $$
+		$b^2 - 4ac$ é chamado de discriminante e é designado pela letra grega delta maiúscula $\Delta$.\\[0.2cm]
+		$-\frac{b}{2a}$ é a abscissa do vértice ($x_v$) e \\[0.2cm]
+		$ - \left(\frac{\Delta}{4a}\right)$ é a ordenada do vértice ($y_v$). Vamos demonstrar isso logo a seguir. \\[0.2cm]
+		Assim, podemos reduzir a forma canônica para:
+	
+	\begin{destaque}[Forma Canônica]
+		\label{dest:formacanonica}
+		$$f(x) = a(x - x_v)^2 + y_v$$
+		onde $V(x_v, y_v)$ é o vértice da parábola, dado por:
+		$$x_v = -\frac{b}{2a} \quad \text{e} \quad y_v = -\frac{\Delta}{4a}, \quad \text{com } \Delta = b^2 - 4ac$$
+	\end{destaque}
+	
+	\subsection{O Vértice da parábola}
+	Sabemos que a parábola é simétrica em relação ao vértice. Podemos então determinar o vértice usando essa ideia. Observe a parábola a seguir. Optamos por não traçar o plano cartesiano para mostrar que nosso raciocínio pode ser desenvolvido em qualquer situação, independentemente de onde se posiciona a parábola.
+	
+	\begin{center}
+		\begin{tikzpicture}[>=latex, scale=1.1]
+			% Parábola genérica sem eixos cartesianos: f(x) = (x - 2)^2 + 0.8 => V(2, 0.8)
+			\draw[very thick, blue!85!black, domain=-0.5:4.5, smooth] plot ({\x}, {0.6*(\x-2)*(\x-2) + 0.8});
+			
+			% Altura da reta secante horizontal y = y_q
+			% Para y_q = 2.3: 0.6*(x-2)^2 + 0.8 = 2.3 => (x-2)^2 = 2.5 => x = 2 - 1.58 = 0.42 e x = 2 + 1.58 = 3.58
+			\coordinate (V) at (2, 0.8);
+			\coordinate (A) at (0.42, 2.3);
+			\coordinate (B) at (3.58, 2.3);
+			
+			% Reta horizontal y = y_q
+			\draw[thick, gray!70, dashed] (-1, 2.3) -- (5, 2.3) node[right, black] {$y = y_q$};
+			
+			% Eixo vertical de simetria passando pelo vértice
+			\draw[thick, red!85!black, dash pattern=on 5pt off 3pt] (2, 0.3) -- (2, 4.0) node[above] {eixo de simetria};
+			
+			% Pontos de intersecção
+			\filldraw[fill=blue!85!black] (A) circle (2pt) node[above left, xshift=-6pt] {$(x_a, y_q)$};
+			\filldraw[fill=blue!85!black] (B) circle (2pt) node[above right, xshift=6pt] {$(x_b, y_q)$};
+			
+			% Vértice
+			\filldraw[fill=red!85!black] (V) circle (2.2pt) node[below right=2pt] {$V$};
+			
+			% Segmento horizontal indicando a distância e a simetria com as cotas d
+			%\draw[<->, >=stealth, semithick] (0.42, 2.0) -- (2, 2.0) node[midway, below=1pt] {$d$};
+			%\draw[<->, >=stealth, semithick] (2, 2.0) -- (3.58, 2.0) node[midway, below=1pt] {$d$};
+			
+			% Linhas auxiliares verticais tracejadas ligando aos rótulos dos pontos
+			\draw[dotted, thick] (A) -- (0.42, 1.4) node[below] {$x_a$};
+			\draw[dotted, thick] (V) -- (2, 0.2) node[below] {$x_v = \dfrac{x_a + x_b}{2}$};
+			\draw[dotted, thick] (B) -- (3.58, 1.4) node[below] {$x_b$};
+		\end{tikzpicture}
+	\end{center}
+	
+	No gráfico traçamos uma reta horizontal (paralela ao eixo $x$) no ponto $y=y_q$, de forma que a reta $y=y_q$ intercepte a parábola em exatamente dois pontos: $x_a$ e $x_b$. Notem que se a função possuir duas raízes reais distintas, ou seja, se $\Delta >0$, $x_a$ e $x_b$ poderiam ser as próprias raízes.
+	
+	Como a parábola é simétrica, o eixo de simetria, ou seja, quando $x=x_v$, será exatamente no ponto médio entre $x_a$ e $x_b$, ou $x_v = \frac{x_a + x_b}{2}$.
+	
+	Além disso, podemos dizer que $f(x_a) = f(x_b) = y_q$, ou seja,
+	
+	$$a (x_a)^2 + b x_a + c = a (x_b)^2 + b x_b + c$$
+	$$a (x_a)^2 + b x_a  = a (x_b)^2 + b x_b $$	
+	$$a (x_a)^2 - a (x_b)^2 =-  b x_a+  b x_b $$
+	$$a [(x_a)^2 - (x_b)^2] = -b (x_a - x_b) $$
+	Mas $(x_a)^2 - (x_b)^2=(x_a+x_b)(x_a-x_b)$
+	$$a (x_a+x_b)(x_a-x_b) = -b (x_a - x_b) $$
+	Como estamos garantindo que $x_a \neq x_b$, podemos dividir ambos os lados por ($x_a - x_b)$
+	$$a (x_a+x_b) = -b $$
+	Finalmente
+		$$x_a+x_b = -\frac{b}{a} $$
+	Já sabemos que $x_v = \frac{x_a + x_b}{2}$, logo
+	$$x_v = \frac{-\frac{b}{a}}{2}$$
+	$$x_v = -\frac{b}{a} \cdot \frac{1}{2}$$
+	$$x_v = -\frac{b}{2a}$$
+	$\hfill \square$
+	
+	Agora vamos ao $y_v$. Sabemos que $y_v=f(x_v)$
+	$$ y_v=f(x_v) = a (x_v)^2 + b x_v + c $$
+	Substituindo $x_v = -\frac{b}{2a}$
+	$$ y_v= a \left( -\frac{b}{2a}\right)^2 + b \left( -\frac{b}{2a}\right)  + c $$
+	$$ y_v= a \left( \frac{b^2}{4a^2}\right) - b \left( \frac{b}{2a}\right)  + c $$
+	$$ y_v=  \frac{ab^2}{4a^2} - \frac{b^2}{2a}  + c $$
+	$$ y_v=  \frac{b^2}{4a} - \frac{b^2}{2a}  + c $$
+	Deixando todos os termos com o denominador igual a $4a$
+	$$ y_v=  \frac{b^2}{4a} - \frac{2b^2}{4a}  + \frac{4c}{4a} $$
+	$$ y_v=  \frac{b^2 - 2b^2 + 4ac}{4a} $$
+	$$ y_v=  \frac{-b^2 + 4ac}{4a} $$
+	$$ y_v=  \frac{-(b^2 - 4ac)}{4a} $$
+	$$ y_v=  -\frac{b^2 - 4ac}{4a} $$
+	$$ y_v=  -\frac{\Delta}{4a} $$
+	$\hfill \square$
+	
+	
+	\subsection{Calculando as raízes a partir da forma canônica}
+	
+	Vamos aproveitar a forma canônica para demonstrar a fórmula resolutiva da equação polinomial do segundo grau, que permite calcular as raízes da função:\\[0.5cm]
+		Sabemos então que
+	$$f(x) = a(x - x_v)^2 + y_v$$
+	onde $V(x_v, y_v)$ é o vértice da parábola, dado por:
+	$$x_v = -\frac{b}{2a} \quad \text{e} \quad y_v = -\frac{\Delta}{4a}, \quad \text{com } \Delta = b^2 - 4ac$$	
+	Para calcular as raízes, igualamos $f(x)$ a zero ($f(x)=0$):
+	$$a(x - x_v)^2 + y_v = 0$$
+	$$a(x - x_v)^2 = - y_v$$
+	$$(x - x_v)^2 = - \frac{y_v}{a}$$
+	Calculando a raiz quadrada de ambos os lados da equação:
+	$$\sqrt{(x - x_v)^2} = \pm \sqrt{- \frac{y_v}{a}}$$
+	$$(x - x_v) = \pm \sqrt{-\frac{y_v}{a}}$$
+	$$x - x_v = \pm \sqrt{-\frac{y_v}{a}}$$
+	$$x  = x_v \pm \sqrt{-\frac{y_v}{a}}$$
+	Substituindo $x_v$ e $y_v$:
+	$$x  = -\frac{b}{2a} \pm \sqrt{-\frac{\left( -\frac{\Delta}{4a}\right) }{a}}$$
+	$$x  = -\frac{b}{2a} \pm \sqrt{-\left( -\frac{\Delta}{4a}\right)  \cdot \frac{1}{a}}$$
+	$$x  = -\frac{b}{2a} \pm \sqrt{\frac{\Delta}{4a} \cdot \frac{1}{a}}$$
+	$$x  = -\frac{b}{2a} \pm \sqrt{\frac{\Delta}{4a^2}}$$
+	$$x  = -\frac{b}{2a} \pm \frac{\sqrt{\Delta}}{\sqrt{4a^2}}$$
+	$$x  = -\frac{b}{2a} \pm \frac{\sqrt{\Delta}}{2a}$$
+	$$x  = \frac{-b \pm \sqrt{\Delta}}{2a}$$
+	Ou ainda:
+	$$x  = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$
+	Isso significa que temos duas raízes:
+	
+	\begin{destaque}[Raízes da função]
+		\label{dest:raizes}
+		$$x_1  = \frac{-b - \sqrt{b^2 - 4ac}}{2a} \text{ e } x_2  = \frac{-b + \sqrt{b^2 - 4ac}}{2a}$$
+		Se $\Delta = b^2 -4ac > 0 \implies $  \textbf{duas raízes reais distintas}.
+		
+		Se $\Delta = b^2 -4ac = 0 \implies $  \textbf{duas raízes reais iguais}.
+		
+		Se $\Delta = b^2 -4ac < 0 \implies $ \textbf{não há raízes reais}.
+	\end{destaque}		
+	
+	\section{Forma Fatorada}
+	\label{subsec:fatorada}
+	
+	A forma fatorada decompõe o polinômio do segundo grau no produto de seus fatores lineares, focando nos pontos em que a curva cruza ou tangencia o eixo horizontal, ou seja, as raízes. Isso significa que só é possível representar essa forma se a função possuir raízes reais, sejam elas duplas ou distintas. Logo $\Delta \geqslant 0$ é condição de existência dessa forma. 
+	
+	\begin{destaque}[Forma Fatorada]
+		\label{dest:formafatorada}
+		$$f(x) = a(x - x_1)(x - x_2), \quad \text{com } \Delta \geqslant 0$$
+		onde $x_1$ e $x_2$ são as raízes reais da função ($f(x_1) = f(x_2) = 0$).
+	\end{destaque}
+	
+	\section{Forma Soma-Produto}
+	Aplicando a propriedade distributiva na forma fatorada:
+	$$f(x) = a(x - x_1)(x - x_2)$$
+	$$f(x) = a(x^2 -x \cdot x_2 - x_1 \cdot x + x_1 \cdot x_2)$$
+	Colocando $x$ em evidência no segundo e terceiro termos:
+	$$f(x) = a[x^2 -x \cdot (x_2 + x_1)+ x_1 \cdot x_2]$$
+	$$f(x) = a[x^2 - (x_1 + x_2) \cdot x + x_1 \cdot x_2]$$
+	Mas $x_1 + x_2$ é a soma das raízes e $x_1 \cdot x_2$ é o produto das raízes, assim podemos substituir por:
+\begin{destaque}[Forma Soma-Produto]
+	\label{dest:soma-produto}
+		$$f(x) = a(x^2 - S \cdot x + P)$$
+	onde $S = x_1 + x_2$ e $P=x_1 \cdot x_2$.
+\end{destaque}
+
+Finalmente podemos comparar as formas geral e soma-produto:
+$$f(x) = ax^2 + bx + c = a(x^2 - S \cdot x + P) $$
+$$ax^2 + bx + c = a(x^2 - S \cdot x + P) $$
+Dividindo toda a equação por $a$:
+$$x^2 + \frac{b}{a}x + \frac{c}{a} = x^2 - S \cdot x + P $$
+Logo podemos comparar termo a termo e chegamos à relação entre os coeficientes da forma geral e a soma e o produto das raízes.
+$$x^2  = x^2  $$
+$$\frac{b}{a}x  = - S \cdot x  $$
+$$ \frac{c}{a} =  P $$
+Finalmente:
+\begin{destaque}[Soma e produto das raízes na forma geral]
+	\label{dest:SP_geral}
+	$$f(x) = ax^2 + bx + c$$
+	$$x_1 + x_2 = S = - \dfrac{b}{a}$$
+	$$x_1 \cdot x_2 = P = \dfrac{c}{a}$$
+\end{destaque}
+
+\subsection*{Mas e se $x_1, x_2 \notin \mathbb{R}$?}
+
+E se a equação não admitir raízes reais, isto é, quando $\Delta < 0$?
+
+Nessa situação, as raízes deixam o conjunto dos números reais e passam a pertencer ao conjunto dos números complexos ($\mathbb{C}$). Mesmo não apronfundando o estudo dos números complexos, destacamos que as manipulações algébricas continuam valendo em $\mathbb{C}$. 
+
+Então vamos mostrar que a soma e o produto das raízes permanecem como $S = - \dfrac{b}{a}$ e $P = \dfrac{c}{a}$, a partir de manipulações algébricas.
+
+
+Já sabemos que
+$$x_1  = \frac{-b - \sqrt{b^2 - 4ac}}{2a} \text{ e } x_2  = \frac{-b + \sqrt{b^2 - 4ac}}{2a}$$
+Logo, para a soma de raízes
+$$x_1 + x_2 = \frac{-b - \sqrt{b^2 - 4ac}}{2a} + \frac{-b + \sqrt{b^2 - 4ac}}{2a}$$
+$$x_1 + x_2 = \frac{-b - \sqrt{b^2 - 4ac}-b + \sqrt{b^2 - 4ac}}{2a}$$
+$$x_1 + x_2 = \frac{-b -b + \sqrt{b^2 - 4ac}- \sqrt{b^2 - 4ac}}{2a}$$
+$$x_1 + x_2 = \frac{-2b}{2a}$$
+$$x_1 + x_2 = -\frac{b}{a}$$
+$$S=-\frac{b}{a}$$
+$\hfill \square$
+
+Agora vamos para o produto:
+$$x_1 \cdot x_2 = \frac{-b - \sqrt{b^2 - 4ac}}{2a} \cdot \frac{-b + \sqrt{b^2 - 4ac}}{2a}$$
+$$x_1 \cdot x_2 = \frac{(-b - \sqrt{b^2 - 4ac}) \cdot (-b + \sqrt{b^2 - 4ac})}{2a \cdot 2a}$$
+$(-b - \sqrt{b^2 - 4ac}) \cdot (-b + \sqrt{b^2 - 4ac})$ é um produto da soma pela diferença (ou da diferença pela soma), com o primeiro termo igual a $-b$ e o segundo igual a $ \sqrt{b^2 - 4ac}$, logo
+$$(-b - \sqrt{b^2 - 4ac}) \cdot (-b + \sqrt{b^2 - 4ac})=(-b)^2-\left( \sqrt{b^2 - 4ac}\right)^2$$
+$$(-b - \sqrt{b^2 - 4ac}) \cdot (-b + \sqrt{b^2 - 4ac})=b^2-\left( b^2 - 4ac\right)$$
+$$(-b - \sqrt{b^2 - 4ac}) \cdot (-b + \sqrt{b^2 - 4ac})=b^2- b^2 + 4ac$$
+$$(-b - \sqrt{b^2 - 4ac}) \cdot (-b + \sqrt{b^2 - 4ac})=4ac$$
+Substituindo
+$$x_1 \cdot x_2 = \frac{4ac}{2a \cdot 2a}$$
+$$x_1 \cdot x_2 = \frac{4ac}{4a^2}$$
+$$x_1 \cdot x_2 = \frac{c}{a}$$
+$$P = \frac{c}{a}$$
+$\hfill \square$
+
+Mesmo que as raízes não sejam reais!
+
+\chapter{Representação Gráfica}
+\label{sec:grafico}
+
+Neste capítulo vamos apresentar os significados geométricos para cada forma de representação algébrica discutida no \autoref{sec:algebricas}.
+		
+\section{Significado Geométrico: Forma Geral}
+\label{subsec:geo_geral}
+
+$$f(x) = ax^2 + bx + c$$ 
+
+Cada coeficiente traz uma leitura geométrica do comportamento da curva:
+\begin{itemize}
+	\item \textbf{Coeficiente $a$ (concavidade e abertura):} define a curvatura da parábola. Se $a > 0$, a concavidade é voltada para cima; se $a < 0$, a concavidade é voltada para baixo. O módulo $|a|$ determina a abertura dos ramos. Quanto menor $|a|$ (mais próximo de zero), maior será a abertura da parábola.
+	\item \textbf{Coeficiente $b$ (inclinação no eixo $y$):} representa a taxa de variação instantânea da função no ponto em que ela intercepta o eixo das ordenadas. Se $b > 0$, a curva intercepta o eixo $y$ em sentido crescente; se $b < 0$, intercepta em sentido decrescente; se $b = 0$, o próprio corte coincide com o vértice.
+	\item \textbf{Termo independente $c$ (interseção vertical):} ordenada do ponto onde o gráfico intercepta o eixo $y$, ou seja, $(0, c)$.
+\end{itemize}
+O gráfico a seguir apresenta essas ideias:
+
+\begin{center}
+	\begin{tikzpicture}[>=Stealth, scale=0.85]
+		% Malha e eixos
+		%\draw[step=1, gray!25, line width=0.4pt] (-3.5,-2.5) grid (4.5,4.5);
+		\draw[->, line width=0.8pt] (-1.5,0) -- (4,0) node[right] {$x$};
+		\draw[->, line width=0.8pt] (0,-2.5) -- (0,3.5) node[above] {$y$};
+		\node[above right, font=\footnotesize] at (0,0) {$0$};
+		
+		% Curva f(x) = x^2 - 2x - 1 (a=1, b=-2, c=-1)
+		\draw[domain=-1.2:3.2, smooth, line width=1.3pt, blue!85!black] plot ({\x}, {\x*\x - 2*\x - 1});
+		
+		%Ponto de corte no eixo y: (0, c)
+		\filldraw[fill=blue!85!black] (0,-1) circle (2.2pt) node[left=3pt, font=\small] {$(0, c)$};
+		
+		%Reta tangente em (0, c) mostrando a inclinação dada por b = -2
+		\draw[dashed, red!80!black, line width=0.9pt] (-1, 1) -- (1, -3) node[below right, font=\footnotesize] {Inclinação $m = b$};
+	\end{tikzpicture}
+\end{center}
+
+Observando o gráfico podemos afirmar, mesmo não conhecendo a lei algébrica:
+\begin{itemize}
+	\item $a>0$, pois a concavidade é voltada para cima;
+	\item $b<0$, pois, no ponto de interseção com o eixo das ordenadas $(y)$, a função é decrescente;
+	\item $c<0$, pois a função intercepta o eixo das ordenadas $(y)$ em um ponto negativo.
+	
+\end{itemize}
+
+\vspace{0.4cm}
+
+\subsubsection*{Resumindo}
+
+\begin{destaque}[Concavidade]
+	\label{dest:concavidade}
+	Se $a>0$ a concavidade é voltada para \textbf{cima}.
+	
+	Se $a<0$ a concavidade é voltada para \textbf{baixo}.
+\end{destaque}
+
+\begin{destaque}[Interseção com eixo das ordenadas $(y)$]
+	\label{dest:eixo_y}
+	O gráfico intercepta o eixo das ordenadas $(y)$ no ponto $(0, c)$.
+\end{destaque}
+
+
+
+	\section{Significado Geométrico e Transformações: Forma Canônica}
+	\label{subsec:geo_canonica}
+	
+	$$f(x) = a(x - x_v)^2 + y_v$$
+	
+	Como na forma geral, os elementos da forma canônica interferem no comportamento da curva:
+\begin{itemize}
+	\item \textbf{Coeficiente $a$:} o parâmetro $a$ mantém sua função de determinar a concavidade e a abertura dos ramos da parábola.
+	\item \textbf{Eixo de Simetria:} a reta vertical $x = x_v$ divide a parábola em duas metades simétricas.
+	\item \textbf{Extremo da Função:} 
+	se $a > 0$, a função atinge valor \textbf{mínimo} absoluto $y_v$ em $x = x_v$; 
+	se $a < 0$, a função atinge valor \textbf{máximo} absoluto $y_v$ em $x = x_v$.
+	\item \textbf{Imagem da função:} a imagem é definida pelo vértice, se \\$a > 0 \implies \text{Im}(f)=\{y \in \mathbb{R} \mid y \geqslant y_v \}$; se $a<0 \implies \text{Im}(f)=\{y \in \mathbb{R} \mid y \leqslant y_v \}$.
+	\item \textbf{Translação Gráfica:} a curva resulta da parábola base $y = ax^2$ transladada horizontalmente por $x_v$ unidades e verticalmente por $y_v$ unidades.
+\end{itemize}
+
+\begin{center}
+	\begin{tikzpicture}[>=Stealth, scale=0.85]
+		% Malha e eixos
+		%\draw[step=1, gray!25, line width=0.4pt] (-2.5,-3.5) grid (5.5,3.5);
+		\draw[->, line width=0.8pt] (-0.5,0) -- (5.5,0) node[right] {$x$};
+		\draw[->, line width=0.8pt] (0,-3.5) -- (0,3) node[above] {$y$};
+		\node[below left, font=\footnotesize] at (0,0) {$0$};
+		
+		% Curva f(x) = (x - 2)^2 - 3 => vértice V(2, -3)
+		\draw[domain=-0.3:4.3, smooth, line width=1.3pt, green!60!black] plot ({\x}, {(\x-2)*(\x-2) - 3});
+		
+		% Eixo de simetria x = 2
+		\draw[dashed, red!85!black, line width=0.9pt] (2,-3.5) -- (2,2.5) node[above, font=\footnotesize] {$x = x_v$};
+		
+		% Projeções e coordenadas do vértice
+		\draw[dotted, line width=0.8pt] (2,0) -- (2,-3) -- (0,-3);
+		\node[above right, font=\footnotesize] at (2,0) {$x_v$};
+		\node[left, font=\footnotesize] at (0,-3) {$y_v$};
+		
+		% Ponto do vértice
+		\filldraw[fill=green!60!black] (2,-3) circle (2.5pt) node[below right=2pt, font=\small] {$V(x_v, y_v)$};
+		\filldraw (0,1) circle (2pt);
+	\end{tikzpicture}
+\end{center}
+
+Novamente, observando o gráfico podemos afirmar, mesmo não conhecendo a lei algébrica:
+\begin{itemize}
+	\item $a>0$, $b<0$ e $c>0$, como já discutimos na subseção anterior;
+	\item $x_v > 0$, pois a função $y=ax^2$ foi transladada para a direita;
+	\item $y_v <0$, pois a  função $y=ax^2$ foi transladada para baixo.
+	
+\end{itemize}
+
+\subsubsection*{Resumindo}
+
+\begin{destaque}[Extremos da Função]
+	\label{dest:extremos}
+	Se $a>0$ a função tem um valor \textbf{mínimo} $y_v$ em $x=x_v$.
+	
+	Se $a<0$ a função tem um valor \textbf{máximo} $y_v$ em $x=x_v$.
+\end{destaque}
+
+\begin{destaque}[Imagem]
+	\label{dest:imagem}
+	Se $a > 0 \implies \text{Im}(f)=\{y \in \mathbb{R} \mid y \geqslant y_v \}$.
+	
+	Se $a<0 \implies \text{Im}(f)=\{y \in \mathbb{R} \mid y \leqslant y_v \}$.
+\end{destaque}
+
+
+
+	\section{Propriedades Geométricas: Forma Fatorada}
+	\label{subsec:geo_fatorada}
+	
+	$$f(x) = a(x - x_1)(x - x_2)$$
+	
+	\begin{itemize}
+		\item \textbf{Raízes:} os pontos $(x_1, 0)$ e $(x_2, 0)$ correspondem aos locais onde a parábola intercepta o eixo das abscissas (eixo $x$).
+		\item \textbf{Eixo de Simetria:} por simetria geométrica da curva, a abscissa do vértice situa-se exatamente na média aritmética entre as raízes:
+		$$x_v = \frac{x_1 + x_2}{2}$$
+		\item \textbf{Coeficiente $a$:} o parâmetro $a$ mantém sua função de determinar a concavidade e a abertura da parábola.
+		\item \textbf{Condição de existência em $\mathbb{R}$:} essa representação só é possível no corpo dos números reais quando $\Delta \geqslant 0$. Conforme já discutimos na \autoref{subsec:canonica}, quando $\Delta = 0$, temos uma raiz dupla ($x_1 = x_2$), e a expressão assume a forma de quadrado perfeito:
+		$$f(x) = a(x - x_1)^2$$
+		indicando que o vértice da parábola tangencia o eixo $x$ no ponto $(x_1, 0)$.
+	\end{itemize}
+	
+	\begin{center}
+		\begin{tikzpicture}[>=Stealth, scale=0.85]
+			% Malha e eixos
+			%\draw[step=1, gray!25, line width=0.4pt] (-1.8,-4.5) grid (3.8,2.8);
+			\draw[->, line width=0.8pt] (-1.8,0) -- (4,0) node[below right] {$x$};
+			\draw[->, line width=0.8pt] (0,-4.5) -- (0,3) node[above] {$y$};
+			\node[below left, font=\footnotesize] at (0,0) {$0$};
+			
+			% Curva f(x) = (x + 1)(x - 3) = x^2 - 2x - 3 (raízes em -1 e 3)
+			\draw[domain=-1.6:3.6, smooth, line width=1.3pt, blue!85!black] plot ({\x}, {(\x + 1)*(\x - 3)});
+			
+			% Raízes marcadas no eixo x
+			\filldraw[fill=blue!85!black] (-1,0) circle (2.5pt) node[above left=1pt, font=\small] {$(x_1, 0)$};
+			\filldraw[fill=blue!85!black] (3,0) circle (2.5pt) node[above right=1pt, font=\small] {$(x_2, 0)$};
+			
+			% Eixo de simetria no ponto médio x_v = 1
+			\draw[dashed, red!85!black, line width=0.9pt] (1,-4.5) -- (1,3.2) node[above, font=\footnotesize] {$x = \dfrac{x_1 + x_2}{2}$};
+			
+		\end{tikzpicture}
+	\end{center}
+	
+	Observando o gráfico podemos afirmar, mesmo não conhecendo a lei algébrica:
+	\begin{itemize}
+		\item $a>0$, $b<0$ e $c<0$;
+		\item $x_v > 0$ e $y_v <0$;
+		\item $\Delta = b^2-4ac > 0$, pois temos duas raízes reais distintas;
+		\item $x_1<0$ e $x_2>0$.
+		
+		
+	\end{itemize}
+	
+	\chapter{Outras características}
+	
+	Neste capítulo vamos aprofundar características ainda não exploradas nos capítulo anteriores, mais especificamente o crescimento/decrescimento e o estudo de sinais.
+	
+	\section{Crescimento e decrescimento}
+	
+	Podemos notar no gráfico que a função muda o crescimento no vértice. Essa mudança é condicionada à concavidade, ou seja, ao valor de $a$:
+	
+	\begin{destaque}[Crescimento e decrescimento]
+		Se $a>0 \implies f(x)$ é:
+		\begin{itemize}
+			\item \textbf{Decrescente} se $x\leqslant x_v$;
+			\item \textbf{Crescente} se $x\geqslant x_v$.
+		\end{itemize}
+		Se $a<0 \implies f(x)$ é:
+		\begin{itemize}
+			\item \textbf{Crescente} se $x\leqslant x_v$;
+			\item \textbf{Decrescente} se $x\geqslant x_v$.
+		\end{itemize}
+	\end{destaque}
+	
+	\section{Estudo de Sinal}
+	Como no crescimento/decrescimento, o estudo de sinal depende da concavidade, mas também da existência e condição das raízes reais. Observemos os seis gráficos a seguir com todas as possibilidades dessas condições:
+	
+	
+	\begin{figure}[htbp]
+		\centering
+		\begin{tabular}{cc}
+			% --- LINHA 1: Delta > 0 ---
+			\multicolumn{1}{c}{\textbf{$a > 0$ e $\Delta > 0$}} & 
+			\multicolumn{1}{c}{\textbf{$a < 0$ e $\Delta > 0$}} \\[0.2cm]
+			\begin{tikzpicture}[>=latex, scale=0.85]
+				% Eixos
+				\draw[->, thick] (-2.2,0) -- (2.5,0) node[right] {$x$};
+				\draw[->, thick] (0,-1.6) -- (0,2.2) node[above] {$y$};
+				% Parábola: a > 0, raízes em -1 e 1.4
+				\draw[very thick, blue!80!black, domain=-1.6:2.0, smooth] plot ({\x}, {(\x + 1)*(\x - 1.4)});
+				% Raízes
+				\filldraw (-1,0) circle (1.8pt) node[below left] {$x_1$};
+				\filldraw (1.4,0) circle (1.8pt) node[below right] {$x_2$};
+			\end{tikzpicture}
+			&
+			\begin{tikzpicture}[>=latex, scale=0.85]
+				% Eixos
+				\draw[->, thick] (-2.2,0) -- (2.5,0) node[right] {$x$};
+				\draw[->, thick] (0,-2.2) -- (0,1.6) node[above] {$y$};
+				% Parábola: a < 0, raízes em -1 e 1.4
+				\draw[very thick, blue!80!black, domain=-1.6:2.0, smooth] plot ({\x}, {-(\x + 1)*(\x - 1.4)});
+				% Raízes
+				\filldraw (-1,0) circle (1.8pt) node[above left] {$x_1$};
+				\filldraw (1.4,0) circle (1.8pt) node[above right] {$x_2$};
+			\end{tikzpicture}
+			\\[1.2cm]
+			
+			% --- LINHA 2: Delta = 0 ---
+			\multicolumn{1}{c}{\textbf{$a > 0$ e $\Delta = 0$}} & 
+			\multicolumn{1}{c}{\textbf{$a < 0$ e $\Delta = 0$}} \\[0.2cm]
+			\begin{tikzpicture}[>=latex, scale=0.85]
+				% Eixos
+				\draw[->, thick] (-2.2,0) -- (2.5,0) node[right] {$x$};
+				\draw[->, thick] (0,-1.0) -- (0,2.5) node[above] {$y$};
+				% Parábola: a > 0, raiz dupla em 0.6
+				\draw[very thick, blue!80!black, domain=-1.0:2.2, smooth] plot ({\x}, {1.1*(\x - 0.6)*(\x - 0.6)});
+				% Raiz única
+				\filldraw (0.6,0) circle (1.8pt) node[below right] {$x_1 = x_2$};
+			\end{tikzpicture}
+			&
+			\begin{tikzpicture}[>=latex, scale=0.85]
+				% Eixos
+				\draw[->, thick] (-2.2,0) -- (2.5,0) node[right] {$x$};
+				\draw[->, thick] (0,-2.5) -- (0,1.0) node[above] {$y$};
+				% Parábola: a < 0, raiz dupla em 0.6
+				\draw[very thick, blue!80!black, domain=-1.0:2.2, smooth] plot ({\x}, {-1.1*(\x - 0.6)*(\x - 0.6)});
+				% Raiz única
+				\filldraw (0.6,0) circle (1.8pt) node[above right] {$x_1 = x_2$};
+			\end{tikzpicture}
+			\\[1.2cm]
+			
+			% --- LINHA 3: Delta < 0 ---
+			\multicolumn{1}{c}{\textbf{$a > 0$ e $\Delta < 0$}} & 
+			\multicolumn{1}{c}{\textbf{$a < 0$ e $\Delta < 0$}} \\[0.2cm]
+			\begin{tikzpicture}[>=latex, scale=0.85]
+				% Eixos
+				\draw[->, thick] (-2.2,0) -- (2.5,0) node[right] {$x$};
+				\draw[->, thick] (0,-0.8) -- (0,2.6) node[above] {$y$};
+				% Parábola: a > 0, sem raízes reais
+				\draw[very thick, blue!80!black, domain=-1.2:2.0, smooth] plot ({\x}, {(\x - 0.4)*(\x - 0.4) + 0.6});
+			\end{tikzpicture}
+			&
+			\begin{tikzpicture}[>=latex, scale=0.85]
+				% Eixos
+				\draw[->, thick] (-2.2,0) -- (2.5,0) node[right] {$x$};
+				\draw[->, thick] (0,-2.6) -- (0,0.8) node[above] {$y$};
+				% Parábola: a < 0, sem raízes reais
+				\draw[very thick, blue!80!black, domain=-1.2:2.0, smooth] plot ({\x}, {-(\x - 0.4)*(\x - 0.4) - 0.6});
+			\end{tikzpicture}
+		\end{tabular}
+	\end{figure}
+	
+	No gráfico superior à esquerda ($a>0$ e $\Delta>0$), podemos perceber que $f(x)<0$ se $x_1 < x < x_2$ e $f(x)> 0$ se $x<x_1$ ou $x>x_2$.
+	
+	No gráfico superior à direita ($a<0$ e $\Delta>0$), podemos perceber que a situação inverte: $f(x)>0$ se $x_1 < x < x_2$ e $f(x)< 0$ se $x<x_1$ ou $x>x_2$.
+	
+	Nos gráficos do meio, $f(x)>0$ se $x \neq x_1=x_2$ quando $a>0$. E $f(x)<0$ se $x \neq x_1=x_2$ quando $a<0$.
+	
+	Finalmente nos gráficos inferiores, $f(x)>0$ quando $a>0$ e $f(x)<0$ quando $a<0$.
+	
+	É possível perceber que há uma relação direta entre o estudo de sinais e a condição do coeficiente $a$. Podemos sistematizar assim:
+	
+	\begin{destaque}[Estudo de Sinais]
+		Se $\Delta>0$ e $x_1<x_2$:
+		\begin{itemize}
+			\item Se $x=x_1$ ou $x=x_2 \implies f(x) = 0$.
+			\item Se $x<x_1$ ou $x>x_2 \implies f(x)$ \textbf{tem o mesmo sinal de} $a$;
+			\item Se $x_1<x<x_2 \implies f(x)$ \textbf{tem o sinal diferente do sinal de} $a$. 
+		\end{itemize}
+
+		Se $\Delta=0$, logo $x_1=x_2$:
+		\begin{itemize}
+			\item Se $x=x_1 \implies f(x) = 0$.
+			\item Se $x \neq x_1 \implies f(x)$ \textbf{tem o mesmo sinal de} $a$.
+		\end{itemize}
+		
+		Se $\Delta<0$:
+		\begin{itemize}
+			\item $f(x)$ \textbf{tem o mesmo sinal de $a$}.
+		\end{itemize}
+		
+	\end{destaque}
+	\newpage
+	\chapter{Uma sistematização geral}
+	Aqui apresentamos uma sistematização de todas as características discutidas ao longo do texto.
+	\section{Condição de existência da Função Quadrática}
+	\begin{destaque}[Condição de existência da Função Quadrática]
+		$$a, b, c \in \mathbb{R} \text{ e } a \neq 0$$
+	\end{destaque}
+	\section{Forma Polinomial ou Geral}
+	\begin{destaque}[Forma Polinomial ou Geral]
+		$$f(x) = ax^2 + bx + c$$
+	\end{destaque}
+	\section{Forma Canônica}
+	\begin{destaque}[Forma Canônica]
+		$$f(x) = a(x - x_v)^2 + y_v$$
+		onde $V(x_v, y_v)$ é o vértice da parábola, dado por:
+		$$x_v = -\frac{b}{2a} \quad \text{e} \quad y_v = -\frac{\Delta}{4a}, \quad \text{com } \Delta = b^2 - 4ac$$
+	\end{destaque}
+	\section{Forma Fatorada}
+	\begin{destaque}[Forma Fatorada]
+		$$f(x) = a(x - x_1)(x - x_2), \quad \text{com } \Delta \geqslant 0$$
+		onde $x_1$ e $x_2$ são as raízes reais da função ($f(x_1) = f(x_2) = 0$).
+	\end{destaque}
+	\section{Forma Soma-Produto}
+	\begin{destaque}[Forma Soma-Produto]
+		$$f(x) = a(x^2 - S \cdot x + P)$$
+		onde $S = x_1 + x_2$ e $P=x_1 \cdot x_2$.
+	\end{destaque}
+	\section{Raízes da função}	
+	\begin{destaque}[Raízes da função]
+		$$x_1  = \frac{-b - \sqrt{b^2 - 4ac}}{2a} \text{ e } x_2  = \frac{-b + \sqrt{b^2 - 4ac}}{2a}$$
+		Se $\Delta = b^2 -4ac > 0 \implies $  \textbf{duas raízes reais distintas}.
+		
+		Se $\Delta = b^2 -4ac = 0 \implies $  \textbf{duas raízes reais iguais}.
+		
+		Se $\Delta = b^2 -4ac < 0 \implies $ \textbf{não há raízes reais}.
+	\end{destaque}		
+	\section{Soma e produto das raízes na forma geral}
+	\begin{destaque}[Soma e produto das raízes na forma geral]
+		$$f(x) = ax^2 + bx + c$$
+		$$x_1 + x_2 = S = - \dfrac{b}{a}$$
+		$$x_1 \cdot x_2 = P = \dfrac{c}{a}$$
+	\end{destaque}
+\section{Concavidade}
+\begin{destaque}[Concavidade]
+	Se $a>0$ a concavidade é voltada para \textbf{cima}.
+	
+	Se $a<0$ a concavidade é voltada para \textbf{baixo}.
+\end{destaque}
+\section{Interseção com eixo das ordenadas $(y)$}
+\begin{destaque}[Interseção com eixo das ordenadas $(y)$]
+	O gráfico intercepta o eixo das ordenadas $(y)$ no ponto $(0, c)$.
+\end{destaque}
+\section{Extremos da Função}
+\begin{destaque}[Extremos da Função]
+	Se $a>0$ a função tem um valor \textbf{mínimo} $y_v$ em $x=x_v$.
+	
+	Se $a<0$ a função tem um valor \textbf{máximo} $y_v$ em $x=x_v$.
+\end{destaque}
+\section{Imagem}
+\begin{destaque}[Imagem]
+	Se $a > 0 \implies \text{Im}(f)=\{y \in \mathbb{R} \mid y \geqslant y_v \}$.
+	
+	Se $a<0 \implies \text{Im}(f)=\{y \in \mathbb{R} \mid y \leqslant y_v \}$.
+\end{destaque}
+\section{Crescimento e decrescimento}
+	\begin{destaque}[Crescimento e decrescimento]
+	Se $a>0 \implies f(x)$ é:
+	\begin{itemize}
+		\item \textbf{Decrescente} se $x\leqslant x_v$;
+		\item \textbf{Crescente} se $x \geqslant x_v$.
+	\end{itemize}
+	Se $a<0 \implies f(x)$ é:
+	\begin{itemize}
+		\item \textbf{Crescente} se $x\leqslant x_v$;
+		\item \textbf{Decrescente} se $x\geqslant x_v$.
+	\end{itemize}
+\end{destaque}
+\section{Estudo de Sinais}
+	\begin{destaque}[Estudo de Sinais]
+	Se $\Delta>0$ e $x_1<x_2$:
+	\begin{itemize}
+		\item Se $x=x_1$ ou $x=x_2 \implies f(x) = 0$.
+		\item Se $x<x_1$ ou $x>x_2 \implies f(x)$ \textbf{tem o mesmo sinal de} $a$;
+		\item Se $x_1<x<x_2 \implies f(x)$ \textbf{tem o sinal diferente do sinal de} $a$. 
+	\end{itemize}
+	
+	Se $\Delta=0$, logo $x_1=x_2$:
+	\begin{itemize}
+		\item Se $x=x_1 \implies f(x) = 0$.
+		\item Se $x \neq x_1 \implies f(x)$ \textbf{tem o mesmo sinal de} $a$. 
+	\end{itemize}
+	
+	Se $\Delta<0$:
+	\begin{itemize}
+		\item $f(x)$ \textbf{tem o mesmo sinal de} $a$.
+	\end{itemize}
+	
+\end{destaque}
+
+\end{document}

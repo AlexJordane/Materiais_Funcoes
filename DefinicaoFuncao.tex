@@ -1,0 +1,226 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[portuguese]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{tcolorbox}
+\usepackage{setspace}
+\setstretch{1.2}
+\tcbuselibrary{skins} 
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.15}
+\usepackage{mathrsfs}
+\usepackage{tasks}
+\usetikzlibrary{arrows, intersections, angles, calc, quotes, babel, shapes.geometric, positioning, arrows.meta}
+
+
+\geometry{top=2cm, bottom=2cm, left=2.5cm, right=2.5cm}
+
+%Caixa de destaque
+\newtcolorbox{meudestaque}[1][]{
+	colback=gray!20, 
+	colframe=black, 
+	arc=5mm, 
+	boxrule=0.5pt,
+	#1
+}
+
+
+
+\begin{document}
+	
+	% --- CABEÇALHO COM CAIXA ---
+	\begin{tcolorbox}[
+		enhanced, 
+		colback=white, 
+		colframe=black, 
+		boxrule=2pt,
+		left=0pt, 
+		right=0pt,
+		top=5pt,
+		bottom=5pt
+		]
+		\noindent
+		\begin{minipage}[c]{0.25\textwidth}
+			\centering
+			\includegraphics[width=4.5cm]{ifes.jpg} 
+		\end{minipage}
+		\begin{minipage}[c]{0.70\textwidth}
+			\centering
+			\textbf{Introdução ao Estudo das Funções -- 2026/2}\\
+			\textbf{Licenciatura em Matemática}\\
+			\textbf{Definição de Função}\\
+			Professor: \textbf{Alex Jordane}
+		\end{minipage}
+	\end{tcolorbox}
+	
+	
+	Dados dois conjuntos $A$ e $B$, não vazios, uma \textbf{relação} $f$ de $A$ em $B$ recebe o nome de função de $A$ em $B$ se, e somente se, para todo $x$ em $A$ existe um só $y$ em $B$ tal que $(x, y)$ está em $f$.
+	
+	\vspace*{5mm}
+	
+	Em uma linguagem matemática formal:
+	
+	\begin{meudestaque}
+		\begin{center}
+			$f$ é função de $A$ em $B \Leftrightarrow (\forall ~ x \in A, ~ \exists ~ | ~ y \in B ~ | ~ (x, y) \in f)$
+		\end{center}
+	\end{meudestaque}
+	
+	\vspace*{5mm}
+	
+	Vamos a um exemplo. Consideremos os conjuntos $A = \{0, 1, 2, 3\}$ e $B = \{-1, 0, 1, 2, 3\}$. Vamos pensar em algumas \textbf{relações}:
+	
+	\begin{meudestaque}
+		$R = \{ (x, y) \in A \times B ~ | ~ y = x + 1\}$
+	\end{meudestaque}
+
+	
+	Mas o que é $A \times B$?
+	
+	\begin{meudestaque}
+		Sejam $A$ e $B$ dois conjuntos não vazios. Denominamos \textbf{produto cartesiano} de $A$ por $B$ o conjunto $A \times B$  cujos elementos são \textbf{todos} os \textbf{pares ordenados} $(x, y)$, em que o primeiro elemento pertence a $A$ e o segundo elemento pertence a $B$.
+	\end{meudestaque}
+	
+	Nesta primeira relação, temos que $A \times B = \{ (0, -1), (0, 0), (0, 1), (0, 2), (0, 3), (1, -1), (1, 0), \\ 
+	(1, 1), (1, 2), (1, 3), (2, -1), (2, 0), (2, 1), (2, 2), (2, 3), (3, -1), (3, 0), (3, 1), (3, 2), (3, 3) \}$.
+	
+	Precisamos então encontrar em $A \times B$ todos os pares ordenados $(x, y)$ que satisfazem a condição $y = x + 1$.
+	
+	$R = \{(0, 1), (1, 2), (2, 3)\}$
+	
+	\vspace*{5mm}
+	
+	Podemos também representar $R$ em um \textbf{diagrama de setas}:
+	 
+	\begin{figure}[H]
+		\centering
+		\begin{tikzpicture}[
+			>=Stealth,
+			oval/.style={ellipse, draw=black, thick, minimum width=3cm, minimum height=5cm, align=center},
+			dot/.style={circle, fill=black, inner sep=1.5pt}
+			]
+			% Conjunto A
+			\node[oval, label=below:{\Large $A$}] (A) at (0,0) {};
+			\node[dot, label=left:$0$] (a0) at (0, 1.35) {};
+			\node[dot, label=left:$1$] (a1) at (0, 0.45) {};
+			\node[dot, label=left:$2$] (a2) at (0, -0.45) {};
+			\node[dot, label=left:$3$] (a3) at (0, -1.35) {};
+			
+			% Conjunto B
+			\node[oval, label=below:{\Large $B$}] (B) at (4.5,0) {};
+			\node[dot, label=right:$-1$] (b_1) at (4.5, 1.8) {};
+			\node[dot, label=right:$0$] (b0) at (4.5, 0.9) {};
+			\node[dot, label=right:$1$] (b1) at (4.5, 0) {};
+			\node[dot, label=right:$2$] (b2) at (4.5, -0.9) {};
+			\node[dot, label=right:$3$] (b3) at (4.5, -1.8) {};
+			
+			% Flechas da Relação R
+			\draw[->, thick, blue!80!black] (a0) -- (b1);
+			\draw[->, thick, blue!80!black] (a1) -- (b2);
+			\draw[->, thick, blue!80!black] (a2) -- (b3);
+			
+			% Rótulo da relação
+			%\node[above] at (2.25, 2.5) {\Large $R$};
+			%\draw[->, bend left=20, shorten >=2pt, shorten <=2pt] (0.5, 2.2) to (4.0, 2.2);
+			
+		\end{tikzpicture}
+	\end{figure}
+	
+	\vspace*{5mm}
+	
+	Podemos também representar em um \textbf{plano cartesiano}:
+	\begin{center}
+			\begin{tikzpicture}[>=Stealth]
+			% Grade
+			\draw[line width=0.4pt, color=gray!30] (-1,-2) grid (4,4);
+			
+			% Eixos
+			\draw[->, line width=1.2pt] (-1,0) -- (4.5,0) node[right] {$x$};
+			\draw[->, line width=1.2pt] (0,-2) -- (0,4.5) node[above] {$y$};
+			
+			% Marcas e numeração no eixo x (Conjunto A)
+			\foreach \x in {0,1,2,3} {
+				\draw[thick] (\x,0.1) -- (\x,-0.1) node[below=2pt] {$\x$};
+			}
+			
+			% Marcas e numeração no eixo y (Conjunto B)
+			\foreach \y in {-1,0,1,2,3} {
+				\ifnum\y=0 \else
+				\draw[thick] (0.1,\y) -- (-0.1,\y) node[left=2pt] {$\y$};
+				\fi
+			}
+			\node[below left=2pt] at (0,0) {$0$};
+			
+			% Pontos do produto cartesiano A x B (grade discreta de pontos)
+			\foreach \x in {0,1,2,3} {
+				\foreach \y in {-1,0,1,2,3} {
+					\fill[gray!50] (\x,\y) circle (1.5pt);
+				}
+			}
+			
+			% Linhas tracejadas para os pontos de R
+			\draw[dashed, gray] (0,1) -- (0,1);
+			\draw[dashed, gray] (1,0) -- (1,2) -- (0,2);
+			\draw[dashed, gray] (2,0) -- (2,3) -- (0,3);
+			
+			% Pontos que pertencem à relação R
+			\fill[blue!80!black] (0,1) circle (3pt) node[above right=1pt] {$(0,1)$};
+			\fill[blue!80!black] (1,2) circle (3pt) node[above right=1pt] {$(1,2)$};
+			\fill[blue!80!black] (2,3) circle (3pt) node[above right=1pt] {$(2,3)$};
+		\end{tikzpicture}
+	\end{center}
+	
+	\vspace*{5mm}
+	
+	Podemos ainda, representá-la em uma \textbf{tabela}:
+	
+	\begin{center}
+		\begin{tabular}{|c|c|}
+			\hline
+			$x$ & $y$ \\ \hline
+			$0$ & $1$ \\ \hline
+			$1$ & $2$ \\ \hline
+			$2$ & $3$ \\ \hline
+		\end{tabular}
+	\end{center}
+	
+	Cada relação pode ser representada de diferentes formas, por meio de diferentes \textbf{sistemas semióticos}:
+	
+	\begin{enumerate}[label=\Roman*)]
+		\item \textbf{Lei de formação}: $R = \{ (x, y) \in A \times B ~ | ~ y = x + 1\}$
+		\item \textbf{Pares ordenados}: $R = \{(0, 1), (1, 2), (2, 3)\}$
+		\item \textbf{Diagrama de setas}
+		\item \textbf{Plano cartesiano}: representação gráfica
+		\item \textbf{Tabela}
+	\end{enumerate}
+	
+	\begin{meudestaque}
+		Como existe um elemento de $A$ (3) que não está associado a nenhum elemento de $B$, podemos concluir que a relação $R$ \textbf{não é} uma função!
+	\end{meudestaque}
+	
+
+Consideremos os conjuntos $A = \{0, 1, 2, 3\}$ e $B = \{-1, 0, 1, 2, 3\}$. Para cada uma das relações a seguir vamos:
+
+	\begin{enumerate}[label=\roman*.]
+		\item Determinar os pares ordenados;
+		\item Representar o diagrama de setas;
+		\item Representar graficamente;
+		\item Fazer uma tabela;
+		\item Determinar se a relação é uma função.
+	\end{enumerate}
+	
+	
+\begin{enumerate}[label=\alph*)]
+	\item $S = \{ (x, y) \in A \times B ~ | ~ y^2 = x^2 \}$
+	
+	\item $T = \{ (x, y) \in A \times B ~ | ~ y = (x-1)^2 -1 \}$
+
+\end{enumerate}	
+\end{document}

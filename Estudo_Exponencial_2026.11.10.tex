@@ -1,0 +1,1696 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{tcolorbox}
+\usepackage{parskip}
+\usepackage{setspace}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.15}
+\usepackage{verbatim}
+\usetikzlibrary{arrows.meta, calc}
+\setstretch{1.2}
+\tcbuselibrary{skins, breakable}
+\geometry{top=2cm, bottom=2cm, left=2.5cm, right=2.5cm}
+\usepackage[colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue]{hyperref}
+
+\usepackage{chngcntr}
+\counterwithout{footnote}{chapter}
+
+\pagestyle{fancy}
+\fancyhf{} 
+\fancyhead[C]{\leftmark} 
+\fancyfoot[C]{\thepage} 
+
+% Estilo de caixa para destaque conceitual
+\newtcolorbox{destaque}[1][]{
+	enhanced,
+	colback=gray!5,
+	colframe=black!70,
+	boxrule=1pt,
+	arc=4pt,
+	left=10pt,
+	right=10pt,
+	top=8pt,
+	bottom=8pt,
+	fonttitle=\bfseries,
+	code={%
+		\ifstrempty{#1}{%
+			\pgfkeysalso{notitle}%
+		}{%
+			\pgfkeysalso{title={#1}}%
+		}%
+	}
+}
+
+\begin{document}
+	
+	\begin{titlepage}
+		\centering
+		
+		\includegraphics[width=8cm]{ifes.png}\\[1cm]
+		
+		{\Large \textbf{Instituto Federal do Espírito Santo}}\\[0.5cm]
+		{\large \textbf{Licenciatura em Matemática}}\\[0.5cm]
+		{\large Introdução ao Estudo das Funções}
+		
+		\vspace{\fill}
+		
+		{\Huge \textbf{Função Exponencial}}\\[0.5cm]
+		{\Large Material de Apoio}
+		
+		\vspace{\fill}
+		
+		{\Large Professor Alex Jordane}
+		
+		\vspace{\fill}
+		
+		{\large Vitória -- ES}\\[0.2cm]
+		{\large 2026}
+		
+	\end{titlepage}
+	
+	\clearpage
+%	\pagenumbering{roman} % Define a numeração em algarismos romanos minúsculos (i, ii, iii, ...)
+	\setcounter{page}{1}  % Inicia a contagem pré-textual a partir de i
+	
+	\chapter*{Apresentação}
+	\addcontentsline{toc}{chapter}{Apresentação}
+	\thispagestyle{empty}
+	
+	Neste material, dedicamo-nos ao estudo aprofundado das funções exponenciais e suas aplicações analíticas. Iniciamos com as definições formais e as condições de existência da base, articuladas às propriedades estruturais da potenciação. Em seguida, investigamos a representação geométrica da curva e suas características centrais: o comportamento assintótico horizontal, a interseção com o eixo das ordenadas, o domínio, o conjunto imagem, a monotonicidade estrita (crescimento e decrescimento), o estudo de sinais e os efeitos provocados pelos parâmetros de translação e dilatação.
+	
+	Após a sistematização desses conceitos fundamentais, ampliamos o percurso para o tratamento das equações e inequações exponenciais. Detalhamos os métodos da redução a uma base comum e da mudança de variável, dedicando atenção especial ao exame de potências com bases variáveis. Para consolidar essas reflexões, disponibilizamos conjuntos de exercícios propostos seguidos de suas respectivas resoluções comentadas passo a passo, pensadas para apoiar os momentos de consulta, estudo autônomo e trabalho colaborativo em sala de aula.
+	
+	Bons estudos!
+	
+	\vspace{\fill}
+	
+	{\footnotesize
+		\texttt{Esta é uma terceira versão do material, atualizada em 10/11/2026.}\\
+		\texttt{Este material foi elaborado em colaboração com a inteligência artificial Gemini, \\ versão 3.1 Pro.} \\		
+		\texttt{O compartilhamento e a reprodução deste material são permitidos, desde que a fonte \\ e a autoria sejam citadas.}  \\		
+		\texttt{Esta obra está licenciada com uma Licença Atribuição-NãoComercial-SemDerivações 4.0.}
+		\vspace{1cm}
+		\begin{center}
+			\includegraphics[width=4cm]{CC.png}
+	\end{center}}
+	
+	\clearpage
+	\chapter*{Convenções e Notações Matemáticas}
+	\addcontentsline{toc}{chapter}{Convenções e Notações Matemáticas}
+	\thispagestyle{empty}
+	
+	Para assegurar a clareza na leitura e no acompanhamento das deduções, destacamos as principais convenções e símbolos adotados ao longo deste material:
+	
+	\vspace{0.3cm}
+	
+	\begin{destaque}[Intervalos Reais (Notação de Bourbaki)]
+		Para representar intervalos numéricos na reta real, adotamos a convenção de colchetes voltados para fora para indicar extremidades abertas:
+		\begin{itemize}[leftmargin=1.5cm, label=--]
+			\item $[a, b] = \{x \in \mathbb{R} \mid a \leqslant x \leqslant b\}$ \quad (Intervalo fechado)
+			\item ${]a, b[} = \{x \in \mathbb{R} \mid a < x < b\}$ \quad (Intervalo aberto)
+			\item ${[a, b[} = \{x \in \mathbb{R} \mid a \leqslant x < b\}$ \quad (Intervalo semiaberto à direita)
+			\item ${]a, b]} = \{x \in \mathbb{R} \mid a < x \leqslant b\}$ \quad (Intervalo semiaberto à esquerda)
+			\item ${[a, +\infty[} = \{x \in \mathbb{R} \mid x \geqslant a\}$ \quad e \quad ${]-\infty, b]} = \{x \in \mathbb{R} \mid x \leqslant b\}$
+			\item ${]a, +\infty[} = \{x \in \mathbb{R} \mid x > a\}$ \quad e \quad $]-\infty, b[ = \{x \in \mathbb{R} \mid x < b\}$
+		\end{itemize}
+	\end{destaque}
+	
+	\vspace{0.4cm}
+	
+	\section*{Símbolos e Conjuntos Numéricos}
+	
+	\begin{itemize}[leftmargin=1.5cm, label=$\bullet$]
+		\item $\mathbb{R}$: Conjunto dos números reais.
+		\item $\mathbb{R}^*$: Conjunto dos números reais não nulos, isto é, $\mathbb{R} - \{0\}$.
+		\item $\mathbb{R}_+$ e $\mathbb{R}^*_+$: Conjunto dos números reais não negativos e estritamente positivos (${]0, +\infty[}$), respectivamente.
+		\item $\text{Dom}(f)$ e $\text{Im}(f)$: Domínio e conjunto imagem de uma função $f$.
+		\item $S$: Conjunto solução de uma equação ou inequação.
+		\item $\iff$: Equivalência lógica (``se, e somente se'').
+		\item $\implies$: Implicação lógica direta.
+	\end{itemize}
+	
+	\clearpage
+	
+	\tableofcontents
+	\thispagestyle{empty}
+	
+	\clearpage
+	%\pagenumbering{arabic} % Retorna à numeração arábica tradicional (1, 2, 3, ...)
+	%\setcounter{page}{1}   % Reinicia a contagem para que o Capítulo 1 comece na página 1
+		
+	\chapter{Fundamentos Algébricos e Condições de Existência}
+	\label{sec:algebricas_exp}
+	
+	Diferentemente das funções polinomiais, nas quais a variável independente situa-se na base e os expoentes são números naturais fixos, na função exponencial a variável assume a posição de expoente. Essa mudança estrutural exige uma investigação cuidadosa sobre o domínio e a natureza da base.
+	
+	\section{Definição e Condição de Existência}
+	\label{subsec:cond_existencia}
+	
+	\begin{destaque}[Função Exponencial Elementar]
+		\label{dest:def_exp}
+		Chama-se \textbf{função exponencial elementar} a aplicação $f: \mathbb{R} \to \mathbb{R}$ dada pela lei:
+		$$f(x) = a^x$$
+		onde a base $a$ satisfaz necessariamente:
+		$$a \in \mathbb{R}, \quad a > 0 \quad \text{e} \quad a \neq 1$$
+	\end{destaque}
+	
+	A exigência de que $a > 0$ e $a \neq 1$ decorre de três impedimentos algébricos e funcionais em $\mathbb{R}$:
+	
+	\begin{enumerate}
+		\item \textbf{Se $a < 0$:} A potência $a^x$ torna-se indefinida para infinitos valores reais no domínio. Por exemplo, se $a = -4$ e $x = \frac{1}{2}$, teríamos $(-4)^{1/2} = \sqrt{-4} \notin \mathbb{R}$. Para garantir que a função tenha domínio em toda a reta real $\mathbb{R}$ sem descontinuidades ou saltos imaginários, impõe-se $a > 0$.
+		\item \textbf{Se $a = 0$:} A expressão $0^x$ gera indeterminação matemática para $x = 0$ ($0^0$) e é indefinida para valores negativos de $x$ (pois envolveria divisão por zero, como em $0^{-2} = \frac{1}{0^2}$). Para $x > 0$, resultaria em uma função identicamente nula, desprovida da dinâmica exponencial.
+		\item \textbf{Se $a = 1$:} A relação $f(x) = 1^x = 1$ converte-se em uma função constante cuja reta é horizontal e paralela ao eixo das abscissas. Embora bem definida em $\mathbb{R}$, ela não compartilha as propriedades essenciais da família exponencial, tais como a estrita monotonicidade e a inversibilidade.
+	\end{enumerate}
+	
+	\section{Propriedades Estruturais Operatórias}
+	\label{subsec:propriedades}
+	
+	A extensão da potenciação para expoentes reais preserva as regras fundamentais da aritmética, fundamentando a manipulação algébrica das equações e funções exponenciais. Esse movimento começa com os números naturais e se estende até os números reais.
+
+	\subsection{Extensão do Conceito de Potência}
+	
+	A potência $a^n$ é construída por meio de sucessivas extensões numéricas para o expoente:
+	
+	\begin{itemize}
+		\item \textbf{Expoente Natural ($n \in \mathbb{N}^*$):} $a^1 = a$ \quad e \quad $a^n = a^{n-1} \cdot a \quad (n \geqslant 2, \, a \in \mathbb{R})$.
+		\item \textbf{Expoente Nulo e Inteiro Negativo ($n \in \mathbb{Z}$):} $a^0 = 1$ \quad e \quad $a^{-n} = \dfrac{1}{a^n} \quad (a \in \mathbb{R}^*)$.
+		\item \textbf{Expoente Racional ($q = \frac{m}{n} \in \mathbb{Q}$):} $a^{\frac{m}{n}} = \sqrt[n]{a^m} \quad (a \in \mathbb{R}^*_+, \, m \in \mathbb{Z}, \, n \in \mathbb{N}^*)$.
+		\item \textbf{Expoente Real ($x \in \mathbb{R}$):} Definido por limites ou aproximações de expoentes racionais, exigindo $a \in \mathbb{R}^*_+$.
+	\end{itemize}
+	
+	\subsection{Propriedades Operatórias Fundamentais}
+	
+	Com a base positiva garantida ($a, b \in \mathbb{R}^*_+$), todas as propriedades aritméticas preservam sua validade para quaisquer expoentes reais:
+	
+	\begin{destaque}[{Propriedades das Potências ($a, b \in \mathbb{R}^*_+$ e $m, n \in \mathbb{R}$)}]
+		\begin{align*}
+			a^m \cdot a^n &= a^{m+n} & \frac{a^m}{a^n} &= a^{m-n} \\[0.3cm]
+			(a^m)^n &= a^{m \cdot n} & (a \cdot b)^n &= a^n \cdot b^n \\[0.3cm]
+			\left(\frac{a}{b}\right)^n &= \frac{a^n}{b^n} & a^{-n} &= \frac{1}{a^n} = \left(\frac{1}{a}\right)^n
+		\end{align*}
+	\end{destaque}
+	
+	\section{A Forma Geral Parametrizada}
+	\label{subsec:forma_geral_exp}
+	
+	Em aplicações empíricas e modelagens de fenômenos contínuos, a função exponencial aparece frequentemente acompanhada de fatores de escala, translação e contração temporal:
+	
+	\begin{destaque}[Forma Geral Parametrizada]
+		\label{dest:forma_geral_param}
+		$$f(x) = k \cdot a^{c(x - x_0)} + d$$
+		com $k, c, x_0, d \in \mathbb{R}$, $k \neq 0$, $c \neq 0$, $a > 0$ e $a \neq 1$.
+	\end{destaque}
+	
+	Cada parâmetro atua de forma direta sobre a geometria da curva:
+	\begin{itemize}
+		\item $k$: Fator de dilatação vertical e reflexão em relação ao eixo $x$ (quando $k < 0$).
+		\item $c$: Fator de escala horizontal que comprime ($|c| > 1$) ou dilata ($0 < |c| < 1$) a curva.
+		\item $x_0$: Translação horizontal: deslocamento para a direita se $x_0 > 0$, ou para a esquerda se $x_0 < 0$).
+		\item $d$: Translação vertical: desloca a curva verticalmente para cima se $d>0$, ou para baixo se $d<0$.
+	\end{itemize}
+	
+	\chapter{Representação Gráfica e Geometria da Curva}
+	\label{sec:grafico_exp}
+	
+	A representação gráfica da função exponencial elementar $f(x) = a^x$ assume duas configurações, dependendo de a base ser maior do que um ou estar compreendida entre zero e um.
+	
+	\section{Comportamento da Base: $a > 1$ versus $0 < a < 1$}
+	\label{subsec:base_comparacao}
+	
+	\begin{itemize}
+		\item \textbf{Caso $a > 1$ (Crescimento Exponencial):} A função cresce indefinidamente à medida que $x$ avança no semi-eixo positivo, acelerando sua curvatura. À medida que $x \to -\infty$, as imagens aproximam-se cada vez mais de zero, sem nunca tocá-lo. Dizemos então que $y=0$ é uma \textbf{assíntota horizontal}.
+		\item \textbf{Caso $0 < a < 1$ (Decaimento Exponencial):} A função decresce continuamente. À medida que $x \to +\infty$, a curva se aproxima do eixo horizontal, sem nunca tocá-lo (\textbf{assíntota horizontal}); quando $x \to -\infty$, os valores assumem magnitudes arbitrariamente grandes.
+	\end{itemize}
+	
+	\begin{center}
+		\begin{tikzpicture}[>=Stealth, scale=0.95]
+			% Eixos
+			\draw[->, line width=0.8pt] (-3.5,0) -- (3.5,0) node[right] {$x$};
+			\draw[->, line width=0.8pt] (0,-0.6) -- (0,5.2) node[above] {$y$};
+			\node[below left, font=\footnotesize] at (0,0) {$0$};
+			
+			% Curva a > 1: f(x) = 2^x
+			\draw[domain=-3.2:2.3, smooth, line width=1.3pt, blue!85!black] plot ({\x}, {2^(\x)});
+			\node[right, blue!85!black, font=\small] at (2.1, 4.6) {$f(x) = a^x \quad (a > 1)$};
+			
+			% Curva 0 < a < 1: g(x) = (1/2)^x = 2^(-x)
+			\draw[domain=-2.3:3.2, smooth, line width=1.3pt, red!85!black] plot ({\x}, {2^(-\x)});
+			\node[left, red!85!black, font=\small] at (-2.1, 4.6) {$g(x) = a^x \quad (0 < a < 1)$};
+			
+			% Ponto notável comum (0, 1)
+			\filldraw[fill=black] (0,1) circle (2.2pt) node[right=3pt, font=\footnotesize] {$(0, 1)$};
+			
+			% Pontos de referência para x = 1 e x = -1
+			\draw[dotted, line width=0.7pt] (1,0) -- (1,2) -- (0,2);
+			\filldraw[fill=blue!85!black] (1,2) circle (2pt) node[right=2pt, font=\scriptsize] {$(1, a)$};
+			\node[below, font=\footnotesize] at (1,0) {$1$};
+			\node[left, font=\footnotesize] at (0,2) {$a$};
+			
+			\draw[dotted, line width=0.7pt] (-1,0) -- (-1,2) -- (0,2);
+			\filldraw[fill=red!85!black] (-1,2) circle (2pt) node[left=2pt, font=\scriptsize] {$(-1, \frac{1}{a})$};
+			\node[below, font=\footnotesize] at (-1,0) {$-1$};
+		\end{tikzpicture}
+	\end{center}
+	
+	\section{A Assíntota Horizontal}
+	\label{subsec:assintota}
+	
+	Um traço singular da curva exponencial é a existência de uma reta limitante que atrai assintoticamente o gráfico nos extremos do infinito:
+	
+	\begin{destaque}[Assíntota Horizontal]
+		\label{dest:assintota}
+		Para a função elementar $f(x) = a^x$, o eixo das abscissas (a reta de equação $y = 0$) é a sua \textbf{assíntota horizontal}.
+		
+		Se $a>1$, quando $x$ tende ao infinito negativo, $x \to -\infty$, a função se aproxima de zero, mas nunca atinge exatamente 0.
+		
+		Se $0<a<1$, quando $x$ tende ao infinito , $x \to \infty$, a função também se aproxima de zero, mas, novamente, nunca atinge exatamente 0.
+		
+		Aqui aperece um conceito matemático que será explorado em breve, no Cálculo I: \textbf{limite}. 
+		
+		Dizemos que o limite de $a^x$ (para $a>1$), quando $x$ tende ao infinito negativo é zero.
+		
+		Ou que o limite de $a^x$ (para $0<a<1$), quando $x$ tende ao infinito positivo é zero.
+		
+		Em uma linguagem matemática formal:
+		
+		$$\lim_{x \to -\infty} a^x = 0 \quad (\text{se } a > 1) \qquad \text{ou} \qquad \lim_{x \to +\infty} a^x = 0 \quad (\text{se } 0 < a < 1)$$
+		
+		Na forma transladada $f(x) = k \cdot a^{c(x-x_0)} + d$, a reta assintótica desloca-se para $y = d$.
+	\end{destaque}
+	
+	\section{Interseção com os Eixos Coordenados}
+	\label{subsec:intersecoes}
+	
+	\begin{itemize}
+		\item \textbf{Interseção com o eixo das ordenadas ($y$):} Fazendo $x = 0$ na função elementar, obtém-se:
+		$$f(0) = a^0 = 1$$
+		Logo, qualquer que seja a base $a$, a curva elementar cruza obrigatoriamente o eixo vertical no ponto notável $(0, 1)$. Na forma geral $f(x) = k \cdot a^{cx} + d$, o corte dá-se em $(0, k + d)$.
+		\item \textbf{Interseção com o eixo das abscissas ($x$) ou raízes:} Como $a^x > 0$ para todo $x \in \mathbb{R}$, a equação $a^x = 0$ \textbf{não possui solução real}. A curva aproxima-se assintoticamente da reta $y = 0$, mas jamais intercepta o eixo $x$\footnote{Para a forma transladada $f(x) = k \cdot a^{c(x-x_0)} + d$, o cálculo da raíz exige, quase sempre, o uso de uma ferramenta específica, \textbf{logaritmo}, que será estudada em breve.}.
+		
+		
+	\end{itemize}
+	
+	\chapter{Comportamento Global, Imagem e Sinais}
+	\label{sec:caracteristicas_exp}
+	
+	\section{Domínio e Conjunto Imagem}
+	\label{subsec:dominio_imagem}
+	
+	A função exponencial padrão\footnote{Vamos focar na função exponencial padrão, do tipo $f(x)=a^x$. A forma transladada impacta diretamente em cada característica, mas iremos discutí-las à medida que forem aparecendo.} está definida sobre todo o corpo dos números reais, mas gera apenas valores estritamente positivos:
+	
+	\begin{destaque}[Domínio e Imagem]
+		\label{dest:dom_im}
+		Para $f(x) = a^x$ com $a > 0$ e $a \neq 1$:
+		$$\text{Dom}(f) = \mathbb{R}$$
+		$$\text{Im}(f) = \mathbb{R}^*_+ = \{y \in \mathbb{R} \mid y > 0\} =  {]0, +\infty[}$$
+	\end{destaque}
+	
+	Quando a função sofre reflexão ou translação vertical na forma $g(x) = k \cdot a^x + d$:
+	\begin{itemize}
+		\item Se $k > 0 \implies \text{Im}(g) = {]d, +\infty[} = \{y \in \mathbb{R} \mid y > d\}$;
+		\item Se $k < 0 \implies \text{Im}(g) = {]-\infty, d[} = \{y \in \mathbb{R} \mid y < d\}$.
+	\end{itemize}
+	
+	\section{Crescimento, Decrescimento e Monotonicidade Estrita}
+	\label{subsec:monotonia}
+	
+	Ao contrário da função quadrática, que altera seu sentido de crescimento no vértice, a função exponencial preserva a mesma taxa relativa de variação em todo o domínio:
+	
+	\begin{destaque}[Monotonicidade]
+		\label{dest:monotonia}
+		Sejam $x_1, x_2 \in \mathbb{R}$ tais que $x_1 < x_2$:
+		\begin{itemize}
+			\item Se $a > 1 \implies a^{x_1} < a^{x_2} \quad$ (\textbf{Estritamente Crescente});
+			\item Se $0 < a < 1 \implies a^{x_1} > a^{x_2} \quad$ (\textbf{Estritamente Decrescente}).
+		\end{itemize}
+	\end{destaque}
+	
+	Uma consequência analítica direta da monotonicidade estrita é a \textbf{injetividade}:
+	$$a^{x_1} = a^{x_2} \iff x_1 = x_2$$
+	Essa propriedade é a base para a resolução de equações exponenciais elementares e assegura a existência de sua função inversa: a função logarítmica (Em breve!).
+	
+	\section{Estudo de Sinais}
+	\label{subsec:estudo_sinais}
+	
+	Para a função pura $f(x) = a^x$, o estudo de sinais é imediato em virtude da positividade estrita da potência de base positiva:
+	
+	\begin{destaque}[Estudo de Sinais para $f(x) = a^x$]
+		\label{dest:sinais_pura}
+		$$f(x) > 0, \quad \forall x \in \mathbb{R}$$
+		A função jamais assume valores nulos ou negativos.
+	\end{destaque}
+	
+	
+	\chapter{Uma Sistematização Geral das Funções Exponenciais}
+	
+
+	
+	\label{sec:sistematizacao_exp}
+	
+	Apresentamos a síntese de todas as definições e propriedades geométricas desenvolvidas ao longo do texto.
+	
+	\section{Condição de Existência da Base}
+	\begin{destaque}[Condição de Existência]
+		$$a \in \mathbb{R}, \quad a > 0 \quad \text{e} \quad a \neq 1$$
+	\end{destaque}
+	
+	\section{Formas de Representação Algébrica}
+	\begin{destaque}[Forma Elementar]
+		$$f(x) = a^x$$
+	\end{destaque}
+	
+	\begin{destaque}[Forma Geral Parametrizada]
+		$$f(x) = k \cdot a^{c(x - x_0)} + d, \quad \text{com } k \neq 0 \text{ e } c \neq 0$$
+	\end{destaque}
+	
+	\section{Domínio e Conjunto Imagem}
+	\begin{destaque}[Domínio e Imagem da Forma Elementar]
+		$$\text{Dom}(f) = \mathbb{R}$$
+		$$\text{Im}(f) = \mathbb{R}^*_+ = {]0, +\infty[}$$
+	\end{destaque}
+	
+	\section{Assíntota Horizontal e Raízes}
+	\begin{destaque}[Comportamento Assintótico e Interseção com $x$]
+		Para a forma elementar $f(x) = a^x$:
+		\begin{itemize}
+			\item \textbf{Assíntota Horizontal:} Reta $y = 0$ (o próprio eixo $x$).
+			\item \textbf{Raízes Reais:} Inexistentes ($a^x \neq 0, \, \forall x \in \mathbb{R}$).
+		\end{itemize}
+		Para a forma transladada $f(x) = k \cdot a^{c(x-x_0)} + d$:
+		\begin{itemize}
+			\item \textbf{Assíntota Horizontal:} Reta $y = d$.
+		\end{itemize}
+	\end{destaque}
+	
+	\section{Interseção com o Eixo das Ordenadas $(y)$}
+	\begin{destaque}[Interseção Vertical]
+		O gráfico elementar intercepta o eixo $y$ no ponto fixo:
+		$$(0, 1)$$
+		pois $f(0) = a^0 = 1$.
+	\end{destaque}
+	
+	\section{Crescimento e Decrescimento}
+	\begin{destaque}[Crescimento e Decrescimento]
+		A função elementar $f(x) = a^x$ é:
+		\begin{itemize}
+			\item \textbf{Estritamente Crescente} em todo o domínio se $a > 1$;
+			\item \textbf{Estritamente Decrescente} em todo o domínio se $0 < a < 1$.
+		\end{itemize}
+	\end{destaque}
+	
+	\section{Estudo de Sinais}
+	\begin{destaque}[Estudo de Sinais]
+		Para a forma elementar $f(x) = a^x$:
+		\begin{itemize}
+			\item $f(x) > 0$ para todo $x \in \mathbb{R}$.
+		\end{itemize}
+	\end{destaque}
+	
+	\chapter{Equações Exponenciais: Métodos Fundamentais de Resolução}
+	\label{sec:equacoes_exp}
+	
+	Uma \textbf{equação exponencial} caracteriza-se pela presença da incógnita no expoente de pelo menos uma potência cuja base satisfaz as condições de existência da função exponencial elementar ($a \in \mathbb{R}$, $a > 0$ e $a \neq 1$). Sentenças da forma $2^x = 64$, $3^{2x-1} = 27$ e $4^x - 2^x = 56$ são exemplos típicos dessa classe de problemas. Para resolver esses problemas algébricos e determinar os valores reais que tornam essas igualdades verdadeiras, apoiamo-nos em dois métodos clássicos: o \textbf{método da redução a uma base comum} — fundamentado diretamente na injetividade da função exponencial — e o \textbf{método da mudança de variável}, que reduz equações aparentemente mais intrincadas a formas polinomiais clássicas. Além disso, dedicamos uma seção específica ao estudo das \textbf{equações com incógnita simultaneamente na base e no expoente}, as quais exigem uma análise exaustiva de casos especiais para a base e para o expoente.
+	
+	\section{Método da Redução a uma Base Comum}
+	\label{subsec:metodo_base_comum}
+	
+	Este método apoia-se na propriedade de monotonicidade estrita demonstrada no Capítulo~\ref{sec:caracteristicas_exp}. Como toda função exponencial elementar $f(x) = a^x$ é estritamente monótona, ela é necessariamente \textbf{injetiva}. Isso garante o seguinte princípio de equivalência:
+	
+	\begin{destaque}[Propriedade Fundamental da Injetividade]
+		Sejam $a \in \mathbb{R}^*_+ - \{1\}$ e $u(x), v(x)$ expressões algébricas com valores reais. Então:
+		\[
+		a^{u(x)} = a^{v(x)} \iff u(x) = v(x)
+		\]
+	\end{destaque}
+	
+	A estratégia consiste em aplicar as propriedades operatórias da potenciação (fatoração em fatores primos, expoentes fracionários e propriedades de potências de potências) em ambos os membros da igualdade até reduzi-los a uma única potência de mesma base. Uma vez estabelecida a igualdade de bases, eliminam-se as bases e igualam-se diretamente os expoentes.
+	
+	\subsection*{Exemplo Comentado 1: Aplicação direta das propriedades operatórias}
+	
+	\textbf{Problema:} Determine o conjunto solução da equação:
+	\[
+	\left( \sqrt{8} \right)^x = \sqrt[5]{32}
+	\]
+	
+	\textbf{Resolução comentada:}
+	\begin{enumerate}[label=\alph*)]
+		\item \textit{Identificação da base comum:} Como tanto o número $8$ quanto o $32$ são potências de base $2$ ($8 = 2^3$ e $32 = 2^5$), reduzimos os dois membros à base $2$.
+		\item \textit{Conversão dos radicais em expoentes racionais:}
+		\[
+		\sqrt{8} = \sqrt{2^3} = 2^{\frac{3}{2}} \implies \left( \sqrt{8} \right)^x = \left( 2^{\frac{3}{2}} \right)^x = 2^{\frac{3x}{2}}
+		\]
+		\[
+		\sqrt[5]{32} = \sqrt[5]{2^5} = 2^{\frac{5}{5}} = 2^1
+		\]
+		\item \textit{Aplicação da injetividade:} Igualando as potências de mesma base:
+		\[
+		2^{\frac{3x}{2}} = 2^1 \iff \frac{3x}{2} = 1
+		\]
+		\item \textit{Isolamento da incógnita:}
+		\[
+		3x = 2 \implies x = \frac{2}{3}
+		\]
+	\end{enumerate}
+	Portanto, o conjunto solução é $S = \left\{ \dfrac{2}{3} \right\}$.
+	
+	\vspace{0.3cm}
+	
+	\subsection*{Exemplo Comentado 2: Fator comum em evidência}
+	
+	\textbf{Problema:} Determine o conjunto solução da equação:
+	\[
+	3^{x+2} + 3^{x-1} - 3^x = 75
+	\]
+	
+	\textbf{Resolução comentada:}
+	Quando ocorrem adições ou subtrações de potências com a mesma base e expoentes lineares na incógnita, desmembram-se as potências pelas propriedades de produto e quociente ($a^{x+n} = a^x \cdot a^n$) para colocar a potência elementar em evidência:
+	\begin{enumerate}[label=\alph*)]
+		\item \textit{Decomposição das potências e fatoração:}
+		\[
+		3^x \cdot 3^2 + 3^x \cdot 3^{-1} - 3^x \cdot 1 = 75
+		\]
+		\[
+		3^x \left( 9 + \frac{1}{3} - 1 \right) = 75
+		\]
+		\item \textit{Redução aritmética dos coeficientes:}
+		\[
+		8 + \frac{1}{3} = \frac{25}{3} \implies 3^x \cdot \frac{25}{3} = 75
+		\]
+		\item \textit{Isolamento da potência e redução à base comum:}
+		\[
+		3^x \cdot \frac{25}{3} = 75 \implies 3^x = \frac{75 \cdot 3}{25} = 3 \cdot 3 = 9
+		\]
+		\[
+		3^x = 3^2 \iff x = 2
+		\]
+	\end{enumerate}
+	Portanto, o conjunto solução é $S = \{2\}$.
+	
+	\section{Método da Mudança de Variável (Incógnita Auxiliar)}
+	\label{subsec:metodo_mudanca_variavel}
+	
+	Em equações onde figuram termos polinomiais com potências da forma $a^{2x}$ associadas a $a^x$ e constantes aditivas, a redução direta de ambos os membros a uma base única não se aplica de modo imediato. Nesses cenários, introduz-se uma variável auxiliar para transformar o problema transcendental em um problema puramente algébrico.
+	
+	\begin{destaque}[Procedimento de Substituição]
+		Dada uma equação na forma:
+		\[
+		A \cdot a^{2x} + B \cdot a^x + C = 0 \quad (\text{com } A \neq 0)
+		\]
+		adota-se a substituição $y = a^x$. Decorre que $a^{2x} = (a^x)^2 = y^2$, o que conduz à equação quadrática:
+		\[
+		A y^2 + B y + C = 0
+		\]
+		\textbf{Atenção à condição de existência da variável auxiliar:} Como a imagem da função exponencial é restrita aos reais positivos, impõe-se imperativamente:
+		\[
+		y > 0
+		\]
+		Portanto, quaisquer raízes não positivas ($y \leqslant 0$) obtidas para $y$ devem ser obrigatoriamente descartadas no retorno à incógnita original $x$.
+	\end{destaque}
+	
+	\subsection*{Exemplo Comentado 3: Resolução via equação de $2^\circ$ grau}
+	
+	\textbf{Problema:} Determine as raízes reais da equação:
+	\[
+	9^x - 4 \cdot 3^x + 3 = 0
+	\]
+	
+	\textbf{Resolução comentada:}
+	\begin{enumerate}[label=\alph*)]
+		\item \textit{Preparação da base de referência:} Escrevemos a base $9$ como potência de base $3$:
+		\[
+		9^x = (3^2)^x = (3^x)^2
+		\]
+		Reescrevendo a sentença:
+		\[
+		(3^x)^2 - 4(3^x) + 3 = 0
+		\]
+		\item \textit{Introdução da incógnita auxiliar:} Definindo $y = 3^x$ com a condição $y > 0$:
+		\[
+		y^2 - 4y + 3 = 0
+		\]
+		\item \textit{Cálculo das raízes quadráticas:}
+		Fatorando o trinômio do segundo grau:
+		\[
+		(y - 1)(y - 3) = 0 \implies y_1 = 1 \quad \text{e} \quad y_2 = 3
+		\]
+		Como $y_1 > 0$ e $y_2 > 0$, ambas as raízes são admissíveis para a variável auxiliar.
+		\item \textit{Retorno à variável original $x$:}
+		\begin{itemize}
+			\item Para $y = 1$: $3^x = 1 \implies 3^x = 3^0 \iff x = 0$
+			\item Para $y = 3$: $3^x = 3 \implies 3^x = 3^1 \iff x = 1$
+		\end{itemize}
+	\end{enumerate}
+	Portanto, o conjunto solução é $S = \{0, 1\}$.
+	
+	\vspace{0.3cm}
+	
+	\subsection*{Exemplo Comentado 4: Equações homogêneas resolúveis por divisão de bases}
+	
+	\textbf{Problema:} Determine a solução real de:
+	\[
+	9^x + 15^x = 2 \cdot 25^x
+	\]
+	
+	\textbf{Resolução comentada:}
+	\begin{enumerate}[label=\alph*)]
+		\item \textit{Reconhecimento das potências:}
+		Expressando as bases por meio de seus fatores primos ($3$ e $5$):
+		\[
+		9^x = (3^2)^x = (3^x)^2, \quad 15^x = (3 \cdot 5)^x = 3^x \cdot 5^x, \quad 25^x = (5^2)^x = (5^x)^2
+		\]
+		Trata-se de uma equação homogênea em relação aos fatores $3^x$ e $5^x$.
+		\item \textit{Normalização por divisão:}
+		Como $25^x > 0$ para qualquer $x \in \mathbb{R}$, dividimos todos os termos por $25^x$:
+		\[
+		\frac{9^x}{25^x} + \frac{15^x}{25^x} = \frac{2 \cdot 25^x}{25^x} \implies \left(\frac{9}{25}\right)^x + \left(\frac{15}{25}\right)^x = 2
+		\]
+		Simplificando as razões fracionárias:
+		\[
+		\left(\left(\frac{3}{5}\right)^2\right)^x + \left(\frac{3}{5}\right)^x = 2 \implies \left(\frac{3}{5}\right)^{2x} + \left(\frac{3}{5}\right)^x - 2 = 0
+		\]
+		\item \textit{Aplicação da mudança de variável:}
+		Tomando $u = \left(\dfrac{3}{5}\right)^x$ (com a restrição $u > 0$):
+		\[
+		u^2 + u - 2 = 0 \implies (u + 2)(u - 1) = 0
+		\]
+		Obtemos $u = 1$ ou $u = -2$. Em virtude da condição $u > 0$, descartamos o valor negativo $u = -2$.
+		\item \textit{Resolução para a incógnita original:}
+		\[
+		\left(\frac{3}{5}\right)^x = 1 \implies \left(\frac{3}{5}\right)^x = \left(\frac{3}{5}\right)^0 \iff x = 0
+		\]
+	\end{enumerate}
+	Portanto, o conjunto solução é $S = \{0\}$.
+	
+	\section{Equações com Incógnita na Base e no Expoente (Bases Variáveis)}
+	\label{subsec:base_expoente_variaveis}
+	
+	Uma classe particularmente importante de equações exponenciais envolve expressões nas quais a incógnita $x$ figura simultaneamente na \textbf{base} e no \textbf{expoente}, assumindo formas como:
+	\[
+	[f(x)]^{g(x)} = 0  \qquad \text{ou} \qquad [f(x)]^{g(x)} = 1 \qquad \text{ou} \qquad  [f(x)]^{g(x)} = [f(x)]^{h(x)}
+	\]
+	Diferentemente das equações exponenciais elementares de base constante ($a > 0$ e $a \neq 1$), nas quais a injetividade permite igualar os expoentes diretamente ($a^u = a^v \iff u = v$), a presença de uma base variável $f(x)$ exige cautela redobrada. Isso ocorre porque a base pode assumir valores críticos — tais como $1$, $-1$ ou $0$ — para os quais a função deixa de ser injetiva ou a operação de potenciação apresenta restrições de existência em $\mathbb{R}$.
+	
+	\subsection*{Discussão Teórica: Análise de Todas as Possibilidades em $\mathbb{R}$}
+	
+	Para determinar todas as soluções reais de uma equação com base e expoente variáveis, devemos examinar sistematicamente os casos em que uma potência real está bem definida e satisfaz a igualdade proposta, evitando a indeterminação matemática $0^0$, divisões por zero (como $0^b$ para $b < 0$) e raízes de índice par de números negativos.
+	
+	\begin{destaque}[{Caso I: Equações da forma $[f(x)]^{g(x)} = 0$}]
+		Como nenhuma potência de base não nula pode resultar em zero ($a^b \neq 0$ para todo $a \neq 0$), uma potência $[f(x)]^{g(x)}$ anula-se no conjunto dos números reais se, e somente se, a base for igual a zero e o expoente for estritamente positivo:
+		\[
+		[f(x)]^{g(x)} = 0 \iff f(x) = 0 \quad \text{e} \quad g(x) > 0
+		\]
+		Na resolução prática, determinamos inicialmente as raízes da base ($f(x) = 0$) e, em seguida, substituímos cada candidato no expoente $g(x)$:
+		\begin{enumerate}
+			\item \textbf{Base nula com expoente estritamente positivo ($f(x) = 0$ e $g(x) > 0$):}
+			Como $0^b = 0$ para todo número real $b > 0$, a igualdade $0 = 0$ é verdadeira e o valor de $x$ é confirmado como solução.
+			\item \textbf{Exclusão por indeterminação ou divisão por zero ($f(x) = 0$ e $g(x) \leqslant 0$):}
+			Se um valor de $x$ que anula a base tornar o expoente nulo ($g(x) = 0$), recai-se na indeterminação $0^0$; se tornar o expoente negativo ($g(x) < 0$), recai-se em uma divisão por zero ($0^{-|b|} = \frac{1}{0^{|b|}}$, indefinida em $\mathbb{R}$). Em ambas as situações, o candidato deve ser obrigatoriamente descartado.
+		\end{enumerate}
+	\end{destaque}
+	
+	\vspace{0.3cm}
+	
+	\begin{destaque}[{Caso II: Equações da forma $[f(x)]^{g(x)} = 1$}]
+		Uma potência $[f(x)]^{g(x)}$ resulta na unidade ($1$) no conjunto dos números reais se, e somente se, ocorrer uma das três possibilidades a seguir:
+		\begin{enumerate}
+			\item \textbf{Expoente nulo com base não nula ($g(x) = 0$ e $f(x) \neq 0$):}
+			Sabemos que $a^0 = 1$ para todo número real $a \neq 0$. Assim, determinamos as raízes de $g(x) = 0$ e verificamos obrigatoriamente se, para esses valores, tem-se $f(x) \neq 0$ (excluindo a indeterminação $0^0$).
+			\item \textbf{Base igual a $1$ ($f(x) = 1$):}
+			Como $1^b = 1$ para todo $b \in \mathbb{R}$, qualquer valor real $x$ que torne $f(x) = 1$ (desde que $g(x)$ esteja bem definido em $\mathbb{R}$) é solução da equação.
+			\item \textbf{Base igual a $-1$ com expoente par ($f(x) = -1$ e $g(x)$ par):}
+			Quando a base assume o valor $-1$, a potência $(-1)^{g(x)}$ é igual a $1$ sempre que $g(x)$ for um número inteiro par (ou, de forma mais ampla na radiciação real, uma fração irredutível $\frac{p}{q}$ com numerador $p$ par e denominador $q$ ímpar, visto que $\sqrt[q]{(-1)^p} = 1$). Na prática, resolve-se $f(x) = -1$ e substitui-se cada candidato no expoente $g(x)$ para testar a igualdade.
+		\end{enumerate}
+	\end{destaque}
+	
+	\vspace{0.3cm}
+	
+	\begin{destaque}[{Caso III: Equações da forma $[f(x)]^{g(x)} = [f(x)]^{h(x)}$ (e o caso particular $[f(x)]^{g(x)} = f(x)$)}]
+		Ao igualarmos duas potências de mesma base variável — destacando-se o caso frequente $[f(x)]^{g(x)} = f(x)$, que equivale a $[f(x)]^{g(x)} = [f(x)]^1$ —, devemos investigar quatro possibilidades:
+		\begin{enumerate}
+			\item \textbf{Expoentes iguais ($g(x) = h(x)$), respeitadas as condições de existência:}
+			Igualam-se os expoentes ($g(x) = h(x)$, ou $g(x) = 1$ no caso particular) e verifica-se se, para os valores de $x$ encontrados, a potência $[f(x)]^{g(x)}$ está bem definida em $\mathbb{R}$ (em especial, que não ocorra $f(x) = 0$ com expoente não positivo).
+			\item \textbf{Base igual a $1$ ($f(x) = 1$):}
+			Se $f(x) = 1$ e os expoentes estão definidos em $\mathbb{R}$, ambos os membros valem $1^b = 1$, tornando a igualdade $1 = 1$ verdadeira independentemente dos valores de $g(x)$ e $h(x)$.
+			\item \textbf{Base igual a $0$ com expoentes estritamente positivos ($f(x) = 0$, $g(x) > 0$ e $h(x) > 0$):}
+			Como $0^b = 0$ para todo $b > 0$, um valor de $x$ que anule a base ($f(x) = 0$) será solução se, e somente se, tornar os expoentes de ambos os membros estritamente positivos ($0 = 0$). No caso particular $[f(x)]^{g(x)} = [f(x)]^1$, como o expoente do segundo membro já é $1 > 0$, basta verificar se $g(x) > 0$. Se $g(x) \leqslant 0$, o candidato é descartado por gerar $0^0$ ou divisão por zero.
+			\item \textbf{Base igual a $-1$ ($f(x) = -1$) com compatibilidade de paridade nos expoentes:}
+			Se $f(x) = -1$, a igualdade $(-1)^{g(x)} = (-1)^{h(x)}$ é válida quando ambos os expoentes são inteiros de mesma paridade (ambos pares, resultando em $1 = 1$, ou ambos ímpares, resultando em $-1 = -1$). No caso particular $[f(x)]^{g(x)} = f(x)$, o segundo membro vale $-1$; logo, $x$ será solução se o expoente $g(x)$ resultar em um número inteiro ímpar (pois $(-1)^{\text{ímpar}} = -1$).
+		\end{enumerate}
+	\end{destaque}
+	
+
+	Nos exemplos resolvidos a seguir, apresentamos a resolução completa contemplando todas as possibilidades algébricas em $\mathbb{R}$.
+	
+	\vspace{0.3cm}
+	
+	\subsection*{Exemplo Comentado 5: Equação do tipo $[f(x)]^{g(x)} = 0$}
+	
+	\textbf{Problema:} Determine todas as soluções reais da equação:
+	\[
+	(x^2 - 4)^x = 0
+	\]
+	
+	\textbf{Resolução comentada:}
+	
+	Trata-se de uma equação na forma $[f(x)]^{g(x)} = 0$, onde a base é $f(x) = x^2 - 4$ e o expoente é $g(x) = x$. Pelo \textbf{Caso I}, a potência anula-se em $\mathbb{R}$ se, e somente se, $f(x) = 0$ e $g(x) > 0$:
+	
+	\begin{enumerate}[label=\textbf{\arabic*ª Etapa:}, leftmargin=*]
+		\item \textbf{Determinação dos candidatos que anulam a base ($f(x) = 0$):}
+		\[
+		x^2 - 4 = 0 \implies x^2 = 4 \implies x = 2 \quad \text{ou} \quad x = -2
+		\]
+		
+		\item \textbf{Verificação da positividade do expoente ($g(x) > 0$) para cada candidato:}
+		\begin{itemize}
+			\item \textbf{Para $x = 2$:} O expoente assume o valor $g(2) = 2 > 0$. Substituindo na equação original:
+			\[
+			(2^2 - 4)^2 = (4 - 4)^2 = 0^2 = 0 \quad (\text{Verdadeiro})
+			\]
+			Como a base é nula e o expoente é estritamente positivo, $x = 2$ é solução.
+			
+			\item \textbf{Para $x = -2$:} O expoente assume o valor $g(-2) = -2 < 0$. Substituindo na expressão original:
+			\[
+			\left((-2)^2 - 4\right)^{-2} = (4 - 4)^{-2} = 0^{-2} = \frac{1}{0^2} \quad (\text{Indefinido em } \mathbb{R})
+			\]
+			Como o expoente é negativo, a expressão recai em uma divisão por zero. Logo, $x = -2$ \textbf{não} é solução e deve ser descartado.
+		\end{itemize}
+	\end{enumerate}
+	
+	Portanto, o conjunto solução é $S = \{2\}$.
+	
+	\vspace{0.3cm}
+	
+	\subsection*{Exemplo Comentado 6: Equação do tipo $[f(x)]^{g(x)} = 1$}
+	
+	\textbf{Problema:} Determine todas as soluções reais da equação:
+	\[
+	x^{2x+5} = 1
+	\]
+	
+	\textbf{Resolução comentada:}
+	
+	Trata-se de uma equação na forma $[f(x)]^{g(x)} = 1$, onde a base é $f(x) = x$ e o expoente é $g(x) = 2x + 5$. Analisamos todas as possibilidades do \textbf{Caso II} para que a potência resulte em $1$:
+	
+	\begin{enumerate}[label=\textbf{\arabic*ª Possibilidade:}, leftmargin=*]
+		\item \textbf{Expoente nulo com base não nula ($g(x) = 0$ e $f(x) \neq 0$):}
+		
+		Impomos que o expoente seja igual a zero:
+		\[
+		2x + 5 = 0 \implies 2x = -5 \implies x = -\frac{5}{2}
+		\]
+		\textit{Verificação:} Para $x = -\dfrac{5}{2}$, a base vale $x = -\dfrac{5}{2} \neq 0$ e o expoente vale $2\left(-\dfrac{5}{2}\right) + 5 = -5 + 5 = 0$. Substituindo na equação original:
+		\[
+		\left(-\frac{5}{2}\right)^{0} = 1 \quad (\text{Verdadeiro})
+		\]
+		Portanto, $x = -\dfrac{5}{2}$ é solução em $\mathbb{R}$.
+		
+		\item \textbf{Base igual a $1$ ($f(x) = 1$):}
+		
+		Tomando $x = 1$ e substituindo na equação original, obtemos:
+		\[
+		1^{2(1) + 5} = 1^7 = 1 \quad (\text{Verdadeiro})
+		\]
+		Portanto, $x = 1$ é solução.
+		
+		\item \textbf{Base igual a $-1$ com expoente par ($f(x) = -1$):}
+		
+		Testamos o candidato $x = -1$ avaliando o valor assumido pelo expoente $g(x) = 2x + 5$:
+		\[
+		g(-1) = 2(-1) + 5 = -2 + 5 = 3
+		\]
+		Substituindo $x = -1$ na equação original:
+		\[
+		(-1)^{2(-1) + 5} = (-1)^3 = -1 \neq 1 \quad (\text{Falso})
+		\]
+		Como o expoente resultante ($3$) é um número inteiro ímpar, a potência resulta em $-1$, não satisfazendo a igualdade. Logo, $x = -1$ \textbf{não} é solução.
+		
+		\item \textbf{Exame da base nula ($f(x) = 0$):}
+		
+		Para $x = 0$, o primeiro membro resulta em $0^{2(0)+5} = 0^5 = 0 \neq 1$. Logo, $x = 0$ não é solução.
+	\end{enumerate}
+	
+	Portanto, reunindo as possibilidades válidas em $\mathbb{R}$, o conjunto solução é:
+	\[
+	S = \left\{ -\frac{5}{2}, 1 \right\}
+	\]
+	
+	\vspace{0.3cm}
+	
+	\subsection*{Exemplo Comentado 7: Equação do tipo $[f(x)]^{g(x)} = f(x)$}
+	
+	\textbf{Problema:} Determine todas as soluções reais da equação:
+	\[
+	x^{4 - 2x} = x
+	\]
+	
+	\textbf{Resolução comentada:}
+	
+	Podemos reescrever a equação dada na forma explícita de igualdade de potências de mesma base (\textbf{Caso III}):
+	\[
+	x^{4 - 2x} = x^1
+	\]
+	onde $f(x) = x$, $g(x) = 4 - 2x$ e $h(x) = 1$. Apresentamos a resolução detalhada por meio de duas abordagens complementares.
+	
+	\subsubsection*{Método 1: Análise direta dos quatro casos da base e do expoente}
+	
+	\begin{enumerate}[label=\textbf{\arabic*ª Possibilidade:}, leftmargin=*]
+		\item \textbf{Expoentes iguais ($g(x) = 1$) com base não nula:}
+		
+		Igualando os expoentes de ambos os membros:
+		\[
+		4 - 2x = 1 \implies -2x = 1 - 4 \implies -2x = -3 \implies x = \frac{3}{2}
+		\]
+		\textit{Verificação:} Substituindo $x = \dfrac{3}{2}$ na equação original:
+		\[
+		\left(\frac{3}{2}\right)^{4 - 2\left(\frac{3}{2}\right)} = \left(\frac{3}{2}\right)^{4 - 3} = \left(\frac{3}{2}\right)^1 = \frac{3}{2} \quad (\text{Verdadeiro})
+		\]
+		Logo, $x = \dfrac{3}{2}$ é solução.
+		
+		\item \textbf{Base igual a $1$ ($x = 1$):}
+		
+		Substituindo $x = 1$ em ambos os membros da equação:
+		\[
+		\text{1º membro: } 1^{4 - 2(1)} = 1^2 = 1 \qquad \text{e} \qquad \text{2º membro: } 1
+		\]
+		Como $1 = 1$ (verdadeiro), concluímos que $x = 1$ é solução (note que a igualdade se verifica mesmo que os expoentes $2$ e $1$ sejam diferentes).
+		
+		\item \textbf{Base igual a $0$ ($x = 0$) com expoente estritamente positivo:}
+		
+		Avaliamos o expoente $g(x) = 4 - 2x$ para $x = 0$:
+		\[
+		g(0) = 4 - 2(0) = 4 > 0
+		\]
+		Substituindo $x = 0$ na equação original:
+		\[
+		\text{1º membro: } 0^{4 - 2(0)} = 0^4 = 0 \qquad \text{e} \qquad \text{2º membro: } 0
+		\]
+		Como o expoente é estritamente positivo ($4 > 0$), a potência $0^4$ é bem definida e igual a $0$, resultando na identidade $0 = 0$ (verdadeiro). Portanto, $x = 0$ é solução.
+		
+		\item \textbf{Base igual a $-1$ ($x = -1$) com expoente ímpar:}
+		
+		Para $x = -1$, o segundo membro da equação vale $-1$. Calculamos o expoente do primeiro membro em $x = -1$:
+		\[
+		g(-1) = 4 - 2(-1) = 4 + 2 = 6
+		\]
+		Substituindo $x = -1$ nos dois membros da equação original:
+		\[
+		\text{1º membro: } (-1)^6 = 1 \qquad \text{e} \qquad \text{2º membro: } -1
+		\]
+		Como $1 \neq -1$ (falso, pois o expoente $6$ é par), concluímos que $x = -1$ \textbf{não} é solução.
+	\end{enumerate}
+	
+	\subsubsection*{Método 2: Redução ao Caso II por divisão algébrica (com separação do caso $x = 0$)}
+	
+	Uma maneira alternativa de resolver $x^{4 - 2x} = x$ consiste em transformar a equação no formato $[f(x)]^{k(x)} = 1$. Para isso, devemos dividir a análise em duas etapas:
+	\begin{enumerate}[label=\alph*)]
+		\item \textit{Testar inicialmente $x = 0$:} Como não é permitido dividir por zero, verificamos $x = 0$ diretamente na equação original: $0^{4 - 2(0)} = 0^4 = 0$, confirmando que $x = 0$ é raiz.
+		\item \textit{Supor $x \neq 0$ e dividir ambos os membros por $x$:}
+		\[
+		\frac{x^{4 - 2x}}{x^1} = 1 \implies x^{(4 - 2x) - 1} = 1 \implies x^{3 - 2x} = 1
+		\]
+		Recaímos assim em uma equação do \textbf{Caso II} ($x^{3 - 2x} = 1$, com $x \neq 0$):
+		\begin{itemize}
+			\item \textbf{Expoente nulo:} $3 - 2x = 0 \implies x = \dfrac{3}{2}$ (como $\dfrac{3}{2} \neq 0$, é solução);
+			\item \textbf{Base igual a $1$:} $x = 1 \implies 1^{3 - 2(1)} = 1^1 = 1$ (é solução);
+			\item \textbf{Base igual a $-1$:} para $x = -1$, o novo expoente é $3 - 2(-1) = 5$ (ímpar), de modo que $(-1)^5 = -1 \neq 1$ (não é solução).
+		\end{itemize}
+	\end{enumerate}
+	
+	Portanto, reunindo todas as soluções reais, o conjunto solução é:
+	\[
+	S = \left\{ 0, 1, \frac{3}{2} \right\}
+	\]
+	
+	\section{Exercícios propostos}
+	\textbf{Resolva as equações exponenciais a seguir:}
+	\begin{multicols}{2}
+		\begin{enumerate}
+			\item $2^x=64$
+			\item $\left( \sqrt{3} \right)^x = \sqrt[3]{81}$
+			\item $\left( \sqrt[5]{4} \right) ^x = \dfrac{1}{\sqrt{8}}$
+			\item $7^{4x+3}=49$
+			\item $2^{x^2-x-16}=16$
+			\item $27^{x^2+1}=9^{5x}$
+			\item $100 \cdot 10^x = \sqrt[x]{1000^5}$
+			\item $3^{2x-1} \cdot 9^{3x+4} = 27^{x+1}$
+			\item $(2^x)^{x+4} = 32$
+			\item $2^{x-1}+2^{x}+2^{x+1}-2^{x+2}+2^{x+3}=120$
+			\item $5^{x-2} - 5^x + 5^{x+1} = 505$
+			\item $2 \cdot 4^{x+2}-5 \cdot 4^{x+1}-3 \cdot 2^{2x+1} - 4^x = 20$
+			\item $4^x-2^x=56$
+			\item $4^x+6^x=2 \cdot 9^x$
+			\item $4^{x+1}-9 \cdot 2^x + 2 = 0$
+			\item $x^{x^2-5x+6}=1$
+			\item $x^x = x$
+			\item $x^{x^2-2}=1$
+			\item $x^{2x^2-7x+4}=x$
+			\item $(x^2- x + 1)^{(2x^2-3x-2)} = 1$
+		\end{enumerate} 	
+	\end{multicols}
+	
+\section{Resolução dos exercícios propostos}
+
+Apresentamos as resoluções passo a passo das equações exponenciais propostas, organizadas de forma a explicitar as propriedades operatórias de potências, reduções a bases comuns, mudanças de variáveis e o estudo cuidadoso de bases variáveis no conjunto dos números reais.
+
+\subsection*{Equações e Desenvolvimentos}
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+	
+	% Item 1
+	\item \textbf{Equação:} $2^x = 64$
+	
+	Fatorando o segundo membro na base $2$:
+	\[
+	64 = 2^6
+	\]
+	Substituindo na equação:
+	\[
+	2^x = 2^6 \implies x = 6
+	\]
+	Portanto, $S = \{6\}$.
+	
+	\vspace{0.5cm}
+	
+	% Item 2
+	\item \textbf{Equação:} $\left( \sqrt{3} \right)^x = \sqrt[3]{81}$
+	
+	Reescrevemos ambos os membros em potências de base $3$, utilizando expoentes fracionários:
+	\[
+	\sqrt{3} = 3^{\frac{1}{2}} \implies \left( \sqrt{3} \right)^x = \left( 3^{\frac{1}{2}} \right)^x = 3^{\frac{x}{2}}
+	\]
+	\[
+	81 = 3^4 \implies \sqrt[3]{81} = \sqrt[3]{3^4} = 3^{\frac{4}{3}}
+	\]
+	Igualando os expoentes:
+	\[
+	3^{\frac{x}{2}} = 3^{\frac{4}{3}} \implies \frac{x}{2} = \frac{4}{3} \implies x = \frac{8}{3}
+	\]
+	Portanto, $S = \left\{ \dfrac{8}{3} \right\}$.
+	
+	\vspace{0.5cm}
+	
+	% Item 3
+	\item \textbf{Equação:} $\left( \sqrt[5]{4} \right)^x = \dfrac{1}{\sqrt{8}}$
+	
+	Reduzimos os termos à base comum $2$:
+	\[
+	\sqrt[5]{4} = \sqrt[5]{2^2} = 2^{\frac{2}{5}} \implies \left( \sqrt[5]{4} \right)^x = 2^{\frac{2x}{5}}
+	\]
+	\[
+	\frac{1}{\sqrt{8}} = \frac{1}{\sqrt{2^3}} = \frac{1}{2^{\frac{3}{2}}} = 2^{-\frac{3}{2}}
+	\]
+	Igualando os expoentes:
+	\[
+	2^{\frac{2x}{5}} = 2^{-\frac{3}{2}} \implies \frac{2x}{5} = -\frac{3}{2} \implies 4x = -15 \implies x = -\frac{15}{4}
+	\]
+	Portanto, $S = \left\{ -\dfrac{15}{4} \right\}$.
+	
+	\vspace{0.5cm}
+	
+	% Item 4
+	\item \textbf{Equação:} $7^{4x+3} = 49$
+	
+	Fatorando o número $49$ na base $7$:
+	\[
+	49 = 7^2
+	\]
+	Substituindo e igualando os expoentes:
+	\[
+	7^{4x+3} = 7^2 \implies 4x + 3 = 2 \implies 4x = -1 \implies x = -\frac{1}{4}
+	\]
+	Portanto, $S = \left\{ -\dfrac{1}{4} \right\}$.
+	
+	\vspace{0.5cm}
+	
+	% Item 5
+	\item \textbf{Equação:} $2^{x^2-x-16} = 16$
+	
+	Como $16 = 2^4$, temos:
+	\[
+	2^{x^2-x-16} = 2^4 \implies x^2 - x - 16 = 4 \implies x^2 - x - 20 = 0
+	\]
+	Resolvendo a equação quadrática:
+	\[
+	\Delta = (-1)^2 - 4(1)(-20) = 1 + 80 = 81
+	\]
+	\[
+	x = \frac{-(-1) \pm \sqrt{81}}{2(1)} = \frac{1 \pm 9}{2}
+	\]
+	\[
+	x_1 = \frac{1 + 9}{2} = 5 \quad \text{e} \quad x_2 = \frac{1 - 9}{2} = -4
+	\]
+	Portanto, $S = \{-4, 5\}$.
+	
+	\vspace{0.5cm}
+	
+	% Item 6
+	\item \textbf{Equação:} $27^{x^2+1} = 9^{5x}$
+	
+	Expressamos ambos os lados na base $3$:
+	\[
+	27 = 3^3 \implies \left( 3^3 \right)^{x^2+1} = 3^{3(x^2+1)} = 3^{3x^2+3}
+	\]
+	\[
+	9 = 3^2 \implies \left( 3^2 \right)^{5x} = 3^{2(5x)} = 3^{10x}
+	\]
+	Igualando os expoentes:
+	\[
+	3x^2 + 3 = 10x \implies 3x^2 - 10x + 3 = 0
+	\]
+	Calculando o discriminante:
+	\[
+	\Delta = (-10)^2 - 4(3)(3) = 100 - 36 = 64
+	\]
+	\[
+	x = \frac{10 \pm \sqrt{64}}{2(3)} = \frac{10 \pm 8}{6}
+	\]
+	\[
+	x_1 = \frac{18}{6} = 3 \quad \text{e} \quad x_2 = \frac{2}{6} = \frac{1}{3}
+	\]
+	Portanto, $S = \left\{ \dfrac{1}{3}, 3 \right\}$.
+	
+	\vspace{0.5cm}
+	
+	% Item 7
+	\item \textbf{Equação:} $100 \cdot 10^x = \sqrt[x]{1000^5}$ \quad ($x \neq 0$)
+	
+	Convertendo os termos para potências de base $10$:
+	\[
+	100 \cdot 10^x = 10^2 \cdot 10^x = 10^{x+2}
+	\]
+	\[
+	1000^5 = (10^3)^5 = 10^{15} \implies \sqrt[x]{1000^5} = 10^{\frac{15}{x}}
+	\]
+	Igualando os expoentes:
+	\[
+	x + 2 = \frac{15}{x}
+	\]
+	Multiplicando ambos os membros por $x$ (com a condição $x \neq 0$):
+	\[
+	x(x + 2) = 15 \implies x^2 + 2x - 15 = 0
+	\]
+	Fatorando o trinômio (Forma Fatorada ou Soma e Produto):
+	\[
+	(x + 5)(x - 3) = 0 \implies x = -5 \quad \text{ou} \quad x = 3
+	\]
+	Como ambos os valores são não nulos, são soluções válidas. Logo, $S = \{-5, 3\}$.
+	
+	\vspace{0.5cm}
+	
+	% Item 8
+	\item \textbf{Equação:} $3^{2x-1} \cdot 9^{3x+4} = 27^{x+1}$
+	
+	Convertendo para a base $3$:
+	\[
+	9^{3x+4} = (3^2)^{3x+4} = 3^{6x+8}
+	\]
+	\[
+	27^{x+1} = (3^3)^{x+1} = 3^{3x+3}
+	\]
+	Multiplicando as potências do primeiro membro:
+	\[
+	3^{2x-1} \cdot 3^{6x+8} = 3^{(2x-1) + (6x+8)} = 3^{8x+7}
+	\]
+	Igualando os expoentes:
+	\[
+	8x + 7 = 3x + 3 \implies 5x = -4 \implies x = -\frac{4}{5}
+	\]
+	Portanto, $S = \left\{ -\dfrac{4}{5} \right\}$.
+	
+	\vspace{0.5cm}
+	
+	% Item 9
+	\item \textbf{Equação:} $(2^x)^{x+4} = 32$
+	
+	Aplicando a propriedade de potência de potência e fatorando $32$:
+	\[
+	2^{x(x+4)} = 2^5 \implies 2^{x^2+4x} = 2^5
+	\]
+	Igualando os expoentes:
+	\[
+	x^2 + 4x = 5 \implies x^2 + 4x - 5 = 0
+	\]
+	Fatorando o trinômio:
+	\[
+	(x + 5)(x - 1) = 0 \implies x = -5 \quad \text{ou} \quad x = 1
+	\]
+	Portanto, $S = \{-5, 1\}$.
+	
+	\vspace{0.5cm}
+	
+	% Item 10
+	\item \textbf{Equação:} $2^{x-1} + 2^x + 2^{x+1} - 2^{x+2} + 2^{x+3} = 120$
+	
+	Colocamos o termo comum $2^x$ em evidência:
+	\[
+	2^x \left( 2^{-1} + 1 + 2^1 - 2^2 + 2^3 \right) = 120
+	\]
+	Calculando a soma dos coeficientes numéricos:
+	\[
+	\frac{1}{2} + 1 + 2 - 4 + 8 = \frac{1}{2} + 7 = \frac{15}{2}
+	\]
+	Substituindo de volta na equação:
+	\[
+	2^x \cdot \frac{15}{2} = 120 \implies 2^x = \frac{120 \cdot 2}{15} \implies 2^x = 8 \cdot 2 \implies 2^x = 16
+	\]
+	Como $16 = 2^4$, temos $x = 4$. Portanto, $S = \{4\}$.
+	
+	\vspace{0.5cm}
+	
+	% Item 11
+	\item \textbf{Equação:} $5^{x-2} - 5^x + 5^{x+1} = 505$
+	
+	Evidenciamos o fator comum $5^x$:
+	\[
+	5^x \left( 5^{-2} - 1 + 5^1 \right) = 505
+	\]
+	Calculando o termo entre parênteses:
+	\[
+	\frac{1}{25} - 1 + 5 = 4 + \frac{1}{25} = \frac{101}{25}
+	\]
+	Isolando $5^x$:
+	\[
+	5^x \cdot \frac{101}{25} = 505 \implies 5^x = \frac{505 \cdot 25}{101}
+	\]
+	Observando que $505 / 101 = 5$:
+	\[
+	5^x = 5 \cdot 25 \implies 5^x = 125 \implies 5^x = 5^3 \implies x = 3
+	\]
+	Portanto, $S = \{3\}$.
+	
+	\vspace{0.5cm}
+	
+	% Item 12
+	\item \textbf{Equação:} $2 \cdot 4^{x+2} - 5 \cdot 4^{x+1} - 3 \cdot 2^{2x+1} - 4^x = 20$
+	
+	Expressamos todos os termos em função de $4^x$, lembrando que $2^{2x+1} = 2^{2x} \cdot 2^1 = (2^2)^x \cdot 2 = 2 \cdot 4^x$:
+	\[
+	2 \cdot 4^{x+2} = 2 \cdot 4^2 \cdot 4^x = 32 \cdot 4^x
+	\]
+	\[
+	5 \cdot 4^{x+1} = 5 \cdot 4^1 \cdot 4^x = 20 \cdot 4^x
+	\]
+	\[
+	3 \cdot 2^{2x+1} = 3 \cdot (2 \cdot 4^x) = 6 \cdot 4^x
+	\]
+	Substituindo na expressão original:
+	\[
+	32 \cdot 4^x - 20 \cdot 4^x - 6 \cdot 4^x - 1 \cdot 4^x = 20
+	\]
+	Reduzindo os termos semelhantes:
+	\[
+	(32 - 20 - 6 - 1) \cdot 4^x = 20 \implies 5 \cdot 4^x = 20 \implies 4^x = 4 \implies x = 1
+	\]
+	Portanto, $S = \{1\}$.
+	
+	\vspace{0.5cm}
+	
+	% Item 13
+	\item \textbf{Equação:} $4^x - 2^x = 56$
+	
+	Reescrevemos $4^x$ como $(2^2)^x = (2^x)^2$:
+	\[
+	(2^x)^2 - 2^x - 56 = 0
+	\]
+	Fazemos a mudança de variável $y = 2^x$ (com a condição $y > 0$):
+	\[
+	y^2 - y - 56 = 0
+	\]
+	Fatorando o trinômio:
+	\[
+	(y - 8)(y + 7) = 0 \implies y = 8 \quad \text{ou} \quad y = -7
+	\]
+	Como $y = 2^x > 0$, descartamos a raiz negativa $y = -7$. Para a raiz positiva:
+	\[
+	2^x = 8 \implies 2^x = 2^3 \implies x = 3
+	\]
+	Portanto, $S = \{3\}$.
+	
+	\vspace{0.5cm}
+	
+		% Item 14
+	\item \textbf{Equação:} $4^x + 6^x = 2 \cdot 9^x$
+	
+	Notamos que as bases envolvidas podem ser expressas em função dos fatores primos $2$ e $3$:
+	\[
+	4^x = (2^2)^x = (2^x)^2, \quad 6^x = (2 \cdot 3)^x = 2^x \cdot 3^x, \quad 9^x = (3^2)^x = (3^x)^2
+	\]
+	Como $9^x > 0$ para todo $x \in \mathbb{R}$, dividimos a equação inteira por $9^x$:
+	\[
+	\frac{4^x}{9^x} + \frac{6^x}{9^x} = \frac{2 \cdot 9^x}{9^x}
+	\]
+	Simplificando as razões:
+	\[
+	\left( \frac{4}{9} \right)^x + \left( \frac{6}{9} \right)^x = 2 \implies \left( \left( \frac{2}{3} \right)^2 \right)^x + \left( \frac{2}{3} \right)^x = 2
+	\]
+	\[
+	\left( \frac{2}{3} \right)^{2x} + \left( \frac{2}{3} \right)^x - 2 = 0
+	\]
+	Introduzimos a variável auxiliar $u = \left( \dfrac{2}{3} \right)^x$, com $u > 0$:
+	\[
+	u^2 + u - 2 = 0
+	\]
+	Fatorando o trinômio:
+	\[
+	(u + 2)(u - 1) = 0 \implies u = 1 \quad \text{ou} \quad u = -2
+	\]
+	Como $u > 0$, descartamos $u = -2$. Retornando à variável original para $u = 1$:
+	\[
+	\left( \frac{2}{3} \right)^x = 1 \implies \left( \frac{2}{3} \right)^x = \left( \frac{2}{3} \right)^0 \implies x = 0
+	\]
+	Portanto, $S = \{0\}$.
+	
+	\vspace{0.5cm}
+	
+	% Item 15
+	\item \textbf{Equação:} $4^{x+1} - 9 \cdot 2^x + 2 = 0$
+	
+	Transformamos a base $4$ na base $2$:
+	\[
+	4^{x+1} = 4^1 \cdot (2^2)^x = 4 \cdot (2^x)^2
+	\]
+	Substituindo na equação:
+	\[
+	4(2^x)^2 - 9(2^x) + 2 = 0
+	\]
+	Adotando a variável auxiliar $y = 2^x$ ($y > 0$):
+	\[
+	4y^2 - 9y + 2 = 0
+	\]
+	Calculando o discriminante:
+	\[
+	\Delta = (-9)^2 - 4(4)(2) = 81 - 32 = 49
+	\]
+	\[
+	y = \frac{9 \pm \sqrt{49}}{2(4)} = \frac{9 \pm 7}{8} \implies y_1 = \frac{16}{8} = 2 \quad \text{e} \quad y_2 = \frac{2}{8} = \frac{1}{4}
+	\]
+	Retornando à variável $x$:
+	\begin{itemize}
+		\item Para $y = 2$: $2^x = 2^1 \implies x = 1$
+		\item Para $y = \frac{1}{4}$: $2^x = 2^{-2} \implies x = -2$
+	\end{itemize}
+	Portanto, $S = \{-2, 1\}$.
+	
+	\vspace{0.5cm}
+	
+	% Item 16
+	\item \textbf{Equação:} $x^{x^2-5x+6} = 1$
+	
+	A igualdade $a^b = 1$ no conjunto dos números reais ocorre em três casos:
+	\begin{enumerate}[label=\alph*)]
+		\item \textbf{Expoente nulo com base não nula:}
+		\[
+		x^2 - 5x + 6 = 0 \quad \text{e} \quad x \neq 0
+		\]
+		\[
+		(x - 2)(x - 3) = 0 \implies x = 2 \quad \text{ou} \quad x = 3
+		\]
+		Ambos os valores satisfazem $x \neq 0$.
+		
+		\item \textbf{Base igual a $1$:}
+		\[
+		x = 1
+		\]
+		Verificação direta: $1^{1^2 - 5(1) + 6} = 1^2 = 1$ (verdadeiro).
+		
+		\item \textbf{Base igual a $-1$ com expoente inteiro par:}
+		\[
+		x = -1
+		\]
+		Avaliando o expoente em $x = -1$:
+		\[
+		(-1)^2 - 5(-1) + 6 = 1 + 5 + 6 = 12
+		\]
+		Como $12$ é um número inteiro par, $(-1)^{12} = 1$ (verdadeiro).
+	\end{enumerate}
+	Reunindo os três casos, temos $S = \{-1, 1, 2, 3\}$.
+	
+	\vspace{0.5cm}
+	
+	% Item 17
+	\item \textbf{Equação:} $x^x = x$
+	
+	Reescrevemos a equação na forma $x^x = x^1$. Analisamos os casos no conjunto dos reais:
+	\begin{enumerate}[label=\alph*)]
+		\item \textbf{Expoentes iguais com base diferente de $0$, $1$ e $-1$:}
+		\[
+		x = 1
+		\]
+		Contudo, a base $x = 1$ constitui um caso próprio examinado a seguir.
+		
+		\item \textbf{Base igual a $1$:}
+		\[
+		x = 1 \implies 1^1 = 1
+		\]
+		Identidade confirmada; logo, $x = 1$ é solução.
+		
+		\item \textbf{Base igual a $0$ com expoente estritamente positivo:}
+		\[
+		x = 0
+		\]
+		Substituindo na expressão, teríamos $0^0$, que é uma indeterminação nos reais. Logo, $x = 0$ não é solução.
+		
+		\item \textbf{Base igual a $-1$ com expoente inteiro ímpar:}
+		\[
+		x = -1
+		\]
+		O expoente é $x = -1$, que é inteiro e ímpar:
+		\[
+		(-1)^{-1} = \frac{1}{(-1)^1} = -1
+		\]
+		A igualdade é satisfeita, confirmando que $x = -1$ é solução.
+	\end{enumerate}
+	Reunindo os valores válidos, obtemos $S = \{-1, 1\}$.
+	
+	\vspace{0.5cm}
+	
+	% Item 18
+	\item \textbf{Equação:} $x^{x^2-2} = 1$
+	
+	Analisamos as condições para que uma potência resulte em $1$ nos reais:
+	\begin{enumerate}[label=\alph*)]
+		\item \textbf{Expoente nulo com base não nula:}
+		\[
+		x^2 - 2 = 0 \quad \text{e} \quad x \neq 0
+		\]
+		\[
+		x^2 = 2 \implies x = \sqrt{2} \quad \text{ou} \quad x = -\sqrt{2}
+		\]
+		Como $\pm\sqrt{2} \neq 0$, ambos são soluções.
+		
+		\item \textbf{Base igual a $1$:}
+		\[
+		x = 1 \implies 1^{1^2 - 2} = 1^{-1} = 1
+		\]
+		Identidade confirmada; logo, $x = 1$ é solução.
+		
+		\item \textbf{Base igual a $-1$ com expoente inteiro par:}
+		\[
+		x = -1
+		\]
+		Avaliando o expoente em $x = -1$:
+		\[
+		(-1)^2 - 2 = 1 - 2 = -1
+		\]
+		Como $-1$ é ímpar, $(-1)^{-1} = -1 \neq 1$. Portanto, $x = -1$ não é solução.
+	\end{enumerate}
+	Reunindo as soluções encontradas, temos $S = \{-\sqrt{2}, 1, \sqrt{2}\}$.
+	
+	\vspace{0.5cm}
+	
+	% Item 19
+	\item \textbf{Equação:} $x^{2x^2-7x+4} = x$
+	
+	Reescrevemos o segundo membro como $x^1$. Analisamos os casos admissíveis nos reais:
+	\begin{enumerate}[label=\alph*)]
+		\item \textbf{Expoentes iguais com base diferente de $0$, $1$ e $-1$:}
+		\[
+		2x^2 - 7x + 4 = 1 \implies 2x^2 - 7x + 3 = 0
+		\]
+		\[
+		\Delta = (-7)^2 - 4(2)(3) = 49 - 24 = 25
+		\]
+		\[
+		x = \frac{7 \pm 5}{4} \implies x = 3 \quad \text{ou} \quad x = \frac{1}{2}
+		\]
+		Ambos os valores diferem de $0$, $1$ e $-1$, sendo soluções válidas.
+		
+		\item \textbf{Base igual a $1$:}
+		\[
+		x = 1 \implies 1^{2(1)^2 - 7(1) + 4} = 1^{-1} = 1
+		\]
+		A igualdade se mantém válida.
+		
+		\item \textbf{Base igual a $0$ com expoente estritamente positivo:}
+		\[
+		x = 0
+		\]
+		Calculando o expoente: $2(0)^2 - 7(0) + 4 = 4 > 0$. Logo, $0^4 = 0$, confirmando a solução.
+		
+		\item \textbf{Base igual a $-1$ com expoente inteiro ímpar:}
+		\[
+		x = -1
+		\]
+		Calculando o expoente: $2(-1)^2 - 7(-1) + 4 = 2(1) + 7 + 4 = 13$. Como $13$ é inteiro e ímpar, $(-1)^{13} = -1$, satisfazendo a igualdade.
+	\end{enumerate}
+	Reunindo todas as possibilidades, obtemos $S = \left\{ -1, 0, \dfrac{1}{2}, 1, 3 \right\}$.
+	
+	\vspace{0.5cm}
+	
+	% Item 20 (Nova: (x^2-x+1)^{2x^2-3x-2} = 1)
+	\item \textbf{Equação:} $(x^2 - x + 1)^{(2x^2 - 3x - 2)} = 1$
+	
+	Para uma igualdade do tipo $[f(x)]^{g(x)} = 1$, analisamos as três situações nos reais:
+	\begin{enumerate}[label=\alph*)]
+		\item \textbf{Expoente nulo com base não nula:}
+		\[
+		2x^2 - 3x - 2 = 0 \quad \text{e} \quad x^2 - x + 1 \neq 0
+		\]
+		Calculando as raízes do expoente:
+		\[
+		\Delta = (-3)^2 - 4(2)(-2) = 9 + 16 = 25
+		\]
+		\[
+		x = \frac{3 \pm 5}{4} \implies x = 2 \quad \text{ou} \quad x = -\frac{1}{2}
+		\]
+		Verificamos a base $f(x) = x^2 - x + 1$:
+		\begin{itemize}
+			\item Para $x = 2$: $2^2 - 2 + 1 = 3 \neq 0$.
+			\item Para $x = -\frac{1}{2}$: $\left(-\frac{1}{2}\right)^2 - \left(-\frac{1}{2}\right) + 1 = \frac{1}{4} + \frac{1}{2} + 1 = \frac{7}{4} \neq 0$.
+		\end{itemize}
+		Como a base não se anula, $x = 2$ e $x = -\dfrac{1}{2}$ são soluções.
+		
+		\item \textbf{Base igual a $1$:}
+		\[
+		x^2 - x + 1 = 1 \implies x^2 - x = 0 \implies x(x - 1) = 0 \implies x = 0 \quad \text{ou} \quad x = 1
+		\]
+		Para a base igual a $1$, a potência $1^{g(x)} = 1$ é satisfeita para qualquer expoente real:
+		\begin{itemize}
+			\item Para $x = 0$: $g(0) = -2$, e $1^{-2} = 1$.
+			\item Para $x = 1$: $g(1) = 2(1)^2 - 3(1) - 2 = -3$, e $1^{-3} = 1$.
+		\end{itemize}
+		Logo, $x = 0$ e $x = 1$ são soluções.
+		
+		\item \textbf{Base igual a $-1$ com expoente inteiro par:}
+		\[
+		x^2 - x + 1 = -1 \implies x^2 - x + 2 = 0
+		\]
+		Calculando o discriminante da base:
+		\[
+		\Delta = (-1)^2 - 4(1)(2) = 1 - 8 = -7 < 0
+		\]
+		Como a equação não admite raízes reais, a base nunca assume o valor $-1$ nos reais.
+	\end{enumerate}
+	Reunindo todas as soluções reais, obtemos $S = \left\{ -\dfrac{1}{2}, 0, 1, 2 \right\}$.
+	
+\end{enumerate}
+
+	\chapter{Inequações Exponenciais}
+	\label{sec:inequacoes_exp}
+	
+	Uma \textbf{inequação exponencial} é uma desigualdade condicionada caracterizada pela presença da incógnita no expoente de pelo menos uma potência cuja base satisfaz as condições de existência da função exponencial elementar ($a \in \mathbb{R}$, $a > 0$ e $a \neq 1$), expressa por meio das relações de ordem $<$, $\leqslant$, $>$ ou $\geqslant$. Enquanto na resolução de equações a propriedade central utilizada é a injetividade ($a^u = a^v \iff u = v$), nas inequações o elemento analítico determinante é a \textbf{monotonicidade estrita} da base. Assim, ao transpor a desigualdade das potências para os seus respectivos expoentes, o sentido do sinal de desigualdade é preservado quando a base for estritamente maior que $1$ e invertido quando a base estiver compreendida entre $0$ e $1$.
+	
+	\section{Fundamento Teórico e Propriedades de Monotonia}
+	\label{subsec:propriedade_inequacoes}
+	
+	A validade da passagem de uma desigualdade entre potências de mesma base para uma desigualdade entre seus expoentes decorre diretamente do estudo do crescimento e decrescimento da função exponencial $f(x) = a^x$:
+	
+	\begin{destaque}[Princípio Fundamental das Inequações Exponenciais]
+		Sejam $u(x)$ e $v(x)$ funções reais e $a \in \mathbb{R}^*_+ - \{1\}$:
+		\begin{enumerate}
+			\item \textbf{Se a base for maior do que um ($a > 1$):} A função exponencial é estritamente crescente, logo \textbf{mantém-se} o sentido da desigualdade:
+			\[
+			a^{u(x)} > a^{v(x)} \iff u(x) > v(x) \qquad \text{e} \qquad a^{u(x)} < a^{v(x)} \iff u(x) < v(x)
+			\]
+			\item \textbf{Se a base estiver entre zero e um ($0 < a < 1$):} A função exponencial é estritamente decrescente, logo \textbf{inverte-se} o sentido da desigualdade:
+			\[
+			a^{u(x)} > a^{v(x)} \iff u(x) < v(x) \qquad \text{e} \qquad a^{u(x)} < a^{v(x)} \iff u(x) > v(x)
+			\]
+		\end{enumerate}
+	\end{destaque}
+	
+	\section{Exemplos Comentados}
+	\label{subsec:exemplos_inequacoes}
+	
+	\subsection*{Exemplo Comentado 1: Base maior do que $1$ ($a > 1$)}
+	
+	\textbf{Problema:} Resolva a inequação $2^{3x - 1} \geqslant 32$.
+	
+	\textbf{Resolução comentada:}
+	\begin{enumerate}[label=\alph*)]
+		\item \textit{Redução à base comum:} $32 = 2^5$, logo:
+		\[
+		2^{3x - 1} \geqslant 2^5
+		\]
+		\item \textit{Análise da base:} A base é $a = 2$. Como $2 > 1$, a função é estritamente crescente, preservando-se a relação de ordem nos expoentes:
+		\[
+		3x - 1 \geqslant 5 \implies 3x \geqslant 6 \implies x \geqslant 2
+		\]
+	\end{enumerate}
+	Portanto, o conjunto solução é $S = \{x \in \mathbb{R} \mid x \geqslant 2\} = [2, +\infty[$.
+	
+	\vspace{0.3cm}
+	
+	\subsection*{Exemplo Comentado 2: Base entre $0$ e $1$ ($0 < a < 1$)}
+	
+	\textbf{Problema:} Resolva a inequação $\left(\dfrac{1}{3}\right)^{2x + 5} < \dfrac{1}{27}$.
+	
+	\textbf{Resolução comentada:}
+	\begin{enumerate}[label=\alph*)]
+		\item \textit{Redução à base comum:} $\dfrac{1}{27} = \left(\dfrac{1}{3}\right)^3$, reescrevendo a sentença:
+		\[
+		\left(\frac{1}{3}\right)^{2x + 5} < \left(\frac{1}{3}\right)^3
+		\]
+		\item \textit{Análise da base:} A base é $a = \dfrac{1}{3}$. Como $0 < \dfrac{1}{3} < 1$, a função é estritamente decrescente. Ao passar a desigualdade para os expoentes, \textbf{inverte-se} o sinal:
+		\[
+		2x + 5 > 3 \implies 2x > -2 \implies x > -1
+		\]
+	\end{enumerate}
+	Portanto, $S = \{x \in \mathbb{R} \mid x > -1\} = {]-1, +\infty [}$.
+	
+	\vspace{0.3cm}
+	
+	\subsection*{Exemplo Comentado 3: Mudança de variável com estudo de sinais}
+	
+	\textbf{Problema:} Resolva em $\mathbb{R}$ a inequação $4^x - 5 \cdot 2^x + 4 \leqslant 0$.
+	
+	\textbf{Resolução comentada:}
+	\begin{enumerate}[label=\alph*)]
+		\item \textit{Preparação e mudança de variável:} Reescrevemos $4^x = (2^x)^2$:
+		
+		\[ (2^x)^2-5 \cdot 2^x + 4 \leqslant 0 \]
+		
+		
+		\item Introduzimos a incógnita auxiliar $y = 2^x$ (com a restrição obrigatória $y > 0$):
+		\[
+		y^2 - 5y + 4 \leqslant 0
+		\]
+		\item \textit{Resolução da inequação quadrática auxiliar:} As raízes da equação associada são dadas por $(y - 1)(y - 4) = 0$, isto é, $y = 1$ ou $y = 4$. Por ser uma parábola com concavidade voltada para cima, o trinômio é não positivo no intervalo entre as raízes:
+		\[
+		1 \leqslant y \leqslant 4
+		\]
+		Ambos os extremos satisfazem a condição de positividade $y > 0$.
+		\item \textit{Retorno à variável original:}
+		\[
+		1 \leqslant 2^x \leqslant 4 \implies 2^0 \leqslant 2^x \leqslant 2^2
+		\]
+		Como a base $a = 2 > 1$, mantém-se o ordenamento entre os expoentes:
+		\[
+		0 \leqslant x \leqslant 2
+		\]
+	\end{enumerate}
+	Portanto, $S = \{x \in \mathbb{R} \mid 0 \leqslant x \leqslant 2\} = [0, 2]$.
+	
+	\section{Exercícios Propostos}
+	\label{subsec:propostos_inequacoes}
+	
+	\textbf{Resolva as seguintes inequações exponenciais em $\mathbb{R}$:}
+	\begin{multicols}{2}
+		\begin{enumerate}
+			\item $3^{x+1} > 81$
+			\item $\left( \dfrac{1}{2} \right)^{3x-2} \leqslant \dfrac{1}{16}$
+			\item $5^{x^2 - 2x} < 125$
+			\item $\left( \dfrac{2}{5} \right)^{x^2 - 4} \geqslant 1$
+			\item $2^{x-1} + 2^x + 2^{x+1} \leqslant 56$
+			\item $9^x - 10 \cdot 3^x + 9 > 0$
+			\item $\left( \dfrac{1}{4} \right)^x - 3 \cdot \left( \dfrac{1}{2} \right)^x - 4 < 0$
+			\item $4^x - 3 \cdot 2^{x+1} + 8 \leqslant 0$
+		\end{enumerate}
+	\end{multicols}
+	
+	\newpage
+	
+	\section{Resolução dos Exercícios Propostos}
+	\label{subsec:resolucao_inequacoes}
+	
+	\begin{enumerate}[label=\textbf{\arabic*.}]
+		
+		% Item 1
+		\item \textbf{Inequação:} $3^{x+1} > 81$
+		
+		Fatorando $81$ na base $3$:
+		\[
+		81 = 3^4 \implies 3^{x+1} > 3^4
+		\]
+		Como a base $3 > 1$, a função é estritamente crescente, preservando o sinal da desigualdade:
+		\[
+		x + 1 > 4 \implies x > 3
+		\]
+		Portanto, $S = \{x \in \mathbb{R} \mid x > 3\} ={]3, +\infty[}$.
+		
+		\vspace{0.4cm}
+		
+		% Item 2
+		\item \textbf{Inequação:} $\left( \dfrac{1}{2} \right)^{3x-2} \leqslant \dfrac{1}{16}$
+		
+		Expressamos o segundo membro na base $\dfrac{1}{2}$:
+		\[
+		\frac{1}{16} = \left(\frac{1}{2}\right)^4 \implies \left(\frac{1}{2}\right)^{3x-2} \leqslant \left(\frac{1}{2}\right)^4
+		\]
+		Como a base satisfaz $0 < \dfrac{1}{2} < 1$, a função é estritamente decrescente. Invertendo a desigualdade entre os expoentes:
+		\[
+		3x - 2 \geqslant 4 \implies 3x \geqslant 6 \implies x \geqslant 2
+		\]
+		Portanto, $S = \{x \in \mathbb{R} \mid x \geqslant 2\} = [2, +\infty[$.
+		
+		\vspace{0.4cm}
+		
+		% Item 3
+		\item \textbf{Inequação:} $5^{x^2 - 2x} < 125$
+		
+		Escrevendo $125$ como potência de base $5$:
+		\[
+		125 = 5^3 \implies 5^{x^2 - 2x} < 5^3
+		\]
+		Sendo a base $5 > 1$, mantemos o sentido da relação de ordem:
+		\[
+		x^2 - 2x < 3 \implies x^2 - 2x - 3 < 0
+		\]
+		Determinando as raízes do polinômio quadrático associado:
+		\[
+		(x - 3)(x + 1) = 0 \implies x_1 = -1 \quad \text{e} \quad x_2 = 3
+		\]
+		Como o coeficiente dominante de $x^2$ é positivo, a parábola assume valores negativos no intervalo interior entre as raízes:
+		\[
+		-1 < x < 3
+		\]
+		Portanto, $S = \{x \in \mathbb{R} \mid -1 < x < 3\} ={]-1, 3[}$.
+		
+		\vspace{0.4cm}
+		
+		% Item 4
+		\item \textbf{Inequação:} $\left( \dfrac{2}{5} \right)^{x^2 - 4} \geqslant 1$
+		
+		Expressamos o número $1$ na base correspondente: $1 = \left(\dfrac{2}{5}\right)^0$:
+		\[
+		\left(\frac{2}{5}\right)^{x^2 - 4} \geqslant \left(\frac{2}{5}\right)^0
+		\]
+		Como $0 < \dfrac{2}{5} < 1$, a função exponencial correspondente é estritamente decrescente, o que impõe a inversão do sinal:
+		\[
+		x^2 - 4 \leqslant 0 \implies (x - 2)(x + 2) \leqslant 0
+		\]
+		Analisando o sinal da função quadrática cujas raízes são $\pm 2$:
+		\[
+		-2 \leqslant x \leqslant 2
+		\]
+		Portanto, $S = \{x \in \mathbb{R} \mid -2 \leqslant x \leqslant 2\} = [-2, 2]$.
+		
+		\vspace{0.4cm}
+		
+		% Item 5
+		\item \textbf{Inequação:} $2^{x-1} + 2^x + 2^{x+1} \leqslant 56$
+		
+		Colocamos $2^x$ em evidência no primeiro membro:
+		\[
+		2^x \left( 2^{-1} + 1 + 2^1 \right) \leqslant 56 \implies 2^x \left( \frac{1}{2} + 3 \right) \leqslant 56
+		\]
+		\[
+		2^x \cdot \frac{7}{2} \leqslant 56 \implies 2^x \leqslant \frac{56 \cdot 2}{7} \implies 2^x \leqslant 8 \cdot 2 \implies 2^x \leqslant 16
+		\]
+		Escrevendo $16$ na base $2$:
+		\[
+		2^x \leqslant 2^4
+		\]
+		Como a base $2 > 1$, mantém-se o sinal da desigualdade:
+		\[
+		x \leqslant 4
+		\]
+		Portanto, $S = \{x \in \mathbb{R} \mid x \leqslant 4\} = {]-\infty, 4]}$.
+		
+		\vspace{0.4cm}
+		
+		% Item 6
+		\item \textbf{Inequação:} $9^x - 10 \cdot 3^x + 9 > 0$
+		
+		Reescrevemos a inequação com a base $3$:
+		\[
+		(3^x)^2 - 10 \cdot 3^x + 9 > 0
+		\]
+		Adotando a substituição $y = 3^x$ com a condição fundamental $y > 0$:
+		\[
+		y^2 - 10y + 9 > 0
+		\]
+		Fatorando a expressão:
+		\[
+		(y - 1)(y - 9) > 0
+		\]
+		A inequação é satisfeita para $y < 1$ ou $y > 9$. Considerando a condição $y > 0$, dividimos em dois casos:
+		\begin{itemize}
+			\item $0 < y < 1 \implies 0 < 3^x < 3^0$. Como $3^x > 0$ para todo $x$, resta $3^x < 3^0 \iff x < 0$.
+			\item $y > 9 \implies 3^x > 3^2 \iff x > 2$.
+		\end{itemize}
+		Portanto, $S = \{x \in \mathbb{R} \mid x < 0 \text{ ou } x > 2\} = {]-\infty, 0[} \cup {]2, +\infty[}$.
+		
+		\vspace{0.4cm}
+		
+		% Item 7
+		\item \textbf{Inequação:} $\left( \dfrac{1}{4} \right)^x - 3 \cdot \left( \dfrac{1}{2} \right)^x - 4 < 0$
+		
+		Reconhecendo que $\left(\dfrac{1}{4}\right)^x = \left(\left(\dfrac{1}{2}\right)^2\right)^x = \left[\left(\dfrac{1}{2}\right)^x\right]^2$, definimos $y = \left(\dfrac{1}{2}\right)^x$ com $y > 0$:
+		\[
+		y^2 - 3y - 4 < 0
+		\]
+		Fatorando o trinômio quadrático:
+		\[
+		(y - 4)(y + 1) < 0 \implies -1 < y < 4
+		\]
+		Como $y = \left(\dfrac{1}{2}\right)^x > 0$ para todo $x \in \mathbb{R}$, a condição $-1 < y$ é identicamente satisfeita. Resta resolver:
+		\[
+		y < 4 \implies \left(\frac{1}{2}\right)^x < 4
+		\]
+		Expressando $4$ na base $\dfrac{1}{2}$:
+		\[
+		4 = 2^2 = \left( \left(\frac{1}{2}\right)^{-1} \right)^2 = \left(\frac{1}{2}\right)^{-2}
+		\]
+		Substituindo na desigualdade:
+		\[
+		\left(\frac{1}{2}\right)^x < \left(\frac{1}{2}\right)^{-2}
+		\]
+		Como a base $0 < \dfrac{1}{2} < 1$, inverte-se o sinal da desigualdade:
+		\[
+		x > -2
+		\]
+		Portanto, $S = \{x \in \mathbb{R} \mid x > -2\} = {]-2, +\infty[}$.
+		
+		\vspace{0.4cm}
+		
+		% Item 8
+		\item \textbf{Inequação:} $4^x - 3 \cdot 2^{x+1} + 8 \leqslant 0$
+		
+		Desenvolvemos as potências em base $2$:
+		\[
+		2^{x+1} = 2^1 \cdot 2^x = 2 \cdot 2^x \implies 3 \cdot 2^{x+1} = 6 \cdot 2^x
+		\]
+		\[
+		(2^x)^2 - 6 \cdot 2^x + 8 \leqslant 0
+		\]
+		Fazendo $y = 2^x$ (com $y > 0$):
+		\[
+		y^2 - 6y + 8 \leqslant 0
+		\]
+		Fatorando a expressão:
+		\[
+		(y - 2)(y - 4) \leqslant 0 \implies 2 \leqslant y \leqslant 4
+		\]
+		Retornando à variável original $x$:
+		\[
+		2 \leqslant 2^x \leqslant 4 \implies 2^1 \leqslant 2^x \leqslant 2^2
+		\]
+		Como a base $2 > 1$, preserva-se o sentido da ordenação:
+		\[
+		1 \leqslant x \leqslant 2
+		\]
+		Portanto, $S = \{x \in \mathbb{R} \mid 1 \leqslant x \leqslant 2\} = [1, 2]$.
+		
+	\end{enumerate}
+\end{document}

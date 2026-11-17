@@ -1,0 +1,94 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[portuguese]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+\usepackage{parskip}
+\usepackage{setspace}
+\usepackage{tikz}
+\usepackage{verbatim}
+\usetikzlibrary{arrows.meta, calc}
+\setstretch{1.2}
+\tcbuselibrary{skins, breakable}
+\geometry{top=2cm, bottom=2cm, left=2.5cm, right=2.5cm}
+\usepackage[colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue]{hyperref}
+
+% Estilo de caixa para destaque conceitual
+\newtcolorbox{destaque}[1][]{
+	enhanced,
+	colback=gray!5,
+	colframe=black!70,
+	boxrule=1pt,
+	arc=4pt,
+	left=10pt,
+	right=10pt,
+	top=8pt,
+	bottom=8pt,
+	fonttitle=\bfseries,
+	title=#1
+}
+
+\begin{document}
+
+	
+% --- CABEÇALHO COM CAIXA ---
+\begin{tcolorbox}[
+	enhanced, 
+	colback=white, 
+	colframe=black, 
+	boxrule=2pt,
+	left=0pt, 
+	right=0pt,
+	top=5pt,
+	bottom=5pt
+	]
+	\noindent
+	\begin{minipage}[c]{0.25\textwidth}
+		\centering
+		\includegraphics[width=4.5cm]{ifes.jpg} 
+	\end{minipage}
+	\begin{minipage}[c]{0.70\textwidth}
+		\centering
+		\textbf{Introdução ao Estudo das Funções -- 2026/2}\\
+		\textbf{Licenciatura em Matemática}\\
+		\textbf{Resumo de Função Quadrática}\\
+		Professor: \textbf{Alex Jordane}
+	\end{minipage}
+\end{tcolorbox}
+
+	\begin{destaque}[Forma Polinomial ou Geral]
+		\label{dest:formageral}
+		$$f(x) = ax^2 + bx + c, \quad \text{com } a, b, c \in \mathbb{R} \text{ e } a \neq 0$$
+	\end{destaque}
+	
+	\begin{destaque}[Forma Canônica]
+		\label{dest:formacanonica}
+		$$f(x) = a(x - x_v)^2 + y_v$$
+		onde $V(x_v, y_v)$ é o vértice da parábola, dado por:
+		$$x_v = -\frac{b}{2a} \quad \text{e} \quad y_v = -\frac{\Delta}{4a}, \quad \text{com } \Delta = b^2 - 4ac$$
+	\end{destaque}
+	
+	\begin{destaque}[Raízes da função]
+		\label{dest:raizes}
+		$$x_1  = \frac{-b - \sqrt{b^2 - 4ac}}{2a} \text{ e } x_2  = \frac{-b + \sqrt{b^2 - 4ac}}{2a}$$
+	\end{destaque}		
+	
+	\begin{destaque}[Forma Fatorada]
+		\label{dest:formafatorada}
+		$$f(x) = a(x - x_1)(x - x_2), \quad \text{com } \Delta \geqslant 0$$
+		onde $x_1$ e $x_2$ são as raízes reais da função ($f(x_1) = f(x_2) = 0$).
+	\end{destaque}
+	
+	\begin{destaque}[Forma Soma-Produto]
+		\label{dest:soma-produto}
+			$$f(x) = a(x^2 - S \cdot x + P)$$
+		onde $S = x_1 + x_2$ e $P=x_1 \cdot x_2$.
+	\end{destaque}
+
+
+\end{document}
